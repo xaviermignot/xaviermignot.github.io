@@ -4,7 +4,6 @@ title: Manage your Visio shapes with Git
 tags: [visio, azure]
 image: /assets/img/visio-tips-git-clone/banner.png
 img_dir: /assets/img/visio-tips-git-clone
-banner_style: fit
 ---
 
 In this post I will share a simple trick I have used for many years to keep my favorite Visio shapes always fresh.  
