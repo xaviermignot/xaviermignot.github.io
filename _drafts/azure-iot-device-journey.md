@@ -41,10 +41,39 @@ Storage|External microSD card with lots of space !|Onboard storage with less spa
 OS|Run a full-featured Linux|Run RTOS that run *only* your code
 
 ## Azure MXChip IoT DevKit
+Why ? To try a MCU-based device
+Pros:
+- Ready for Azure IoT development
+- Lots of features on the board: screen, sensors, buttons, ...
+- Nice catalog of sample project to get started with
+- Runs on Arduino so lots of content on the web as well
+- Great VS Code support
+Cons:
+- Can be programmed in C/C++ only
+- A little pricey
+- SDK repository and official blog/website are not very active
 
 ## Wilderness Lab Meadow board
+Why ? I was having troubles with C, so C# on a MCU was more than appealing
+Pros:
+- Runs C#, on a MCU
+Cons:
+- VS Code support not ready yet
+- Experience is still clunky: needed to reconnect, flash it again, ... (need to retry in .NET 5)
 
 ## Adafruit boards
+Why ? I like Python so writing it on a device seemed great
+Pros:
+- Cheap
+- The company is great, CircuitPython is very active, library support is amazing
+- The documentation is great
+- It's very straightforward, you plug the device, edit the code, and it's already deployed
+- The REPL is very handy to troubleshoot, try things quickly, or understand things
+Cons:
+- Most of the boards are not ready for IoT: no WiFi or event BLE
+- As the dev workflow is handy, if you want to host your code on a repo it's not the best
 
 ## What's next ?
+There are lots of devices to try out there (Wio Terminal from Seeed Studio, Pico, ...) but I have enough devices at the moment. I could make something with CircuitPython on a connected device (like the Metro), or use a BLE CircuitPython board as a child device and a Pi as a gateway for instance.  
+Projects first, buying things next !
 
