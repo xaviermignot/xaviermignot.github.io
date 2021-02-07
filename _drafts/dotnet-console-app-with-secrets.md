@@ -4,7 +4,7 @@ title: Using .NET Secret Manager with console applications
 tags: [dotnet, csharp]
 ---
 
-A few hours ago I was starting to build a small demo that use a secret that I don't want to commit in the related repository (like a device connection string for instance).  
+A few hours ago I was starting to build a small demo as a console app that uses a secret that I don't want to commit in the related repository (like a device connection string for instance).  
 So I asked myself *Why not try to use this .NET secret thing that I never use normally ?*  
 Well, as it was not as simple a I initially though, I have ended up with the idea of writing this post to share what I have learnt.
 
@@ -18,7 +18,7 @@ It's a tool to store secrets away from the repository structure during developme
 - Setting a secret value is done using the `dotnet user-secrets "<key>" "<value>"` command, or `dotnet user-secrets "<section>:<key>" "<value>"` if you want to use section or map to a POCO (more on this below)
 - Secrets are stored in a *json* file in a folder named after the *UserSecretsId*, located somewhere in you home directory (depending on you OS)
 
-The official documentation is centered around ASP.NET Core, and the information I have found elsewhere was a little out of date, or missing using statements or packages references. So as using the Secret Manager for a console application was not that simple, I'll try to illustrate it with 3 samples. Let's start with the most basic one.
+The official documentation is centered around ASP.NET Core, and the information I have found elsewhere was a little out of date, or missing using statements or package references. So as using the Secret Manager for a console application was not that simple, I'll try to illustrate it with 3 samples. Let's start with the most basic one.
 
 
 ## Sample 1: Store a single value as a secret
@@ -39,7 +39,7 @@ var configuration = new ConfigurationBuilder()
     .Build();
 ```
 
-Then you can access a secret value:
+Then you can access a secret value as simple as that:
 ```csharp
 var secretValue = configuration["MySecret"];
 ```
