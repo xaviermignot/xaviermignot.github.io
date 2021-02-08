@@ -64,3 +64,79 @@ namespace SingleValueSample
     }
 }
 ```
+
+
+## Sample 2: Map to a POCO object
+
+Getting a single secret is a first step, if you have many secrets it's probably a good idea to map them to a POCO like this class:
+```csharp
+class MyConfiguration
+{
+    public string MyFirstSecret { get; set; }
+    public string MySecondSecret { get; set; }
+}
+```
+
+To tell the Secret Manager about your POCO, simply name your secrets with the `<class>:<property>` pattern like this:
+```console
+$ dotnet user-secrets init
+$ dotnet user-secrets set "MyConfiguration:MyFirstSecret" "my first secret value"
+$ dotnet user-secrets set "MyConfiguration:MySecondSecret" "my second secret value"
+```
+
+Starting from the previous sample you'll need to add two more packages references:
+- `Microsoft.Extensions.DependencyInjection`
+- `Microsoft.Extensions.Options.ConfigurationExtensions`
+
+In the code, when you add the user secrets configuration source, use you POCO class instead of `Program` in the type parameter:
+```csharp
+var configuration = new ConfigurationBuilder()
+    .AddUserSecrets<MyConfiguration>()
+    .Build();
+```
+
+Then, using the DI and configuration packages, register a configuration instance for your POCO class and build a `ServiceProvider` that will let you get your secrets as a POCO like any other service:
+```csharp
+var services = new ServiceCollection()
+    .Configure<MyConfiguration>(configuration.GetSection(nameof(MyConfiguration)))
+    .AddOptions()
+    .BuildServiceProvider();
+
+var myConf = services.GetService<IOptions<MyConfiguration>>();
+```
+
+Here is the full code with the usings I did not mention yet:
+```csharp
+using System;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+
+namespace MapToPocoSample
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var configuration = new ConfigurationBuilder()
+                .AddUserSecrets<MyConfiguration>()
+                .Build();
+
+            var services = new ServiceCollection()
+                .Configure<MyConfiguration>(configuration.GetSection(nameof(MyConfiguration)))
+                .AddOptions()
+                .BuildServiceProvider();
+            
+            var myConf = services.GetService<IOptions<MyConfiguration>>();
+            Console.WriteLine($"The first secret is: {myConf.Value.MyFirstSecret}");
+            Console.WriteLine($"The second secret is: {myConf.Value.MySecondSecret}");
+        }
+    }
+
+    class MyConfiguration
+    {
+        public string MyFirstSecret { get; set; }
+        public string MySecondSecret { get; set; }
+    }
+}
+```
