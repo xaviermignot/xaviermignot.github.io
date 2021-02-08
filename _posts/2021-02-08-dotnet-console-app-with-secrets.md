@@ -4,9 +4,9 @@ title: Using .NET Secret Manager with console applications
 tags: [dotnet, csharp]
 ---
 
-A few hours ago I was starting to build a small demo as a console app that uses a secret that I don't want to commit in the related repository (like a device connection string for instance).  
+A few ~~hours~~ days ago I was starting to build a small demo as a console app that uses a secret that I didn't want to commit in the related repository (like a device connection string for instance).  
 So I asked myself *Why not try to use this .NET secret thing that I never use normally ?*  
-Well, as it was not as simple a I initially though, I have ended up with the idea of writing this post to share what I have learnt.
+Well, as it was not as simple a I initially thought, I have ended up with the idea of writing this post to share what I have learnt.
 
 All the samples are written in .NET 5 and are available [here](https://github.com/xaviermignot/dotnet-console-secret-samples){:target="_blank"}.  
 I have put everything in the `Program.cs` file for each sample for readability, I don't do this normally 😉
