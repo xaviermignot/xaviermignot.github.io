@@ -1,17 +1,19 @@
 ---
 layout: post
 title: Using .NET Secret Manager with console applications
-tags: [dotnet]
+tags: [dotnet, csharp]
 ---
 
 A few hours ago I was starting to build a small demo that use a secret that I don't want to commit in the related repository (like a device connection string for instance).  
 So I asked myself *Why not try to use this .NET secret thing that I never use normally ?*  
 Well, as it was not as simple a I initially though, I have ended up with the idea of writing this post to share what I have learnt.
 
+All the samples are written in .NET 5 and are available [here](https://github.com/xaviermignot/dotnet-console-secret-samples){:target="_blank"}.  
+I have put everything in the `Program.cs` file for each sample for readability, I don't do this normally 😉
 
 ## What is the .NET Secret Manager ?
 
-It's a tool to store secrets away from the repository structure during development. The full documentation is available [here](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets), here is what it does in a few bullet points:
+It's a tool to store secrets away from the repository structure during development. The full documentation is available [here](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets){:target="_blank"}, here is what it does in a few bullet points:
 - The `dotnet user-secrets init` command generates a *UserSecretsId*, a GUID stored in a element of the *csproj*
 - Setting a secret value is done using the `dotnet user-secrets "<key>" "<value>"` command, or `dotnet user-secrets "<section>:<key>" "<value>"` if you want to use section or map to a POCO (more on this below)
 - Secrets are stored in a *json* file in a folder named after the *UserSecretsId*, located somewhere in you home directory (depending on you OS)
@@ -84,7 +86,7 @@ $ dotnet user-secrets set "MyConfiguration:MyFirstSecret" "my first secret value
 $ dotnet user-secrets set "MyConfiguration:MySecondSecret" "my second secret value"
 ```
 
-Starting from the previous sample you'll need to add two more packages references:
+Starting from the previous sample you'll need to add two more packages references (in addition to `Microsoft.Extensions.Configuration.UserSecrets`):
 - `Microsoft.Extensions.DependencyInjection`
 - `Microsoft.Extensions.Options.ConfigurationExtensions`
 
@@ -105,7 +107,7 @@ var services = new ServiceCollection()
 var myConf = services.GetService<IOptions<MyConfiguration>>();
 ```
 
-Here is the full code with the usings I did not mention yet:
+Here is the full code with the usings I haven't mentioned yet:
 ```csharp
 using System;
 using Microsoft.Extensions.Configuration;
@@ -140,3 +142,89 @@ namespace MapToPocoSample
     }
 }
 ```
+
+
+## Sample 3: Using the .NET Generic Host
+
+In this last sample we will use the [.NET Generic Host](https://docs.microsoft.com/en-us/dotnet/core/extensions/generic-host){:target="_blank"} with a `BackgroundService` implementation. This is the step where your console app moves from the "script-style console app" stage to the "real-world console app with full DI power & stuff" level.
+
+We will use the default host builder, which as stated in the [documentation](https://docs.microsoft.com/en-us/dotnet/core/extensions/generic-host#default-builder-settings){:target="_blank"} comes with some nice features out of the box: console logging, environment variables, *appsettings.json* configuration, and Secret Manager __when the app runs in the *Development* environment__.  
+
+So if you have an environment variable `DOTNET_ENVIRONMENT` whose value is `Development`, you don't even need to reference the `Microsoft.Extensions.Configuration.UserSecrets` package and to call the `AddUserSecrets` method to get your secrets, the default host will do that for you.  
+You will find more informations on environments in .NET [here](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments){:target="_blank"}, but just to set the environment variable you need to do:
+- `export DOTNET_ENVIRONMENT=Development` if you use Bash
+- `$env:DOTNET_ENVIRONMENT='Development'` if you use Powershell
+
+Starting from the previous sample with the POCO class, the Secret Manager commands are the same. You need to reference the following packages:
+- `Microsoft.Extensions.Hosting`
+- `Microsoft.Extensions.Options.ConfigurationExtensions`
+
+In the code of the `Program` class, there is no mention about user secrets, we use the default host builder like this in the `Main` method:
+```csharp
+Host.CreateDefaultBuilder()
+    .ConfigureServices((hostContext, services) =>
+    {
+        services.Configure<MyConfiguration>(hostContext.Configuration.GetSection(nameof(MyConfiguration)));
+        services.AddHostedService<ConsoleWorker>();
+    }).Build().Run();
+```
+This code creates the default host builder, registers the configuration for the POCO class, and registers the `ConsoleWorker` class as a hosted service. This class is an implementation of `BackgroundService`, and contains the logic of the console app.  
+The dependencies, including the POCO instance containing the secrets, can be injected directly in the constructor.  
+
+Here is the whole code of this sample:
+```csharp
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+
+namespace UseHostBuilder
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Host.CreateDefaultBuilder()
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.Configure<MyConfiguration>(hostContext.Configuration.GetSection(nameof(MyConfiguration)));
+                    services.AddHostedService<ConsoleWorker>();
+                }).Build().Run();
+        }
+    }
+
+    class MyConfiguration
+    {
+        public string MyFirstSecret { get; set; }
+        public string MySecondSecret { get; set; }
+    }
+
+    class ConsoleWorker : BackgroundService
+    {
+        private readonly MyConfiguration _myConfiguration;
+        private readonly ILogger _logger;
+
+        public ConsoleWorker(IOptions<MyConfiguration> myConfiguration, ILogger<ConsoleWorker> logger)
+        {
+            _myConfiguration = myConfiguration.Value;
+            _logger = logger;
+        }
+
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            _logger.LogInformation($"The first secret is: {_myConfiguration.MyFirstSecret}");
+            _logger.LogInformation($"The second secret is: {_myConfiguration.MySecondSecret}");
+
+            return Task.CompletedTask;
+        }
+    }
+}
+```
+
+
+## Wrapping up
+
+I hope you will find this post useful, all the information was already available online but I needed some work to properly understand how the Secret Manager works with console apps.  
+Nothing stops me from using it event in small POCs, I hope it's the same for you now.
