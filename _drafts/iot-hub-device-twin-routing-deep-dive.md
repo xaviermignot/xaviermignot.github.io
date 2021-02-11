@@ -31,3 +31,8 @@ For each section, show if a change generates an event and what's in the payload
 ## Adding a condition on the route
 
 Demonstrate that the condition is applied *after* the change
+
+
+## What about message enrichments ?
+
+Add a message enrichment and test if it's propagated in message properties
