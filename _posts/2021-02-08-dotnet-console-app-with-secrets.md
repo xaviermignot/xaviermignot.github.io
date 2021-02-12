@@ -67,6 +67,21 @@ namespace SingleValueSample
 }
 ```
 
+Bonus if you want to do the same thing using .NET 5/C# 9 [top-level statements](https://docs.microsoft.com/en-us/dotnet/csharp/tutorials/exploration/top-level-statements){:target="_blank"}:
+```csharp
+using System;
+using System.Reflection;
+using Microsoft.Extensions.Configuration;
+
+var configuration = new ConfigurationBuilder()
+    .AddUserSecrets(Assembly.GetExecutingAssembly())
+    .Build();
+
+var secretValue = configuration["MySecret"];
+
+Console.WriteLine($"The secret value is: {secretValue}");
+```
+
 
 ## Sample 2: Map to a POCO object
 
