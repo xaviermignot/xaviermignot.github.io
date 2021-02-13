@@ -61,10 +61,28 @@ The following diagrams sums up the whole set-up:
 
 ## Testing changes on properties (desired/reported) and tags
 
-
+For each test I am using Windows Terminal with two panes open in WSL: one on the lef to make the twin change, one on the right to monitor the changes:
+![Reported test in Windows Terminal]({{ page.img_dir }}/02-test-reported.png)
 
 ### Test on reported properties
-
+As seen in the image above, runing the device tool in the left pane changes the `color` reported property from `Red` to `Blue`. In the right pane, we see an event with the following payload:
+```json
+{
+    "version": 10,
+    "properties": {
+        "reported": {
+            "color": "Blue",
+            "$metadata": {
+                "$lastUpdated": "2021-02-13T17:56:23.2704925Z",
+                "color": {
+                    "$lastUpdated": "2021-02-13T17:56:23.2704925Z"
+                }
+            },
+            "$version": 7
+        }
+    }
+}
+```
 
 For each section, show if a change generates an event and what's in the payload
 
