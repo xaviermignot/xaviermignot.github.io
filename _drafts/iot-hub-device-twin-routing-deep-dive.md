@@ -83,13 +83,160 @@ As seen in the image above, runing the device tool in the left pane changes the 
     }
 }
 ```
+As a comparison, here is the whole reported section of the device twin:
+```json
+"reported": {
+    "propertyUsedOnlyOnce": "This is set only once",
+    "color": "Blue",
+    "$metadata": {
+        "$lastUpdated": "2021-02-13T17:56:23.2704925Z",
+        "propertyUsedOnlyOnce": {
+            "$lastUpdated": "2021-02-13T16:07:58.6609507Z"
+        },
+        "color": {
+            "$lastUpdated": "2021-02-13T17:56:23.2704925Z"
+        }
+    },
+    "$version": 7
+}
+```
+To summarize, in the event payload we have:
+- The `version` of the whole device twin
+- The new values of the properties included in the change
+- The `$metadata` of the properties in the change
+- The `$version` of the reported property section
+And we don't have:
+- The reported properties not included in the change (and their `$metadata`)
+- Any data from the other section of the device twin (tags, desired)
 
-For each section, show if a change generates an event and what's in the payload
+### Test on desired properties
+Back in my Windows Terminal, on the left pane I enter the following command to add a new property in the desired section:
+```console
+az iot hub device-twin update --hub-name $hub_name -d $device_id --set properties.desired.desiredColor='Orange'
+```
+In the right pane I receive an event with the following payload:
+```json
+{
+    "version": 11,
+    "tags": {
+        "tagProperty": "tagValue"
+    },
+    "properties": {
+        "desired": {
+            "desiredProperty": "desiredValue",
+            "desiredColor": "Orange",
+            "$metadata": {
+                "$lastUpdated": "2021-02-14T18:05:38.5825801Z",
+                "$lastUpdatedVersion": 3,
+                "desiredProperty": {
+                    "$lastUpdated": "2021-02-14T18:05:38.5825801Z",
+                    "$lastUpdatedVersion": 3
+                },
+                "desiredColor": {
+                    "$lastUpdated": "2021-02-14T18:05:38.5825801Z",
+                    "$lastUpdatedVersion": 3
+                }
+            },
+            "$version": 3
+        }
+    }
+}
+```
+So we have more content in this payload:
+- The `version` of the whole device twin
+- The tags section
+- The whole desired properties section (not only the one that has changed), with the full `$metadata` and the `$version`
+Only the reported section missing !
+
+### Test on tags
+Let's do the same test but by adding a new property in the tags sections with the following command:
+```console
+az iot hub device-twin update --hub-name $hub_name -d $device_id --set tags.newTagProperty='newTagValue'
+```
+It generates an event with the following payload:
+```json
+{
+    "version": 12,
+    "tags": {
+        "tagProperty": "tagValue",
+        "newTagProperty": "newTagValue"
+    },
+    "properties": {
+        "desired": {
+            "desiredProperty": "desiredValue",
+            "desiredColor": "Orange",
+            "$metadata": {
+                "$lastUpdated": "2021-02-14T19:53:14.4410421Z",
+                "$lastUpdatedVersion": 4,
+                "desiredProperty": {
+                    "$lastUpdated": "2021-02-14T19:53:14.4410421Z",
+                    "$lastUpdatedVersion": 4
+                },
+                "desiredColor": {
+                    "$lastUpdated": "2021-02-14T19:53:14.4410421Z",
+                    "$lastUpdatedVersion": 4
+                }
+            },
+            "$version": 4
+        }
+    }
+}
+```
+Basically we have the same event as for updating the desired properties: all the tags and all the desired properties with the `$metadata`.
+
+### Summary
+This table sums-up the tests done so far:  
+
+Updated twin section | Event generated
+-------------------- | ---------------
+Reported property    | Part of the reported section updated
+Desired property     | All the tags and desired properties
+Tags                 | All the tags and desired properties
 
 
 ## Adding a condition on the route
 
-Demonstrate that the condition is applied *after* the change
+Now that we know that an event is triggered for each section of the twin, and what's in the payload, we can move to the third question: if we add a condition on the route, will this condition be evaluated before or after the change ?  
+Let's update the route to figure this out:
+```console
+az iot hub route update --hub-name $hub_name -n route-device-twin-changes --condition '$twin.properties.reported.color = "Red"
+'
+```
+With this condition, now only events from device with reported color set to *Red* will be sent to the endpoint.  
+Using the dotnet tool again to simulate the device, whose reported color is *Blue*, the input says that the reported color has turned to *Red*:
+```console
+$ dotnet run
+DeviceClient created ! Getting current twin...
+Changing 'color' reported property from 'Blue' to 'Red'...
+Done ! Exiting now...
+```
+In the monitoring pane, there is an event flowing:
+```json
+{
+    "version": 13,
+    "properties": {
+        "reported": {
+            "color": "Red",
+            "$metadata": {
+                "$lastUpdated": "2021-02-14T22:50:11.6725239Z",
+                "color": {
+                    "$lastUpdated": "2021-02-14T22:50:11.6725239Z"
+                }
+            },
+            "$version": 8
+        }
+    }
+}
+```
+Running the dotnet tool again, the reported color turns back to *Blue*:
+```console
+$ dotnet run
+DeviceClient created ! Getting current twin...
+Changing 'color' reported property from 'Red' to 'Blue'...
+Done ! Exiting now...
+```
+In the monitoring pane, no event is flowing.  
+So the answer is clear: first the change is made on the device twin, then the routing condition is evaluated.
 
 
 ## What about message enrichments ?
