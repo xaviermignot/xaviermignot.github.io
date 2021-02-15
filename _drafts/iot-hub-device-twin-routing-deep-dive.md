@@ -57,12 +57,12 @@ $
 Set-up is done, later to monitor the events flowing to the IoT Hub we will also use az cli with the `az iot hub monitor-events` command.
 
 The following diagrams sums up the whole set-up:
-
+![Diagram]({{ page.img_dir }}/02-diagram.png)
 
 ## Testing changes on properties (desired/reported) and tags
 
 For each test I am using Windows Terminal with two panes open in WSL: one on the lef to make the twin change, one on the right to monitor the changes:
-![Reported test in Windows Terminal]({{ page.img_dir }}/02-test-reported.png)
+![Reported test in Windows Terminal]({{ page.img_dir }}/03-test-reported.png)
 
 ### Test on reported properties
 As seen in the image above, runing the device tool in the left pane changes the `color` reported property from `Red` to `Blue`. In the right pane, we see an event with the following payload:
@@ -184,15 +184,6 @@ It generates an event with the following payload:
 ```
 Basically we have the same event as for updating the desired properties: all the tags and all the desired properties with the `$metadata`.
 
-### Summary
-This table sums-up the tests done so far:  
-
-Updated twin section | Event generated
--------------------- | ---------------
-Reported property    | Part of the reported section updated
-Desired property     | All the tags and desired properties
-Tags                 | All the tags and desired properties
-
 
 ## Adding a condition on the route
 
@@ -236,9 +227,15 @@ Changing 'color' reported property from 'Red' to 'Blue'...
 Done ! Exiting now...
 ```
 In the monitoring pane, no event is flowing.  
-So the answer is clear: first the change is made on the device twin, then the routing condition is evaluated.
+So the answer is clear: first the change is made on the device twin, then the routing condition is evaluated, on the updated version of the device twin.
 
 
-## What about message enrichments ?
+## Summary
 
-Add a message enrichment and test if it's propagated in message properties
+The following table shows the answers to the two first questions from the begining of this post:
+
+Updated twin section | Payload of event
+-------------------- | ---------------
+Reported property    | Part of the reported section updated
+Desired property     | All the tags and desired properties
+Tags                 | All the tags and desired properties
