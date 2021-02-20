@@ -7,40 +7,62 @@ image: /assets/img/azure-iot-device-journey/banner.jpg
 ---
 
 If you want to start prototyping a project, or just start learning Azure IoT with a physical device, you have several options. Obviously you can simulate one on your machine, but it's much funnier to use a physical one, right ?  
-Over the years I have accumulated several boards for various reasons (maybe I have a problem with it). In this post I will share my experience with all these devices and hopefully help you chose a device.  
-Let's start with the most obvious choice, the mighty Raspberry Pi.
+Over the years I have accumulated several boards for various reasons (maybe I have a problem with it). In this post I will share my experience with all these devices and hopefully help you one.  
+I will go through the devices I have used by chronological order, based on my experience.  
+As a reminder/disclaimer I don't have any background in embedded development, I'm a backend developer who has developed an interest for IoT and therefore for coding on devices 🤗  
 
 
 ## Raspberry Pi boards
+
 There is nothing I could write about Raspberry Pi that hasn't been written yet. I have been using them for many years for various purposes: media center, home automation box, network ad blocker, retrogaming, etc.  
 On my first meetup as a speaker, I have presented a little project based on a traffic light made using a Raspberry Pi. It was running a .NET App to control the 3 lights using the pins of the Pi and electronic relays.  
 ![Raspberry Pi and relays]({{ page.img_dir }}/rpi-relay-small.jpg){: width="300" .normal }
 ![Raspberry Pi and relays]({{ page.img_dir }}/traffic-light.jpg){: width="400" .normal }  
-There was also a Slack bot to interact with the device, and a integration with Twitter so that the audience could tweet and depending on the hashtag the light was changing.  
-At first it was running an UWP app in Windows IoT Core, later I changed it as a .NET Core app running on Linux.  
-Overall, using the Raspberry Pi as a starter is best choice to interact with Azure IoT, for the following reasons:
+There was also a Slack bot to interact with the device, and a integration with Twitter so that the audience could tweet and depending on the hashtag the light was changing. It was a fun project to build.  
+I can't recommend enough the Raspberry Pi to start with Azure IoT, or for physical computing in general, for the following reasons:
 - you can choose you preferred language: Python, Javascript, .NET (not on Zero board), ...
 - you'll find tons of documentation and inspiration on the web
-- builtin support for bluetooth and wifi
+- built-in support for bluetooth and wifi
 
-Anyway, do I consider Raspberry Pis as IoT devices ? Well, not really, and people are often asking the difference between a Raspberry Pi and and an Arduino board. And the difference is huge !
-As tiny as they are, Raspberry Pi boards are more computers that IoT devices:
-- they're packed with a lot of power (for their size)
-- they run a full operating system
-- can perform many tasks in paralell: host a website, a DNS server, ...
-- run using micro-SD card: lots of storage, but not very reliable
 
-Microcontrollers (like Arduino boards) on the other end, are more focus on a single task:
-- use less power (a battery pack or a USB connection to your laptop is enough)
-- use a simpler OS that run *only* your code
+## Tiny computers compared to microcontrollers
 
-Item|Raspberry Pis|Microcontrollers
---|--|--
-Power supply|Require a 15W power supply|Can run from a battery pack or a USB port on your laptop
-Storage|External microSD card with lots of space !|Onboard storage with less space but more reliable (you can unplug the device without worrying about corrupted storage issues)
-OS|Run a full-featured Linux|Run RTOS that run *only* your code
+At this point I want to make a pause to answer a question I was often asked: *How can I choose between a Raspberry Pi and an Arduino board ?*  
+Well, they are from different kind of devices, as Raspberry Pis are *tiny computers* (except the shiny new Pico) and Arduino is a *microcontroller* platform.  
+
+### Tiny computers
+If we look at the features of a Raspberry Pi, we realize that it can handle most of the things people do with their computers:
+- it powers up a full blown operating system with a graphical interface, desktop, file explorer and so on
+- it comes with a preinstalled with software like an internet browser, text editor, video player, etc.
+- it can perform many tasks in parallel: host a website, act like a DNS server, a media-center, ...
+
+It also require a minimum of power: even if it uses the same micro USB port as a smartphone, it requires more current so a dedicated, more powerful power supply than your smartphone's must be used for the Pi. If you need portability, using a usb power supply for instance, you should consider a Raspberry Pi Zero over a *full-size* model.   
+For storage you have to provide a separated micro-SD card, as the Pi doesn't have onboard storage. So you can have plenty of space but this can also be corrupted, that's why you should always shutdown you Pi gracefully, and not unplug it like a maniac !
+
+### Microcontrollers
+On the other hand we have microcontroller-based devices, like Arduino boards, who differ from tiny computers because:
+- they *use* less power, you can plug them to a USB port of your laptop, use a battery pack and they'll boot up
+- they also *have* less power, I mean less compute capability, less memory, less storage, etc.
+- they use a simpler OS than computers, that will run your code very quickly once booted
+- they're also more robust, you can unplug and plug them anytime without any issue
+
+### Other differences
+So we have seen that tiny computers and microcontrollers have a huge difference in power capability and usage, but that's not the only difference.  
+In terms of programming language, tiny computers support almost any language: Python, Js, C#/.NET, etc.  
+Microcontrollers are more restricted, C based languages (C, C++, Arduino C) are the kings of microcontrollers. But there are some implementation of Python that run on microcontrollers like MicroPython or CircuitPython (more on that later).
+
+In terms of connectivity, almost all Raspberry Pis come with Wifi and Bluetooth built-in support, whereas lots of microcontroller-base boards need an additional component to connect to a network.
+
+### Raspberry != IoT device ? 
+Overall, shall we consider tiny computers like Raspberry Pis as IoT devices or not ?  
+I would say it depend on how you use them, a Raspberry Pi can be used as a desktop computer, or as a small server, in this case it will not be an IoT device.  
+But a Pi can also be connected to sensors, and act as a gateway to push telemetry to the cloud, it can also run Azure IoT Edge, so of course in this case it would be an IoT device (a beefier IoT device than a microcontroller, so to speak).
+
+Let's finish this long pause and move on to the first microcontroller board I have used.
+
 
 ## Azure MXChip IoT DevKit
+
 Why ? To try a MCU-based device
 Pros:
 - Ready for Azure IoT development
@@ -53,7 +75,9 @@ Cons:
 - A little pricey
 - SDK repository and official blog/website are not very active
 
+
 ## Wilderness Lab Meadow board
+
 Why ? I was having troubles with C, so C# on a MCU was more than appealing
 Pros:
 - Runs C#, on a MCU
@@ -61,7 +85,9 @@ Cons:
 - VS Code support not ready yet
 - Experience is still clunky: needed to reconnect, flash it again, ... (need to retry in .NET 5)
 
+
 ## Adafruit boards
+
 Why ? I like Python so writing it on a device seemed great
 Pros:
 - Cheap
@@ -73,7 +99,15 @@ Cons:
 - Most of the boards are not ready for IoT: no WiFi or event BLE
 - As the dev workflow is handy, if you want to host your code on a repo it's not the best
 
+
+## So how to choose ?
+It depends on what you want to do, and where your are in your learning journey:
+- You are just starting and have no specific idea for the moment ? Use a Raspberry Pi model A/B
+- You are starting and you want to build something wireless or portable ? Use Raspberry Pi Zero W
+
+
 ## What's next ?
+
 There are lots of devices to try out there (Wio Terminal from Seeed Studio, Pico, ...) but I have enough devices at the moment. I could make something with CircuitPython on a connected device (like the Metro), or use a BLE CircuitPython board as a child device and a Pi as a gateway for instance.  
 Projects first, buying things next !
 
