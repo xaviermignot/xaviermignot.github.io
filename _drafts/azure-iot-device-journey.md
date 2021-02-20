@@ -15,7 +15,7 @@ As a reminder/disclaimer I don't have any background in embedded development, I'
 ## Raspberry Pi boards
 
 There is nothing I could write about Raspberry Pi that hasn't been written yet. I have been using them for many years for various purposes: media center, home automation box, network ad blocker, retrogaming, etc.  
-On my first meetup as a speaker, I have presented a little project based on a traffic light made using a Raspberry Pi. It was running a .NET App to control the 3 lights using the pins of the Pi and electronic relays.  
+On my first meetup as a speaker in 2016, I have presented with a colleague a little project based on a traffic light powered by a Raspberry Pi. It was running a .NET App to control the 3 lights using the pins of the Pi and electronic relays.  
 ![Raspberry Pi and relays]({{ page.img_dir }}/rpi-relay-small.jpg){: width="300" .normal }
 ![Raspberry Pi and relays]({{ page.img_dir }}/traffic-light.jpg){: width="400" .normal }  
 There was also a Slack bot to interact with the device, and a integration with Twitter so that the audience could tweet and depending on the hashtag the light was changing. It was a fun project to build.  
@@ -53,7 +53,7 @@ Microcontrollers are more restricted, C based languages (C, C++, Arduino C) are 
 
 In terms of connectivity, almost all Raspberry Pis come with Wifi and Bluetooth built-in support, whereas lots of microcontroller-base boards need an additional component to connect to a network.
 
-### Raspberry != IoT device ? 
+### Raspberry Pi, IoT device or not ? 
 Overall, shall we consider tiny computers like Raspberry Pis as IoT devices or not ?  
 I would say it depend on how you use them, a Raspberry Pi can be used as a desktop computer, or as a small server, in this case it will not be an IoT device.  
 But a Pi can also be connected to sensors, and act as a gateway to push telemetry to the cloud, it can also run Azure IoT Edge, so of course in this case it would be an IoT device (a beefier IoT device than a microcontroller, so to speak).
@@ -63,17 +63,17 @@ Let's finish this long pause and move on to the first microcontroller board I ha
 
 ## Azure MXChip IoT DevKit
 
-Why ? To try a MCU-based device
-Pros:
-- Ready for Azure IoT development
-- Lots of features on the board: screen, sensors, buttons, ...
-- Nice catalog of sample project to get started with
-- Runs on Arduino so lots of content on the web as well
-- Great VS Code support
-Cons:
-- Can be programmed in C/C++ only
-- A little pricey
-- SDK repository and official blog/website are not very active
+Around 2017 Microsoft has released the Azure IoT DevKit through a partnership with MXChip. Designed to help people to prototype projects with Azure IoT, it is packed with a lot of nice features:
+- onboard sensors (temperature, humidity, magnetic, accelerometer, gyroscope, ...)
+- other features on the board: small oled screen, headphone jack, microphone, leds ...
+- wifi connectivity !
+- extensibility through GPIO pins like on Microbit boards
+As hardware is not everything, it comes with an SDK to interact with the sensors and the cloud, and extensions for Visual Studio Code for a well integrated development experience.  
+
+Me and a colleague have used two of them for a talk in 2018, with another super useful demo: shaking one device triggered a call to an Azure Function who called a direct method on the other device to power up a PC fan to move polystyrene balls in a ball. Yep we did that, code is [here](https://github.com/neotechsolutions/dx2018-iot) if you're interested. 
+
+I have also built another traffic light program, as I was running out of stupid project ideas, and I needed a pet project to continue to use this DevKit. The code is available on my [GitHub](https://github.com/xaviermignot/traffic-light-mxchip-client), I enjoy working on it from time to time, but I have to admit that coding C/C++ can give hard times, especially when working with strings, JSON serialization, and sometimes the compiler throws an error out of nowhere that seem impossible to tackle.  
+Anyway, I still have things to do with that board, I should try Azure RTOS for instance, but at one time I needed to move back to a language I know more, that's when I heard about a microcontroller board that run C#.
 
 
 ## Wilderness Lab Meadow board
