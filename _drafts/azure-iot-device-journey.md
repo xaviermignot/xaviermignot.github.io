@@ -63,7 +63,7 @@ Let's finish this long pause and move on to the first microcontroller board I ha
 
 ## Azure MXChip IoT DevKit
 
-Around 2017 Microsoft has released the Azure IoT DevKit through a partnership with MXChip. Designed to help people to prototype projects with Azure IoT, it is packed with a lot of nice features:
+Around 2017 Microsoft has released the [Azure IoT DevKit](https://microsoft.github.io/azure-iot-developer-kit/) through a partnership with MXChip. Designed to help people to prototype projects with Azure IoT, it is packed with a lot of nice features:
 - onboard sensors (temperature, humidity, magnetic, accelerometer, gyroscope, ...)
 - other features on the board: small oled screen, headphone jack, microphone, leds ...
 - wifi connectivity !
@@ -71,6 +71,7 @@ Around 2017 Microsoft has released the Azure IoT DevKit through a partnership wi
 As hardware is not everything, it comes with an SDK to interact with the sensors and the cloud, and extensions for Visual Studio Code for a well integrated development experience.  
 
 Me and a colleague have used two of them for a talk in 2018, with another super useful demo: shaking one device triggered a call to an Azure Function who called a direct method on the other device to power up a PC fan to move polystyrene balls in a ball. Yep we did that, code is [here](https://github.com/neotechsolutions/dx2018-iot) if you're interested. 
+![DevKit Blender]({{ page.img_dir }}/blender.gif)
 
 I have also built another traffic light program, as I was running out of stupid project ideas, and I needed a pet project to continue to use this DevKit. The code is available on my [GitHub](https://github.com/xaviermignot/traffic-light-mxchip-client), I enjoy working on it from time to time, but I have to admit that coding C/C++ can give hard times, especially when working with strings, JSON serialization, and sometimes the compiler throws an error out of nowhere that seem impossible to tackle.  
 Anyway, I still have things to do with that board, I should try Azure RTOS for instance, but at one time I needed to move back to a language I know more, that's when I heard about a microcontroller board that run C#.
@@ -78,29 +79,34 @@ Anyway, I still have things to do with that board, I should try Azure RTOS for i
 
 ## Wilderness Lab Meadow board
 
-Why ? I was having troubles with C, so C# on a MCU was more than appealing
-Pros:
-- Runs C#, on a MCU
-Cons:
-- VS Code support not ready yet
-- Experience is still clunky: needed to reconnect, flash it again, ... (need to retry in .NET 5)
+In 2019 I've bought a Meadow board from [Wilderness Labs](https://www.wildernesslabs.co/), after missing their Kickstarter campaign in 2018. The promise is to run a full .NET Standard on a microcontroller board, which was appealing to me as C# is my preferred language, and I had some issues with C on the MXChip.  
+However I have barely used this board for the moment, I only went through the getting started guides and that's it. The development experience with Visual Studio "full" (not Code) was not that great, I had to reset/reflash my board all the time, it was pretty clunky so I put it aside for the moment.  
+The project is still in beta, it requires lots of work so I don't mind, I will probably get back to it once VS Code support will be out (it's on the roadmap).  
+If you are really into .NET and don't want to use any other language than C# (I know some folks like that 😜), Meadow is one of the best choice among microcontrollers. 
 
 
 ## Adafruit boards
 
-Why ? I like Python so writing it on a device seemed great
-Pros:
-- Cheap
-- The company is great, CircuitPython is very active, library support is amazing
-- The documentation is great
-- It's very straightforward, you plug the device, edit the code, and it's already deployed
-- The REPL is very handy to troubleshoot, try things quickly, or understand things
-Cons:
-- Most of the boards are not ready for IoT: no WiFi or event BLE
-- As the dev workflow is handy, if you want to host your code on a repo it's not the best
+Recently I have discovered Adafruit boards, a huge family of microcontroller boards, including some of them running CircuitPython, an implementation of the Python language running on microcontrollers.  
+I really like Python, although I need to practice with it more often, and I already knew Adafruit as a very reliable component manufacturer so I decided to give CircuitPython a shot.  
+It turns out it's pretty great, I really like the development flow: plugging the device on my laptop USB port, editing a `code.py` file using VS Code, save it and *BAM !* the code is already running on the device.  
+I can also use Python's *REPL* to enter individual lines of code and see what happens on the device, it's really helpful to figure out of things work.  
+So after a few experiments on my Trinket M0 and Feather M0 Express (blinking a led, turning a servo, ...), I was like *"Hey, let's connect that thing to an IoT Hub !"*. And that's how silly me learned that not all development boards come with Wifi connectivity 🤦‍♂️  
+Wifi connectivity is possible using an add-on like the AirLift FeatherWing, or using another board like the [Metro M4 Express](https://learn.adafruit.com/adafruit-metro-m4-express-airlift-wifi).  
+Anyway event if I don't do IoT with my Adafruit boards, I really like using them, it helps me to practice Python, and to improve my electronic knowledge. That's also what I like with Adafruit, their website is full of great tutorial to teach electronics, with content suitable for kids or for grown up noobs like me.
+
+
+## A few words on CPX and Microbit
+
+Speaking of learning for kids, I want to mention two last devices: Adafruit Circuit Playground Express and BBC Microbit. It's slightly off the post's topic as they are not communicating devices (Microbit has bluetooth though), but their great for introducing people to programming, especially youngsters.  
+Each platform website provides great content and project inspiration, and there is also a nice integration on Microsoft MakeCode to let people program the devices without coding, using a blocky interface. Here are the links:
+- [BBC Microbit project page](https://microbit.org/projects/)
+- [Adafruit CPX learn page](https://learn.adafruit.com/category/express)
+- [Microsoft MakeCode](https://www.microsoft.com/en-us/makecode)
 
 
 ## So how to choose ?
+
 It depends on what you want to do, and where your are in your learning journey:
 - You are just starting and have no specific idea for the moment ? Use a Raspberry Pi model A/B
 - You are starting and you want to build something wireless or portable ? Use Raspberry Pi Zero W
