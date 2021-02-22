@@ -10,6 +10,6 @@ Over the last few years I have specialized in the IoT space, in my professional 
 
 I am constantly trying to learn new things, professionally or personally. When I am not sitting in front of a computer I try to become a better musician (I consider myself as a *decent* guitar and *bad* accordion player), or to learn how to fly a plane (it takes some time).
 
-You can find me on [Twitter](https://twitter.com/_xavierm){:target="_blank"}, on [GitHub](https://github.com/xaviermignot){:target="_blank"} or on [Linkedin](https://www.linkedin.com/in/mignotxavier/){:target="_blank"}, let's connect !
+You can find me on [Twitter](https://twitter.com/_xavierm), on [GitHub](https://github.com/xaviermignot) or on [Linkedin](https://www.linkedin.com/in/mignotxavier/), let's connect !
 
-Favicon inspired by [Freepik](https://www.flaticon.com/authors/freepik){:target="_blank"} from [www.flaticon.com](https://www.flaticon.com/){:target="_blank"}
+Favicon inspired by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/)

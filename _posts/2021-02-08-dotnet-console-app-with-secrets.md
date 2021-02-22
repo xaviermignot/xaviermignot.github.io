@@ -8,12 +8,12 @@ A few ~~hours~~ days ago I was starting to build a small demo as a console app t
 So I asked myself *Why not try to use this .NET secret thing that I never use normally ?*  
 Well, as it was not as simple a I initially thought, I have ended up with the idea of writing this post to share what I have learnt.
 
-All the samples are written in .NET 5 and are available [here](https://github.com/xaviermignot/dotnet-console-secret-samples){:target="_blank"}.  
+All the samples are written in .NET 5 and are available [here](https://github.com/xaviermignot/dotnet-console-secret-samples).  
 I have put everything in the `Program.cs` file for each sample for readability, I don't do this normally 😉
 
 ## What is the .NET Secret Manager ?
 
-It's a tool to store secrets away from the repository structure during development. The full documentation is available [here](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets){:target="_blank"}, here is what it does in a few bullet points:
+It's a tool to store secrets away from the repository structure during development. The full documentation is available [here](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets), here is what it does in a few bullet points:
 - The `dotnet user-secrets init` command generates a *UserSecretsId*, a GUID stored in a element of the *csproj*
 - Setting a secret value is done using the `dotnet user-secrets "<key>" "<value>"` command, or `dotnet user-secrets "<section>:<key>" "<value>"` if you want to use section or map to a POCO (more on this below)
 - Secrets are stored in a *json* file in a folder named after the *UserSecretsId*, located somewhere in you home directory (depending on you OS)
@@ -67,7 +67,7 @@ namespace SingleValueSample
 }
 ```
 
-Bonus if you want to do the same thing using .NET 5/C# 9 [top-level statements](https://docs.microsoft.com/en-us/dotnet/csharp/tutorials/exploration/top-level-statements){:target="_blank"}:
+Bonus if you want to do the same thing using .NET 5/C# 9 [top-level statements](https://docs.microsoft.com/en-us/dotnet/csharp/tutorials/exploration/top-level-statements):
 ```csharp
 using System;
 using System.Reflection;
@@ -161,12 +161,12 @@ namespace MapToPocoSample
 
 ## Sample 3: Using the .NET Generic Host
 
-In this last sample we will use the [.NET Generic Host](https://docs.microsoft.com/en-us/dotnet/core/extensions/generic-host){:target="_blank"} with a `BackgroundService` implementation. This is the step where your console app moves from the "script-style console app" stage to the "real-world console app with full DI power & stuff" level.
+In this last sample we will use the [.NET Generic Host](https://docs.microsoft.com/en-us/dotnet/core/extensions/generic-host) with a `BackgroundService` implementation. This is the step where your console app moves from the "script-style console app" stage to the "real-world console app with full DI power & stuff" level.
 
-We will use the default host builder, which as stated in the [documentation](https://docs.microsoft.com/en-us/dotnet/core/extensions/generic-host#default-builder-settings){:target="_blank"} comes with some nice features out of the box: console logging, environment variables, *appsettings.json* configuration, and Secret Manager __when the app runs in the *Development* environment__.  
+We will use the default host builder, which as stated in the [documentation](https://docs.microsoft.com/en-us/dotnet/core/extensions/generic-host#default-builder-settings) comes with some nice features out of the box: console logging, environment variables, *appsettings.json* configuration, and Secret Manager __when the app runs in the *Development* environment__.  
 
 So if you have an environment variable `DOTNET_ENVIRONMENT` whose value is `Development`, you don't even need to reference the `Microsoft.Extensions.Configuration.UserSecrets` package and to call the `AddUserSecrets` method to get your secrets, the default host will do that for you.  
-You will find more informations on environments in .NET [here](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments){:target="_blank"}, but just to set the environment variable you need to do:
+You will find more informations on environments in .NET [here](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments), but just to set the environment variable you need to do:
 - `export DOTNET_ENVIRONMENT=Development` if you use Bash
 - `$env:DOTNET_ENVIRONMENT='Development'` if you use Powershell
 

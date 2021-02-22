@@ -14,8 +14,8 @@ The first time I used it for device twin change events, I could not find answers
 
 In this post I will do a deep dive into IoT Hub message routing on device twin change events to answer these questions.  
 If you're not familiar with the concepts of message routing and device twin, I encourage you to read the following content first: 
-- [Message routing for telemetry](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-messages-d2c){: target="_blank" }
-- [Device twin presentation](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-device-twins){: target="_blank" }
+- [Message routing for telemetry](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-messages-d2c)
+- [Device twin presentation](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-device-twins)
 
 *TL;DR* If you're in a hurry and need the answers right now you can jump to the [summary](#summary) section of this post, otherwise I'll appreciate if you read the whole thing 🤗  
 
@@ -30,7 +30,7 @@ For this demo I will use the following components:
   - Run a .NET 5 console app to simulate a device
   - Monitor the events from the IoT Hub using other az cli commands
 
-I have chosen to use only az cli from bash as I want to get more comfortable with it, but you can also use the Azure portal to configure the IoT Hub and update the desired properties and tags section of the twin, or Powershell cmdlets. The [Azure IoT Hub](https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.azure-iot-toolkit){: target="_blank" } extension for VS Code is also great to update the twin and monitor events.
+I have chosen to use only az cli from bash as I want to get more comfortable with it, but you can also use the Azure portal to configure the IoT Hub and update the desired properties and tags section of the twin, or Powershell cmdlets. The [Azure IoT Hub](https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.azure-iot-toolkit) extension for VS Code is also great to update the twin and monitor events.
 
 The following diagrams shows the whole set-up:
 ![Diagram]({{ page.img_dir }}/diagram.png)
@@ -51,7 +51,7 @@ $ az iot hub device-identity create --hub-name $hub_name -d $device_id
 $ device_connection_string=$(az iot hub device-identity show-connection-string --hub-name $hub_name -d $device_id -o tsv)
 ```
 To send device twin change events we will need two things:
-1. For reported property changes, we must simulate the device so I have prepared a simple .NET console app available [here](https://github.com/xaviermignot/device-twin-routing-demo){: target="_blank" }. From the project folder, we run the following commands to securely store the device connection string and run the tool to initialize reported properties:
+1. For reported property changes, we must simulate the device so I have prepared a simple .NET console app available [here](https://github.com/xaviermignot/device-twin-routing-demo). From the project folder, we run the following commands to securely store the device connection string and run the tool to initialize reported properties:
 ```console
 $ dotnet user-secrets set "DeviceConnectionString" $device_connection_string
 $ dotnet run
@@ -255,4 +255,4 @@ Desired property     | yes | All the tags and desired properties
 Tags                 | yes | Same content as desired property updates
 
 Lastly, we have seen that if there is a condition on the route, it will be evaluated *after* the application of the device twin change.  
-I hope this post was helpful, I you have any question don't hesitate to reach out on [Twitter](https://twitter.com/_xavierm){: target="_blank" }, or leave a comment below if you are reading this post from [DEV.to](https://dev.to/xaviermignot){: target="_blank" }.
+I hope this post was helpful, I you have any question don't hesitate to reach out on [Twitter](https://twitter.com/_xavierm), or leave a comment below if you are reading this post from [DEV.to](https://dev.to/xaviermignot).
