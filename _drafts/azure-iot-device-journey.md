@@ -107,9 +107,16 @@ Each platform website provides great content and project inspiration, and there 
 
 ## So how to choose ?
 
-It depends on what you want to do, and where your are in your learning journey:
-- You are just starting and have no specific idea for the moment ? Use a Raspberry Pi model A/B
-- You are starting and you want to build something wireless or portable ? Use Raspberry Pi Zero W
+Wrapping up what we have seen in this post, let's summarize everything in this table to help decision making:
+
+| Device | Type | Reason to choose | Thing to consider |
+|--------|------|------------------|-------------------|
+| Raspberry Pi model A/B | Tiny computers | The best choice for starting out, great learning platform as well | Nothing to say |
+| Raspberry Pi Zero W | Tinier computer | Best choice for starting with portable projects | No support for C# unlike A/B models |
+| Azure DevKit/MXChip | MCU | Take this one if you are really into Azure IoT | Don't be afraid of coding in C |
+| Wilderness Labs Meadow | MCU | For C# enthusiasts | No VS Code support yet, project in beta  |
+| Adafruit boards | MCU | Great for learning electronics using CircuitPython | Few boards provide internet connectivity, choose carefully for an IoT project |
+| Microbit & CPX | MCU | Great learning platform for kids, using code or blocks | Mostly for kids (of any age 😉) and no connectivity beside BLE on the Microbit |
 
 
 ## What's next ?
