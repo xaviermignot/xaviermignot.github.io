@@ -82,7 +82,8 @@ Anyway, I still have things to do with that board, I should try Azure RTOS for i
 In 2019 I've bought a Meadow board from [Wilderness Labs](https://www.wildernesslabs.co/), after missing their Kickstarter campaign in 2018. The promise is to run a full .NET Standard on a microcontroller board, which was appealing to me as C# is my preferred language, and I had some issues with C on the MXChip.  
 However I have barely used this board for the moment, I only went through the getting started guides and that's it. The development experience with Visual Studio "full" (not Code) was not that great, I had to reset/reflash my board all the time, it was pretty clunky so I put it aside for the moment.  
 The project is still in beta, it requires lots of work so I don't mind, I will probably get back to it once VS Code support will be out (it's on the roadmap).  
-If you are really into .NET and don't want to use any other language than C# (I know some folks like that 😜), Meadow is one of the best choice among microcontrollers. 
+The fact that I finally haven't used yet is totally on me, I do want to mention it though as I think it's great to have options to code in C# on microcontrollers.  
+If you are really into .NET and don't want to use any other language than C# (I know some folks like that 😜), you should give Meadow a try.  
 
 
 ## Adafruit boards
@@ -109,18 +110,18 @@ Each platform website provides great content and project inspiration, and there 
 
 Wrapping up what we have seen in this post, let's summarize everything in this table to help decision making:
 
-| Device | Type | Reason to choose | Thing to consider |
-|--------|------|------------------|-------------------|
-| Raspberry Pi model A/B | Tiny computers | The best choice for starting out, great learning platform as well | Nothing to say |
-| Raspberry Pi Zero W | Tinier computer | Best choice for starting with portable projects | No support for C# unlike A/B models |
-| Azure DevKit/MXChip | MCU | Take this one if you are really into Azure IoT | Don't be afraid of coding in C |
-| Wilderness Labs Meadow | MCU | For C# enthusiasts | No VS Code support yet, project in beta  |
-| Adafruit boards | MCU | Great for learning electronics using CircuitPython | Few boards provide internet connectivity, choose carefully for an IoT project |
-| Microbit & CPX | MCU | Great learning platform for kids, using code or blocks | Mostly for kids (of any age 😉) and no connectivity beside BLE on the Microbit |
+| Device | Reasons to choose | Things to consider | Approx price |
+|--------|-------------- ----|---- ---------------|--------------|
+| Raspberry Pi model A/B | The best choice for starting out<br /> Great learning platform as well | Nothing to say | $35 |
+| Raspberry Pi Zero W | Best choice for starting with portable projects | No support for C# unlike A/B models | $8 |
+| Azure DevKit/MXChip | Take this one if you are really into Azure IoT <br /> Azure IoT certified, PnP ready, runs Azure RTOS | Don't be afraid of coding in C | $40 |
+| Wilderness Labs Meadow | For C# enthusiasts <br /> For pro developers | No VS Code support yet <br /> Project in beta, some features & improvements to come  | $50 |
+| Adafruit boards | Great electronics & code learning platform <br /> Code in CircuitPython or C (Arduino) <br /> For beginners and pro hackers | Few boards provide internet connectivity, <br />choose carefully for an IoT project | from $9 to $35 |
+| Microbit & CPX | Great learning platform for kids, using code or blocks | Mostly for kids (of any age 😉) <br /> No connectivity beside BLE on the Microbit | from $15 to $25 |
 
 
 ## What's next ?
 
-There are lots of devices to try out there (Wio Terminal from Seeed Studio, Pico, ...) but I have enough devices at the moment. I could make something with CircuitPython on a connected device (like the Metro), or use a BLE CircuitPython board as a child device and a Pi as a gateway for instance.  
+There are lots of devices to try out there (Wio Terminal from Seeed Studio, Pico, ...) but I have more than enough devices at the moment. I could make something with CircuitPython on a connected device (like the Metro), or use a BLE CircuitPython board as a child device and a Pi as a gateway for instance.  
 Projects first, buying things next !
 
