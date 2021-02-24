@@ -17,7 +17,7 @@ layout: compress
   "icons": [
     {
       "src": "{{ icon_url }}/android-icon-36x36.png",
-      "sizes": "36x36",
+      "sizes": "36x22",
       "type": "image/png",
       "density": "0.75"
     },
@@ -35,19 +35,19 @@ layout: compress
     },
     {
       "src": "{{ icon_url }}/android-icon-96x96.png",
-      "sizes": "96x96",
+      "sizes": "96x59",
       "type": "image/png",
       "density": "2.0"
     },
     {
       "src": "{{ icon_url }}/android-icon-144x144.png",
-      "sizes": "144x144",
+      "sizes": "144x89",
       "type": "image/png",
       "density": "3.0"
     },
     {
       "src": "{{ icon_url }}/android-icon-192x192.png",
-      "sizes": "192x192",
+      "sizes": "192x118",
       "type": "image/png",
       "density": "4.0"
     }],
