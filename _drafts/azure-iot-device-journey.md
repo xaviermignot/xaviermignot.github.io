@@ -3,12 +3,16 @@ layout: post
 title: My journey with Azure IoT devices
 tags: [azure-iot]
 img_dir: /assets/img/azure-iot-device-journey
-image: /assets/img/azure-iot-device-journey/banner.jpg
+# image: /assets/img/azure-iot-device-journey/banner.jpg
 ---
 
 If you want to start prototyping a project, or just start learning Azure IoT with a physical device, you have several options. Obviously you can simulate one on your machine, but it's much funnier to use a physical one, right ?  
-Over the years I have accumulated several boards for various reasons (maybe I have a problem with it). In this post I will share my experience with all these devices and hopefully help you one.  
-I will go through the devices I have used by chronological order, based on my experience.  
+Over the years I have accumulated several boards for various reasons (maybe I have a problem with it).  
+![Raspberry Pi 1]({{ page.img_dir }}/rpi-alone.jpg){: width="400" .normal }
+![All my devices]({{ page.img_dir }}/all-devices.jpg){: width="400" .normal }
+_How it started, how it's going_
+
+In this post I will share my experience with all these devices and hopefully help you one. I will go through the devices I have used by chronological order, based on my experience.  
 As a reminder/disclaimer I don't have any background in embedded development, I'm a backend developer who has developed an interest for IoT and therefore for coding on devices 🤗  
 
 
@@ -71,7 +75,9 @@ Around 2017 Microsoft has released the [Azure IoT DevKit](https://microsoft.gith
 As hardware is not everything, it comes with an SDK to interact with the sensors and the cloud, and extensions for Visual Studio Code for a well integrated development experience.  
 
 Me and a colleague have used two of them for a talk in 2018, with another super useful demo: shaking one device triggered a call to an Azure Function who called a direct method on the other device to power up a PC fan to move polystyrene balls in a ball. Yep we did that, code is [here](https://github.com/neotechsolutions/dx2018-iot) if you're interested. 
+
 ![DevKit Blender]({{ page.img_dir }}/blender.gif)
+_The blender project in action_
 
 I have also built another traffic light program, as I was running out of stupid project ideas, and I needed a pet project to continue to use this DevKit. The code is available on my [GitHub](https://github.com/xaviermignot/traffic-light-mxchip-client), I enjoy working on it from time to time, but I have to admit that coding C/C++ can give hard times, especially when working with strings, JSON serialization, and sometimes the compiler throws an error out of nowhere that seem impossible to tackle.  
 Anyway, I still have things to do with that board, I should try Azure RTOS for instance, but at one time I needed to move back to a language I know more, that's when I heard about a microcontroller board that run C#.
