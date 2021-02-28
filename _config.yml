@@ -74,6 +74,10 @@ toc: true
 
 paginate: 10
 
+app_insights:
+  enabled: true
+  instrumentation_key: 90eb1399-4a98-49ce-ba54-b69979071fbe
+
 kramdown:
   syntax_highlighter: rouge
   syntax_highlighter_opts:   # Rouge Options › https://github.com/jneen/rouge#full-options
