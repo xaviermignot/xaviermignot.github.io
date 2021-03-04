@@ -9,28 +9,30 @@ Recently I have seen and participated in conversations about the utility of IT c
 
 ## My personal journey with certifications
 
-I have started my career in 2004 and earned my first certification in 2016. So I haven't been a fan of certifications forever, for 12 years I wasn't into it for various reasons.  
-First I had some colleagues who passed them with an instructor-led course, and a significant part of the course was to work on the questions of a dump. The goal seemed more to be prepared for an exam than to learn something new or to improve existing skills.  
-Secondly at that I did not want to dedicate time to my work outside of work hours. Even if my employer offered the exam fee (but not the instructor-led course), I would have to work during evening and week-ends to be prepared. I was not considering doing that in my early adult life for some reasons (🎉🍻🙌🎸) and even a few years later for other reasons (👫👶👶).  
-Lastly I did not see the value of being certified at that time (especially on things like WCF...), I just felt I did not need it to make good work and my employer did not push me to do it either so everyone was happy.  
+I have started my career in 2004 and earned my first certification in 2016, so I wasn't into certifications at the beginning. I knew some certified people, some of them were arrogant, personally I did not feel the need to be certified on a technology I was already using daily (whether is was C#, ASP.NET or WCF).  
+And I did not want to do some work outside of work hours, I had other plans in my early adult life (🎉🍻🙌🎸), and then different plans in my less-early adult life (👫👶👶 but still 🎸).
 
-In 2016 I started working with Azure (after a company change), and after a few months on the project I had a good overall understanding of the platform. My employer of that time, a relatively small Microsoft *pure player* partner, needed a few certified people in the staff to become Gold Partner.  
-So I was offered to pass the Azure Developer exam (70-532 at that time), with a few work hours dedicated to study, a MeasureUp practice test, and even a short training from a Microsoft architect to help getting started with certifications. A colleague jumped in the same train so we were motivating each other during training, it was nice.  
-Finally the date of the exam arrived, it was stressful as hell, it was super hard but somehow I passed (just above the limit 😅). 
-I was super happy, it was a great feeling of accomplishment as the content of the exam was very broad and some questions were really tricky. But on top of that I had learnt many things during my study that I was ready to put in practice on my project. I simply realized that I had a narrowed knowledge of Azure and still had many things to learn.  
+In 2016 I started working with Azure, and after a few months I though I had a good understanding of the platform, as my project was using several PaaS services.  
+At that time it felt more relevant to get certified, especially on Azure. For me it was a way to broader my knowledge of the platform, for my employer a requirement for the gold partnership with Microsoft. And I was given some time and some training material from my employer and from Microsoft, so finally why not.  
+Over the course of a year and a half I passed the Azure Developer (I'm a dev first), the Azure Administrator (I wanted to improve my knowledge on infrastructure), and the Azure Architect exams. 
 
-Almost a year later I studied and passed the Azure Administrator exam (70-533 at that time). I'm a developer but I wanted to broader my knowledge on infrastructure. I also got time for studying, and even a 5 days training including two days in Microsoft France campus, so that was nice to go there for the first time.
+In 2019 when Microsoft introduced the role-based certifications, and came up with transition exams for those like me with *old* certifications, I couldn't help to renew all of mine.  
 
-Then as I was working as an architect, but not very confident about that role, I decided to go for the Azure Architect exam (70-535). This time it was on my own, I studied pretty hard and was confident on passing the exam. But I didn't, I failed miserably as I clicked to quickly on a study case, validating a few questions without answering them.  
-It was disappointing but no big deal, I learned from my mistakes, sat the exam again a few days later and pass it this time (but pretty close as it's a tough one).  
+Then in 2020 the IoT Developer specialty was open to beta, as an Azure IoT fan I was waiting for it so I sat for the exam in beta, and a few month later it felt logical for me to pass the DevOps Engineer as well. 
 
-At this point I thought I was pretty done with certs, I did not feel the need to pass more. But when Microsoft changed everything with role-based certifications in 2019, and came up with transition exams for those like me with *old* certifications, I couldn't help to renew all of mine.  
-So I sat for the Developer transition, passed it, then the architect, failed again, passed it on second attempt, and finally passed the administrator on first try. 
+And finally during the pandemic I passed two Fundamentals certifications, first one on AI (I had a voucher to use, and very little knowledge on AI), second on Power Platform (I was curious to try this, and was suggested a training with a voucher at the end). I will tell more about Fundamental exams at the end of this post.
+
+So that's my story with Azure certifications, from 0 to 10 exams in less that 5 years, and a complete change of mind about getting certified. So let me explain why I take these exams.
 
 ## Why I take exams
+Exam is the cherry on the cake, learning, studying and getting knowledge is more important
+
 
 ## What earning a certification means...
+Certifications are theory exams, event if there are labs now. 
+Getting certified show the world that you have spent some time on the subject, so at least you know what you are talking about.
 
 ## ... and what earning a certification doesn't mean
+Still on the theory thing, the certifications you have doesn't tell anything about the quality of the work you will do using the related technology. But your experience and technical abilities will, and these are much harder to measure with a number.
 
 ## One word about Fundamental certifications
