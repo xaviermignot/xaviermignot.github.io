@@ -2,6 +2,7 @@
 layout: post
 title: My thoughts on Azure certifications
 tags: [azure, certifications]
+image: /assets/img/azure-certifications/banner.png
 ---
 
 Recently I have seen and participated in conversations about the utility of IT certifications, especially Azure certifications. As I have passed several of them I am convinced of their utility, and I will use this post to expose my point of view.
@@ -22,7 +23,9 @@ Then in 2020 the IoT Developer specialty was open to beta, as an Azure IoT fan I
 
 And finally during the pandemic I passed two Fundamentals certifications, first one on AI (I had a voucher to use, and very little knowledge on AI), second on Power Platform (I was curious to try this, and was suggested a training with a voucher at the end). I will tell more about Fundamental exams at the end of this post.
 
-I do not always succeed at exams, I have already failed twice (for the Architect exams they're the toughest), but I have always analyzed my weaknesses, worked on them and pass on second attempt. I have also had various scores, sometimes I have passed just above the 700 limit 😬, other times I have killed it and scored above 900 😎.  
+I do not always succeed at exams, I have already failed twice (for the Architect exams they're the toughest), but I have always analyzed my weaknesses, worked on them and pass on second attempt.  
+![South Park learn](https://media.giphy.com/media/70lp5ktdEl2XS/giphy.gif)  
+I have also had various scores, sometimes I have passed just above the 700 limit 😬, other times I have killed it and scored above 900 😎.  
 
 So that's my story with Azure certifications, from 0 to 10 exams in less that 5 years, and a complete change of mind about getting certified. So let me explain why I take these exams.
 
@@ -30,7 +33,7 @@ So that's my story with Azure certifications, from 0 to 10 exams in less that 5 
 ## Why I take exams
 
 The main reason for me to take an exam is not the exam itself, it's all the things I will learn while studying. The exam is just the cherry on the cake, it is important as it sets an objective to reach and it helps to stay motivated, but what really matter at the end is the knowledge gain.  
-
+![Learn Yoda](https://media.giphy.com/media/yDYAHbqe5DfyM/giphy.gif)  
 And I have always learned something while preparing an exam, even when I was already proficient on the subject:
 - Azure Developer: I already knew Web Apps, Storage Account and most common services, but I learned about Traffic Manager, Azure AD, VMs, Service Fabric...
 - Azure Administrator: as a developer it was an opportunity to refresh my knowledge about networking, learning about security, NSGs, and more Azure AD (that bloody Azure AD that frightens developers 😅)
@@ -38,6 +41,7 @@ And I have always learned something while preparing an exam, even when I was alr
 - Azure IoT: I already knew IoT Hub pretty well, but was not aware of Device Configuration, customizing DPS with an Azure Function, and I had tons of things to learn on IoT Edge because I don't use it in my daily work
 
 Also to be honest it always feels great to earn a certification, at this point I think I'm kinda addicted to the feeling of excitement when I click on the button to reveal the exam result 😜. I enjoy also sharing by badges, as all MCPs do I guess.  
+![Thank you my friends](https://media.giphy.com/media/DmzQ4iPMyUScw/giphy.gif)  
 It's also a boost for my career, as I get more messages on Linkedin, but once again it's not the main reason for me. I do it for me, to improve my skills.  
 
 Speaking of skills, let's jump into what I think being certified means skill-wise.
