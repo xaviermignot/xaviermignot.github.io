@@ -76,6 +76,6 @@ Anyway I think it's nice to see non-technical people like sales or HR pass the A
 In the short term I do not plan to try another Microsoft exam, I will have to renew 3 of my certifications this year anyway.  
 As I always have something new to learn in mind, I would like to expand my knowledge on infrastructure as code. I have already tried Terraform a little bit, I will probably deep more into it and try the associate exam.  
 And as life is not all about technology, I also try to expand my knowledge on music theory, and I have to work on the theoretical part of my flying lessons.  
-It's one my mottos in my life: *"always try to learn, always be a noob at something"*.  
+It's one of my mottos in life: *"always try to learn, always be a noob at something"*.  
 
 Thanks for reaching the very bottom of this (long) post, next time I might write one about how I prepare for an exam. Meanwhile, happy learning ! 🤓
