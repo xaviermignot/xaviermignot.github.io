@@ -45,11 +45,21 @@ I strongly encourage you to use as one of your primary sources of learning, with
 - Create an account to track your progress and gain xp, it's more rewarding/addictive
 - Use bookmarks and collections to save up things you wanna learn
 - Under each exam page, there is a list of *learning paths* to follow to prepare for the exam. Do as much as you can !
-- There are some questions after each module, which are relatively easy. Don't be too confident if you always find the good answers, as most of the questions in the exams are harder
+- There are some questions after each module, which are relatively easy. Don't be too confident if you always find the good answers, as the questions is the exams are usually harder 😉
 
 
 ## MeasureUp practice tests
-Pros and cons of using those
+
+At some point you will consider getting a practice test from MeasureUp, as those are official practice tests. I have already used them a few times, here are their advantages in my opinion:
+- The interface is similar, but not exactly like the real exam UI. So if it's your first exam, it helps to get familiar with the exam experience and the type of questions.
+- Each answer comes with an explanation, and resources to know more about it. So if you're wrong, you can learn why and improve
+
+Additionally here are some tips I can provide on the practice tests:
+- Do not spend too much time working on them. It's tempting to dedicate almost all your studying time to it, as you want to improve your score, but be careful. I have already done this too much, and at the end I knew almost all questions by heart, which was worthless. Remember you're preparing to get certified on a piece of tech, not on a set of questions !
+- Opinions will vary on this, but in my experience I have almost never met a question in the real exam that was in a practice test. This a good and a bad point, the practice test does not provide the questions in advance, it prepares you to think in the way the real exam is made.
+
+Lastly if you search for practice tests on the web, outside of the official ones you will find tons of websites that guarantee 100% success with *real* questions. Do not trust them, these are bullshit, barely legal sources I think, and the worst way to prepare for an exam: you might get certified using these, but you not learn anything valuable at the end.
+
 
 ## Other sources of information
 Blog posts, Pluralsight, reddit, ...
