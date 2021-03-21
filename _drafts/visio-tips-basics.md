@@ -14,7 +14,7 @@ This one is about the basics, Visio is a complex software so it's important to k
 
 To get started you should get comfortable with the *tools* of Visio, which are:
 - The pointer tool, to select and drag shapes
-- The text tool, to associate text to shapes
+- The text block tool, to move the text associated to shapes
 - The connector tool, to draw lines between shapes
 - The connection point tool, to edit the connection points of a shape  
 
@@ -32,4 +32,35 @@ Then you'll be able to move around those rectangles, resize them, delete, any ba
 That's all the pointer tool is about: getting back to the most basic mode of the tool, using the shortcut to memorize: `Ctrl+1`  
 Let's keep a single rectangle before moving to the second tool.
 
-### The text tool
+### The text block tool
+In Visio you can easily add some text to any shape: simply select the shape, start typing and that's it. You can hit F2 before typing but it's not mandatory.  
+So there is no need to manually associated a text zone to a shape, it's already within each shape.  
+You can use the text block tool to move or resize these text zones, without changing the shape itself. Select a shape, hit `Ctrl+Shift+4` and arrange the text as you want.
+
+### The connector tool
+Connecting shapes is where Visio begins to shine in my opinion. The first tool for managing connection is the connector tool which creates connections between shapes.  
+To use it we are going to use more complex shapes than rectangles. Let's select the first shape available in the *Shapes* panel, the *Main topic* shape in the *Brainstorming Shapes* stencil, and create two shapes:  
+![Main topic shape]({{ page.img_dir }}/03-main-topic.png)  
+These shapes have predefined *connection points*, so if you hit `Ctrl+3` to switch to the connector tool, you can easily draw a connection between the two shapes.  
+As the connection points anchors the connection to the shapes, you can move the shape around and the connection will follow naturally.
+
+### The connection point tool
+As all shapes do not come with predefined connection points, or sometime you need to add some, that's where the connection point comes in handy. 
+Select a shape using the pointer tool, hit `Ctrl+Shift+1` to switch to the connection point tool, and you can perform tasks like:
+- Adding a new connection point using `Ctrl+click`
+- Dragging an existing connection point
+- Delete a connection point by clicking on it and hit `Delete`  
+The connection point tool combined with the connector tool let you do anything you want with connection between shapes.
+
+
+## Wrapping up
+
+That's it for this post, we have covered the most basic features of Visio. Next time we will see how to use the align and position features to perfectly place shapes in a diagram.  
+Meanwhile, take some time to memorize the keyboard shortcuts and the role of each tool:  
+
+| Tool | Shortcut | Role |
+|------|----------|------|
+| Pointer tool | `Ctrl+1` | Select, move & resize shapes |
+| Text block tool | `Ctrl+Shift+4` | Arrange text linked to shapes |
+| Connector tool | `Ctrl+3` | Draw connections between shapes |
+| Connection point tool | `Ctrl+Shift+1` | Edit shapes connection points |
