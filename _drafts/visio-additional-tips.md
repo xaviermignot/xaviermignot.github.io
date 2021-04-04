@@ -12,6 +12,25 @@ For this one I don't have a specific topic, but I have remaining tips to share ð
 
 ## Find your own style
 
+As a backend developer/architect, making diagrams is one of my few opportunities to make something nice-looking in my professional life. So over the years I have tried to improve my diagrams to give them a *personal* style with very simple tweaks, starting with connectors.  
+
+Let's start with this few shapes linked together:  
+![Linked shapes]({{ page.img_dir }}/01-linked-shapes.png){: width="350" }  
+The alignment and positioning looks good, but the connectors with the default settings give a raw, unfinished feeling. The contextual menu can open the *Format Shape* panel and set the connector style between right-angle, straight and curved:  
+![Linked shapes]({{ page.img_dir }}/02-contextual-menu.png){: width="350" }  
+The curved style is great for softening the angles, but it's not easy to work with so I stick with the right-angle style all the time. It's much easier to get something symmetric, and to soften the angles I increase the *rounding size* in the *format shape* panel to 3mm. I also increase the *width* to 1pt and choose an *end arrow type* (I like the 02).  
+These 3 little changes are my go-to style for connectors, and make the diagram look much better:  
+![Styled connectors]({{ page.img_dir }}/03-connector-style.png){: width="350" }  
+I haven't found a way to set this as the *default* style for connectors, so I set it once on a connector and use the `Ctrl+Shift+P` shortcut to apply it quickly on other connectors.  
+
+Another thing I like to do is putting shapes in the same "box" when they're related in some way. For instance Azure resources in the same *resource group* or *domain*, or to break down the underlying features of a resource, like this IoT Hub for example:  
+![IoT Hub raw]({{ page.img_dir}}/04-iot-hub-raw.png){: width="350" }  
+By setting the *transparency* to 50%, increasing the *width* to 1.5pt, choosing a *dash type* and setting the *rounding size* to 3mm, all from the format shape panel, it's more stylish:  
+![IoT Hub styled]({{ page.img_dir}}/05-iot-hub-styled.png){: width="350" }  
+
+These are just a few changes I do all the time to improve my diagrams, I encourage you to experiment with the format shape panel, find your style and give your diagram a personal touch.
+
+
 ## Use the text background feature
 
 ## Create temporary groups
