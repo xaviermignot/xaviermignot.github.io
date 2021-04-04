@@ -23,7 +23,7 @@ So that all the icons are easily accessible in the *Shapes* panel, under the *Mo
 ![My Shapes menu]({{ page.img_dir}}/my-shapes-visio-menu.png){: width="800"}
 
 To keep them up-to-date, I simple go into each folder with my terminal and do a git pull.  
-:warning: Keep in mind that Visio must be closed before doing this.
+⚠ Keep in mind that Visio must be closed before doing this.
 ```console
 ~\Documents\My Shapes\Microsoft-Integration-and-Azure-Stencils-Pack-for-Visio
 ❯ git pull
