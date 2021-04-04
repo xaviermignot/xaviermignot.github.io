@@ -33,6 +33,20 @@ These are just a few changes I do all the time to improve my diagrams, I encoura
 
 ## Use the text background feature
 
-## Create temporary groups
+Adding text to a connector can be made in different ways, depending on the length of the text and the connector. When the text is shorter than the connector, I like to place the text on top of the connector. But when there is too little room the text would hide the connector so I prefer to split it and keep its background transparent.  
+You can see the difference here:  
+![Text background sample]({{ page.img_dir}}/06-text-background.png){: width="350" }  
+This is done by selecting the connector, and setting the text background from either *None* or *Solid color* to white. Open the *Paragraph* dialog, *Text block* pane, and finally *Text background*:  
+![Text background option]({{ page.img_dir}}/07-text-background-dialog.png){: width="350" }  
+Very simple tip but very handy as well, so worth sharing at the end I think.
+
 
 ## Sync you favorite shapes using git
+
+This last one is a trick I have been using for many years to synchronize my Visio shapes from various sources using git. I have made a [dedicated post]({% post_url 2021-01-24-visio-tips-git-clone %}) a few weeks ago so you can check it out.  
+
+
+## Wrapping up
+
+This is the end of *Microsoft 101* series, at least for now, I might edit this last post if I have more ideas. I hope these posts will help you to improve you diagrams, and that you will enjoy doing diagrams as much as I do.  
+Happy drawing ! 🤓
