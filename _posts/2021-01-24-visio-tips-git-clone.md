@@ -2,7 +2,8 @@
 layout: post
 title: Manage your Visio shapes with Git
 tags: [visio, azure]
-image: /assets/img/visio-tips-git-clone/banner.png
+image: 
+  src: /assets/img/visio-tips-git-clone/banner.png
 img_dir: /assets/img/visio-tips-git-clone
 ---
 

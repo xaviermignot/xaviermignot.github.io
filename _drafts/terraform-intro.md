@@ -1,5 +1,4 @@
 ---
-layout: post
 title: Manage your pet projects resources using Terraform Cloud
 tags: [terraform]
 ---

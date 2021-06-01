@@ -1,5 +1,4 @@
 ---
-layout: post
 title: Azure IoT Hub - Routing device twin changes deep dive
 tags: [azure, azure-iot]
 img_dir: /assets/img/device-twin-routing
