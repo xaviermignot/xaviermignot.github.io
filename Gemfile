@@ -1,20 +1,15 @@
 source "https://rubygems.org"
 
-# gem "jekyll", ">= 4.1.0", "< 5.0"
-gem "github-pages", "~> 210", group: :jekyll_plugins
+gem "jekyll-theme-chirpy", "~> 4.0", ">= 4.0.1"
 
-# plugins
 group :jekyll_plugins do
-  gem "jekyll-paginate"
-  gem "jekyll-redirect-from"
-  gem "jekyll-seo-tag"
-  gem "jekyll-archives"
-  gem "jekyll-sitemap"
+  # If you have any plugins, put them here!
+  # gem "jekyll-xxx", "~> x.y"
   gem 'jekyll-target-blank'
 end
 
 group :test do
-  gem "html-proofer"
+  gem "html-proofer", "~> 3.18"
 end
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem

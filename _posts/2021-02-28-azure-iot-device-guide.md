@@ -1,5 +1,4 @@
 ---
-layout: post
 title: My guide for Azure IoT devices
 tags: [azure-iot]
 img_dir: /assets/img/azure-iot-device-guide

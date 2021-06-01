@@ -1,5 +1,4 @@
 ---
-layout: post
 title: Using .NET Secret Manager with console applications
 tags: [dotnet, csharp]
 ---
