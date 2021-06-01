@@ -4,9 +4,8 @@
 # © 2017-2019 Cotes Chung
 # MIT licensed
 
+theme: jekyll-theme-chirpy
 
-# jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
-# --------------------------
 title: Xavier Mignot                          # the main title
 
 tagline: Azure, IoT & other things   # it will display as the sub-title
