@@ -1,7 +1,7 @@
 ---
 title: About
 icon: fas fa-info
-order: 4
+order: 2
 ---
 
 Hi! My name is Xavier Mignot, I am a cloud architect specialized in Microsoft Azure, welcome to my website. I am a backend developer at heart, I have written .NET code for many years and am still happy to do it ! I am also open to other languages/stacks, like Python or C.  
