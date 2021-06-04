@@ -118,6 +118,7 @@ To summarize, in the event payload we have:
 - The new values of the properties included in the change
 - The `$metadata` of the properties in the change
 - The `$version` of the reported property section
+
 And we don't have:
 - The reported properties not included in the change (and their `$metadata`)
 - Any data from the other section of the device twin (tags, desired)
