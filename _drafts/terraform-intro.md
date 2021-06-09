@@ -1,11 +1,7 @@
 ---
-title: Manage your pet projects resources using Terraform Cloud
+title: Introduction to Terraform
 tags: [terraform]
 ---
-
-Over the last few years I have been interested by IaC (Infrastructure as Code), but never had the opportunity to use it in my professional life. For my few pet projects I was lazy so I have created the resources using the Azure portal, click click mode FTW !  
-Finally for my last project I really wanted to get into Terraform so I made the effort to start using it, and overall I was happy to find out that I can use Terraform Cloud for free, so I have decided to build my next few projects with it, with a method I will share in this post.
-
 
 ## Basics - What is TF & TF Cloud
 
@@ -40,14 +36,14 @@ Where the state is stored depends on the *backend* (another important concept of
 
 The *local* backend is recommended for getting started, but once you're getting comfortable with the tooling you can move to Terraform cloud, even for pet projects as it's free to use for teams up to 5 users.
 
-### Terraform Cloud
-
 ### Terraform providers
 
-## Using Terraform Cloud from your terminal
+## What is Terraform Cloud ?
+Terraform Cloud is an hosted service provided by HashiCorp. It provides the following main features:
+- Storing the state of the infrastructure securely and remotely
+- Providing *agents* to run Terraform commands remotely
+- Helping teams to work together as everything happens remotely and not on someone's machine
 
-## Organization of the repo
-### File organization
-### Do not commit tf-backend.tf file
-
-## Wrapping up
+As Terraform is [open-source](https://github.com/hashicorp/terraform) but provided by a [corporation](https://www.hashicorp.com/), it's important to know how this corporation earns money. At first I was thinking that Terraform was paid but it turns out it's free for teams up to 5 users 😎  
+Paid plans starts for bigger teams and there is also a self-hosted version of the same application called Terraform Enterprise. So that's how HashiCorp earns money, with big companies.  
+And you can get started for free, which is pretty nice, and pretty clever too 😏
