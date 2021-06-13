@@ -45,6 +45,31 @@ _The CLI-driven workflow on the new workspace page_
 Using this workflow allows you to run Terraform commands from your machine, but they will run remotely in Terraform Cloud. It's the best of two worlds approach as you get the simplicity of running the commands from your terminal of choice, and you get the security of having the state stored remotely, and the runs are accessible in Terraform Cloud.
 
 ### Give Terraform Cloud access to your Azure subscription
+Next you need to connect your workspace with you Azure subscription. Start by creating a new service principal with this Azure CLI command:
+```shell
+$ az ad sp create-for-rbac -n '<SERVICE PRINCIPAL NAME>' --role Owner
+```
+Choosing a relevant name will be more helpful than the default `azure-cli-datetime` name. Specifying the `Owner` role is needed if you plan to assign a role to a resource, using a Managed Identity for instance.
+
+The command will output a JSON object:
+```json
+{
+  "appId": "<A NEW GUID>",
+  "displayName": "service-principal-name",
+  "name": "http://service-principal-name",
+  "password": "<A SUPER SECRET STRING>",
+  "tenant": "<YOU TENANT ID>"
+}
+```
+
+Then back in Terraform Cloud you need to create environment variables from the *Variables* tab of your workspace page:
+- `ARM_CLIENT_ID` => The Service Principal's id if from the previous command's output
+- `ARM_CLIENT_SECRET` => The Service Principal's secret also from the command output (you should tick the *Sensitive*  checkbox for this one)
+- `ARM_SUBSCRIPTION_ID` => Your subscription id, you can get using like this: `az account show --query id -o tsv`
+- `ARM_TENANT_ID` => Your tenant id, also from the command output
+
+You should get something like this:
+![Environment variables]({{ page.img_dir}}/03-environment-variables.png)_These variables are then used by Terraform to get tokens for calling the Azure REST API._
 
 ### Get the Terraform code
 
