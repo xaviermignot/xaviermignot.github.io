@@ -27,18 +27,26 @@ Let's get finally to the point, shall we ? For this sample we will create an Azu
 - An App Service Plan
 - A storage account
 - A Function App
-- An Application Insights account (optional)
+- An Application Insights account (optional but always handy to monitor the app's telemetry)
 
-If you haven't already you will need to sign-up to Terraform Cloud and create an organization, everything is explained [here](https://learn.hashicorp.com/tutorials/terraform/cloud-sign-up?in=terraform/cloud-get-started#create-an-account) in the docs.  
+### Prerequisites
+To do this we will need the following prerequisites:
+- A Terraform Cloud account with an organization, to create one follow the guidelines from [here](https://learn.hashicorp.com/tutorials/terraform/cloud-sign-up?in=terraform/cloud-get-started#create-an-account)
+- An Azure subscription, a [free](https://azure.microsoft.com/en-us/free/) one will be enough
+- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/) installed and connected to your subscription
 
-Once you have your *organization* (which represents your *team*), you will need a *workspace* (which represents your *project*).  
-When you create your workspace, you have to choose a workflow, choose *CLI-driven workflow*:  
+### Create your workspace
+Once you have your *organization* (which represents your *team*) in Terraform Cloud, you will need a *workspace* (which represents your *project*).  
+Go to [Terraform Cloud](https://app.terraform.io/), select you organization, and click on the *"__New workspace__"* button.  
+
+On the next page you have to choose a workflow, choose *CLI-driven workflow*:  
 ![CLI-driven workflow]({{ page.img_dir }}/01-workspace-type.png)
 _The CLI-driven workflow on the new workspace page_  
 Using this workflow allows you to run Terraform commands from your machine, but they will run remotely in Terraform Cloud. It's the best of two worlds approach as you get the simplicity of running the commands from your terminal of choice, and you get the security of having the state stored remotely, and the runs are accessible in Terraform Cloud.
 
+### Give Terraform Cloud access to your Azure subscription
 
-## Using Terraform Cloud from your terminal
+### Get the Terraform code
 
 ## Organization of the repo
 ### File organization
