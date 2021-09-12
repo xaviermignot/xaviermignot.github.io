@@ -1,6 +1,6 @@
 ---
-title: Manage your pet projects resources using Terraform Cloud
-tags: [terraform]
+title: Use Terraform Cloud for your pet projects
+tags: [terraform, azure]
 img_dir: /assets/img/terraform-cloud
 ---
 
@@ -63,10 +63,10 @@ The command will output a JSON object:
 ```
 
 Then back in Terraform Cloud you need to create *environment variables* from the *Variables* tab of your workspace page:
-- `ARM_CLIENT_ID` => The Service Principal's id if from the previous command's output
-- `ARM_CLIENT_SECRET` => The Service Principal's secret also from the command output (you should tick the *Sensitive*  checkbox for this one)
-- `ARM_SUBSCRIPTION_ID` => Your subscription id, you can get it with this command: `az account show --query id -o tsv`
-- `ARM_TENANT_ID` => Your tenant id, also from the command output
+- `ARM_CLIENT_ID`: The Service Principal's id if from the previous command's output
+- `ARM_CLIENT_SECRET`: The Service Principal's secret also from the command output (you should tick the *Sensitive*  checkbox for this one)
+- `ARM_SUBSCRIPTION_ID`: Your subscription id, you can get it with this command: `az account show --query id -o tsv`
+- `ARM_TENANT_ID`: Your tenant id, also from the command output
 
 You should get something like this:
 ![Environment variables]({{ page.img_dir}}/03-environment-variables.png)_These variables are then used by Terraform to get tokens for calling the Azure REST API._
@@ -107,10 +107,32 @@ terraform {
 This file is git-ignored as it contains the name of the Terraform Cloud organization and workspace. Even if those are not secrets, I consider as good practice not to commit environment-related values like this, especially in public repositories.
 
 ### Let's deploy the resources !
-We are finally getting to the point where we are going to deploy some stuff in Azure. Let's jump in your favorite terminal in the root of the repo if you are not already there, and fire the following commands:
-1. Run `terraform login`
-2. Run `terraform init`
-3. Run `terraform plan`
-4. Run `terraform apply`
+We are finally getting to the point where we are going to deploy some stuff in Azure. Let's jump in your favorite terminal in the root of the repo if you are not already there, and fire a few commands.  
+First and just once run:
+- `terraform login` to authenticate to your Terraform Cloud workspace using your browser
+- `terraform init` to install the required providers
+
+Then you are ready to use the most common Terraform CLI commands:
+- `terraform plan` to create a *plan* to let Terraform determine the changes to make on your infrastructure
+- `terraform apply` to *apply* the plan and finally make the changes (which will result in the creation of all resources when you run this for the first time)
+
+After that feel free to tweak the Terraform files, experiment, and run the `plan` and `apply` commands again. Use the Azure portal to see what you have deployed:
+![Azure portal]({{ page.img_dir }}/05-azure-portal.png)_You should get something similar to this_  
+Once you are done, you can delete all the resources with the `terraform destroy` command.  
+
+What I like about this approach is that even if you can see the output of the commands in you terminal, everything is running in the cloud, and the state of the infrastructure is securely stored in the cloud as well.
+
 
 ## Wrapping up & next steps
+
+We have seen in this post how to deploy resources using the CLI approach of Terraform Cloud. While it might seem overkill to do this for personal projects or POCs, I think it's a good compromise as it combines the good practice to have the state securely stored in the cloud with the comfort of running the commands from my terminal (and not to have to push a change to trigger a CI/CD pipeline).  
+When I finish late my work on a project, I also like to run `terraform destroy`, approve the changes and close my laptop right away, as everything is running somewhere else... in the cloud !  
+
+This post describes a first step in my Terraform journey, and a big one as I needed quit some time to make up this post 😇  
+Then I might go further with the following next steps:
+- __Automate things__: I could write a script to create the workspace, the service principal and configure everything in a single step
+- __Manage environments__: while it's not necessary in the early stages of pet projects, being able to manage several environments (DEV, PROD, ...) could be interesting to do, and useful for my professional life
+- __Improve security__: creating a service principal with the Owner role does not following the principle of least privilege... there must be a way to ensure that its access are scoped to the dedicated resource group
+- __Use Bicep__: not related to Terraform at all but I know I will try this new way of deploying stuff in Azure some day 😅
+
+That's it for this post, thanks for reading, don't hesitate to reach out, and happy *terraforming* 🤓
