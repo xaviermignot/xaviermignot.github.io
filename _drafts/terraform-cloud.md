@@ -85,8 +85,32 @@ Here is how I have set the variables in my workspace:
 I have made up a GitHub repo with the resources listed above, you can grab it [here](https://github.com/xaviermignot/terraform-sample).  
 So you don't have to write the Terraform code for now but you can explore it and tweak it as you want.
 
-### Organization of the repo
-### File organization
-### Do not commit tf-backend.tf file
+### Repository content
+For simplicity I have put all the files at the root of the repository. In a "full" project I would have several folders dedicated to the Terraform files, the source, the tests, the doc, etc.  
+But there is only Terraform files here so it's pretty simple, we can just note that we have:
+- `az-*.tf` files containing the creation of the Azure resources
+- `tf-*.ft` files containing Terraform configuration such as the variables declaration and the required providers
 
-## Wrapping up
+### Add the `tf-backend.tf` file
+There is one file that you need to add to establish the link between the repo and your Terraform Cloud workspace. Just create the `tf-backend.tf` file with the following structure:
+```hcl
+terraform {
+  backend "remote" {
+    organization = "<YOUR ORGANIZATION NAME>"
+
+    workspaces {
+      name = "<YOUR WORKSPACE NAME>"
+    }
+  }
+}
+```
+This file is git-ignored as it contains the name of the Terraform Cloud organization and workspace. Even if those are not secrets, I consider as good practice not to commit environment-related values like this, especially in public repositories.
+
+### Let's deploy the resources !
+We are finally getting to the point where we are going to deploy some stuff in Azure. Let's jump in your favorite terminal in the root of the repo if you are not already there, and fire the following commands:
+1. Run `terraform login`
+2. Run `terraform init`
+3. Run `terraform plan`
+4. Run `terraform apply`
+
+## Wrapping up & next steps
