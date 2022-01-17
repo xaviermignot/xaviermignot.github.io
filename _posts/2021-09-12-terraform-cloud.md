@@ -46,7 +46,7 @@ Using this workflow allows you to run Terraform commands from your machine, but 
 
 ### Give Terraform Cloud access to your Azure subscription
 Next you need to connect your workspace with you Azure subscription. Start by creating a new service principal with this Azure CLI command:
-```shell
+```console
 $ az ad sp create-for-rbac -n '<SERVICE PRINCIPAL NAME>' --role Owner
 ```
 Choosing a relevant name will be more helpful than the default `azure-cli-datetime` name. Specifying the `Owner` role is needed if you plan to assign a role to a resource, using a Managed Identity for instance.
