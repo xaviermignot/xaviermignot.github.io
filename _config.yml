@@ -6,6 +6,17 @@
 
 theme: jekyll-theme-chirpy
 
+# The language of the webpage › http://www.lingoes.net/en/translator/langcode.htm
+# If it has the same name as one of the files in folder `_data/locales`, the layout language will also be changed,
+# otherwise, the layout language will use the default value of 'en'.
+lang: en
+
+# Additional parameters for datetime localization, optional. › https://github.com/iamkun/dayjs/tree/dev/src/locale
+prefer_datetime_locale:
+
+# Change to your timezone › http://www.timezoneconverter.com/cgi-bin/findzone/findzone
+timezone: Europe/Paris
+
 title: Xavier Mignot                          # the main title
 
 tagline: Azure, IoT & other things   # it will display as the sub-title
@@ -77,6 +88,8 @@ app_insights:
   enabled: true
   instrumentation_key: 90eb1399-4a98-49ce-ba54-b69979071fbe
 
+# ------------ The following options are not recommended to be modified ------------------
+
 kramdown:
   syntax_highlighter: rouge
   syntax_highlighter_opts:   # Rouge Options › https://github.com/jneen/rouge#full-options
@@ -88,15 +101,10 @@ kramdown:
       line_numbers: true
       start_line: 1
 
-# DO NOT change this unless you're a Pro user on Jekyll and Web development,
-# or you think you're smart enough to change other relevant URLs within this template.
-permalink: /posts/:title/
-
 collections:
   tabs:
     output: true
     sort_by: order
-
 
 defaults:
   -
@@ -122,10 +130,8 @@ defaults:
     values:
       layout: page
       permalink: /:title/
-      dynamic_title: true    # Hide title in mobile screens.
 
 sass:
-  sass_dir: /assets/css
   style: compressed
 
 compress_html:
@@ -138,13 +144,15 @@ compress_html:
     envs: [development]
 
 exclude:
-  - vendor
-  - Gemfile.lock
-  - Gemfile
+  - '*.gem'
+  - '*.gemspec'
   - tools
   - docs
   - README.md
   - LICENSE
+  - gulpfile.js
+  - node_modules
+  - package*.json
 
 jekyll-archives:
   enabled: [categories, tags]
