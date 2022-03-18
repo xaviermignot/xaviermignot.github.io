@@ -1,5 +1,6 @@
 ---
-title: "Generate TLS certificates with Terraform for your Azure projects"
+title: "TLS with Terraform and Azure: generate self-signed certificates"
+# title: "Generate TLS certificates with Terraform for your Azure projects"
 tags: [terraform, azure, app-service]
 img_path: /assets/img/azure-terraform-certificates
 ---
@@ -7,8 +8,8 @@ img_path: /assets/img/azure-terraform-certificates
 We all love starting pet projects, so we tend to buy custom domains as it can be fairly cheap. SSL/TLS certificates on the other hand used to be pricey, but today there are several solutions to get these for free.  
 And this is for the good cause as every website should be secured by certificates nowadays.  
 This post is the first of a series where I will share 3 ways to automate the generation of certificates with Terraform for your Azure projects.  
-This one introduces the common workflow around an Azure Web App, and shows the first *level* of certificate generation: using self-signed certificates.  
-The second post will use Let's Encrypt and the last one managed certificates (links will be put here after publication).  
+This one introduces the common workflow around an Azure Web App, and shows the first *level* of certificate generation using *self-signed* certificates.  
+The second post will use Let's Encrypt and the last one managed certificates (I will put the links here once the posts will have been published).  
 
 
 ## Presentation of the context for the whole series
@@ -34,7 +35,7 @@ Now that we have our basic setup, let's see how we can secure this web app.
 
 ## GitHub repository
 
-All the code from this post is available in the following [repo](https://github.com/xaviermignot/terraform-certificates).  
+All the code from this series of posts is available in the following [repo](https://github.com/xaviermignot/terraform-certificates).  
 The `readme` explains how to get started if you want to create the resources and generate the certificates in your own subscription.
 
 
@@ -80,6 +81,16 @@ resource "pkcs12_from_pem" "self_signed_cert" {
   private_key_pem = tls_private_key.private_key.private_key_pem
   password        = random_password.self_signed_cert.result
 }
+
+# Finally we push the PFX certificate in the Azure webspace
+resource "azurerm_app_service_certificate" "self_signed_cert" {
+  name                = "self-signed"
+  resource_group_name = var.resource_group_name
+  location            = var.location
+
+  pfx_blob = pkcs12_from_pem.self_signed_cert.result
+  password = pkcs12_from_pem.self_signed_cert.password
+}
 ```
 And that's it, the certificate is ready to be used as an App Service certificate as you can see in the full code [here](https://github.com/xaviermignot/terraform-certificates/blob/main/01_self_signed/main.tf). 
 
@@ -97,4 +108,3 @@ If we take a look back to our initial diagram, we have made the following change
 ![Generating self-signed certs](02-self-signed.png) _Diagram of the generation and deployment of the self-signed cert_  
 Stay tuned for the next post who will be about Let's Encrypt. If you already need it, you can go to my [repo](https://github.com/xaviermignot/terraform-certificates) as the code is already there 🤓  
 Thanks for reading !
-
