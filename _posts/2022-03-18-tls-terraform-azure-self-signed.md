@@ -1,6 +1,5 @@
 ---
 title: "TLS with Terraform and Azure: generate self-signed certificates"
-# title: "Generate TLS certificates with Terraform for your Azure projects"
 tags: [terraform, azure, app-service]
 img_path: /assets/img/azure-terraform-certificates
 ---
@@ -24,7 +23,7 @@ So we have the following components:
 - These two records allow the creation of a custom hostname *binding* at the App Service level
 
 Everything is created using Terraform CLI from my terminal, including the DNS records, that's why I'm using Azure DNS 😎  
-With this setup the App Service is accessible on the custom hostname using HTTP only, if we try to access it using HTTPS our browser displays an error as the only certificate it can find is bound the `azurewebsites.net` domain:
+With this setup the App Service is accessible on the custom hostname using HTTP only, if we try to access it using HTTPS our browser displays an error as the only certificate it can find is bound the `azurewebsites.net` domain:  
 ![Browser error](/01-http-browser.png) _The browser displays an error as the certificate doesn't match the hostname... yet_  
 
 In the Azure portal, the custom domain is added to the App Service but marked as unsecured:
@@ -45,7 +44,7 @@ As a very first step we will generate a *self-signed* certificate, something we 
 HashiCorp provides a [tls](https://registry.terraform.io/providers/hashicorp/tls/latest) provider to generate the certificate using Terraform just like we will do using openssl in Linux or PowerShell in Windows.  
 Here is the HCL code to do this:
 ```hcl
-# Create a private key in PEM format
+# Creates a private key in PEM format
 resource "tls_private_key" "private_key" {
   algorithm = "RSA"
 }
