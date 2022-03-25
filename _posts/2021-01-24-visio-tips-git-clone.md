@@ -3,8 +3,8 @@ layout: post
 title: Manage your Visio shapes with Git
 tags: [visio, azure]
 image: 
-  src: /assets/img/visio-tips-git-clone/banner.png
-img_dir: /assets/img/visio-tips-git-clone
+  src: /banner.png
+img_path: /assets/img/visio-tips-git-clone
 ---
 
 In this post I will share a simple trick I have used for many years to keep my favorite Visio shapes always fresh.  
@@ -18,10 +18,10 @@ Here are the one I use:
 - [David Summers' Azure Design](https://github.com/David-Summers/Azure-Design): another great pack, very complete, and the one use the most lately. What I like with this pack is that the connection point are already present on the shapes, so I don't have to add them manually. I'm not a fan of the shadows and the font, so I always change it with my personal settings though
 
 To use this icon sources, I have cloned all the github repos in the `My Shapes` folder on my laptop:
-![My Shapes folder]({{ page.img_dir }}/my-shapes-folder.png){: width="400"}
+![My Shapes folder](/my-shapes-folder.png){: width="400"}
 
 So that all the icons are easily accessible in the *Shapes* panel, under the *More Shapes > My Shapes* menu:
-![My Shapes menu]({{ page.img_dir}}/my-shapes-visio-menu.png){: width="800"}
+![My Shapes menu](/my-shapes-visio-menu.png){: width="800"}
 
 To keep them up-to-date, I simple go into each folder with my terminal and do a git pull.  
 ⚠ Keep in mind that Visio must be closed before doing this.
