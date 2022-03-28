@@ -8,7 +8,7 @@ We all love starting pet projects, so we tend to buy custom domains as it can be
 And this is for the good cause as every website should be secured by certificates nowadays.  
 This post is the first of a series where I will share 3 ways to automate the generation of certificates with Terraform for your Azure projects.  
 This one introduces the common workflow around an Azure Web App, and shows the first *level* of certificate generation using *self-signed* certificates.  
-The second post will use Let's Encrypt and the last one managed certificates (I will put the links here once the posts will have been published).  
+The [second post]({% post_url 2022-03-28-tls-terraform-azure-lets-encrypt %}) is using Let's Encrypt and the last one managed certificates (I will put the last link here once the post will have been published).  
 
 
 ## Presentation of the context for the whole series
