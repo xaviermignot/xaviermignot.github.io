@@ -51,8 +51,53 @@ resource "azurerm_app_service_certificate_binding" "cert_binding" {
   ssl_state           = "SniEnabled"
 }
 ```
-Note that comparing to the other posts of the series, I have detailed a little bit more what's happening in the code before and after the generation of the certificate. Otherwise I would have only 3 lines of code show 😬  
+Note that comparing to the other posts of the series, I have detailed a little bit more what's happening in the code before and after the generation of the certificate. Otherwise I would have only 3 lines of code to show 😬  
 
 > The code snippets above are spread into 3 modules from the repo of the whole series.  
 I had previously made another [repo](https://github.com/xaviermignot/app-service-managed-certificate-demo) dedicated to managed certificates using a single module if you prefer.
 {: .prompt-tip }  
+
+When browsing the App Service, we can see that the certificate is issued by GeoTrust (aka DigiCert) and of course trusted by the browser:  
+![Browser](/04-managed-browser.png) _The certificate is trusted and valid for 6 months ✅_
+
+
+## Managed certificates: too good to be true ?
+
+As you can see it's very simple to generate a managed certificate, and it's ~~free~~ included in the App Service Plan's pricing. It looks like the perfect solution for securing your Web Apps, but there is a downside that you should be aware of: if you want to use managed certificates, **your App Service have to be publicly exposed**.
+
+So you can't use them if you put your Web Apps behind an appliance like an Application Gateway and enforce the traffic to go through this appliance. 
+Even if it's technically feasible to do so (by using tricky maneuvers, I have done this but I won't tell more 😅), this is not a target solution as it will prevent the certificate from being renewed by App Service.
+
+There are other minor limitations like the lack of support of wildcard certificates and the impossibility to export the certificate but it seems fair to me and it did not bother me at all in my personal usage.
+
+> These limitations are listed [here](https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-certificate?tabs=subdomain%2Cportal#create-a-free-managed-certificate) in the documentation, a little bit quietly so I think it's worth mentioning them.
+{: .prompt-tip }
+
+To finish on a positive note, considering these limitations means that managed certificate might not suit enterprise scenarios where we will probably put a security appliance in front of our App Services. 
+But for personal projects, or smaller ones, proof of concepts, sandbox environments, it's really a great feature that you could use.
+
+
+### Managed certificates for other Azure services
+
+Staying on a positive track before closing this post, I have to mention that managed certificates are not limited to App Service in Azure.   
+
+I have already used them for Azure [CDN](https://docs.microsoft.com/en-us/azure/cdn/cdn-custom-ssl?tabs=option-1-default-enable-https-with-a-cdn-managed-certificate#tlsssl-certificates) (in GA, supported by the AzureRm Terraform provider) and Azure [API Management](https://docs.microsoft.com/en-us/azure/api-management/configure-custom-domain?tabs=managed#domain-certificate-options) (currently in public preview, no support in Terraform yet).  
+
+It might also exist for other services so if your are about to use an Azure service associated with a custom domain, look for the support of managed certificates 😉
+
+
+## Wrapping up 
+
+As this post closes the series on certificate generation with Terraform for Azure, let's recap the whole series in a single table:  
+
+| Generation method        | Ease of use | Security level | Summary                                                                                               |
+| ------------------------ | ----------- | -------------- | ----------------------------------------------------------------------------------------------------- |
+| Self-signed certificates | ✅✅        | 🔓            | You can start here but consider moving to the other method as soon as you can.                         |
+| Let's Encrypt            | ✅          | 🔐🔐🔐      | Free & trusted certs, require little maintenance once set-up. <br/> A little harder to understand at first but then can be used everywhere. |
+| Managed certificates     | ✅✅✅      | 🔐🔐🔐      | Use this unless your Web Apps can't be directly and publicly accessible. <br/> Or if you are not using Web Apps... |
+
+That's it for this post, I hope this series has been informative, as this is not the topic I am the most comfortable with (don't forget that I am a developer first, and most of us are scared by certificates 😱).  
+
+Anyway, there are several ways to automate certificate generation in Azure and in general, and the industry makes it easier that ever, through open initiatives like Let's Encrypt or public cloud specific features like managed certificates.  
+
+Choose the one that best suits your needs, and thanks for reading 🤓
