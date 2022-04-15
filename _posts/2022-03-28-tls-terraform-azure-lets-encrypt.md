@@ -122,5 +122,5 @@ So I hope this post makes sense and helps other to issue trusted certificates us
 Back to the original diagram, here is where we are now:  
 ![Diagram](/03-lets-encrypt.png) _The certificate is now issued by a trusted CA before being bounded to the App Service_
 
-The next post will close the series with Azure *managed* certificates, a feature that deserves more attention 😉  
+The [next post]({% post_url 2022-04-15-tls-terraform-azure-managed %}) will close the series with Azure *managed* certificates, a feature that deserves more attention 😉  
 Thanks for reading !

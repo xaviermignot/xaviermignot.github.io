@@ -2,6 +2,7 @@
 title: "TLS with Terraform and Azure: use managed certificates"
 tags: [terraform, azure, app-service]
 img_path: /assets/img/azure-terraform-certificates
+date: 2022-04-15 08:15:00
 ---
 
 This post is the last one of my series on the generation of TLS certificates with Terraform for Azure, after the post about [self signed certificates]({% post_url 2022-03-18-tls-terraform-azure-self-signed %}) and the one about [Let's Encrypt]({% post_url 2022-03-28-tls-terraform-azure-lets-encrypt %}).  
@@ -73,8 +74,8 @@ There are other minor limitations like the lack of support of wildcard certifica
 > These limitations are listed [here](https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-certificate?tabs=subdomain%2Cportal#create-a-free-managed-certificate) in the documentation, a little bit quietly so I think it's worth mentioning them.
 {: .prompt-tip }
 
-To finish on a positive note, considering these limitations means that managed certificate might not suit enterprise scenarios where we will probably put a security appliance in front of our App Services. 
-But for personal projects, or smaller ones, proof of concepts, sandbox environments, it's really a great feature that you could use.
+To finish on a positive note, these limitations mean that managed certificate might not suit enterprise scenarios where we will probably put a security appliance in front of our App Services.  
+But for personal projects, or smaller ones, proof of concepts, or sandbox environments, it's really a great feature, as it makes really easy to expose you applications securely on a custom domain.
 
 
 ### Managed certificates for other Azure services
