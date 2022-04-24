@@ -128,7 +128,7 @@ What I like about this approach is that even if you can see the output of the co
 We have seen in this post how to deploy resources using the CLI approach of Terraform Cloud. While it might seem overkill to do this for personal projects or POCs, I think it's a good compromise as it combines the good practice to have the state securely stored in the cloud with the comfort of running the commands from my terminal (and not to have to push a change to trigger a CI/CD pipeline).  
 When I finish late my work on a project, I also like to run `terraform destroy`, approve the changes and close my laptop right away, as everything is running somewhere else... in the cloud !  
 
-This post describes a first step in my Terraform journey, and a big one as I needed quit some time to make up this post 😇  
+This post describes a first step in my Terraform journey, and a big one as I needed quite some time to make up this post 😇  
 Then I might go further with the following next steps:
 - __Automate things__: I could write a script to create the workspace, the service principal and configure everything in a single step
 - __Manage environments__: while it's not necessary in the early stages of pet projects, being able to manage several environments (DEV, PROD, ...) could be interesting to do, and useful for my professional life
