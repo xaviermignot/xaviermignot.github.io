@@ -49,5 +49,5 @@ This last one is a trick I have been using for many years to synchronize my Visi
 
 ## Wrapping up
 
-This is the end of *Microsoft 101* series, at least for now, I might edit this last post if I have more ideas. I hope these posts will help you to improve you diagrams, and that you will enjoy doing diagrams as much as I do.  
+This is the end of *Microsoft Visio 101* series, at least for now, I might edit this post later if I have more ideas. I hope these posts will help you to improve your diagrams, and that you will enjoy doing diagrams as much as I do.  
 Happy drawing ! 🤓
