@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "jekyll-theme-chirpy", "~> 5.1", ">= 5.1.0"
+gem "jekyll-theme-chirpy", "5.2.1"
 
 group :jekyll_plugins do
   # If you have any plugins, put them here!
@@ -21,3 +21,5 @@ end
 
 # Performance-booster for watching directories on Windows
 gem "wdm", "~> 0.1.1", :install_if => Gem.win_platform?
+
+gem "webrick", "~> 1.7"
