@@ -228,7 +228,9 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
 ```
 {: file="resources.bicep" }
 
-## The whole picture
+The only thing left to do is to grant the Logic App access to the Storage Account using an assignment to the `Storage Table Data Contributor` builtin role. This can be seen [here](https://github.com/xaviermignot/deploy-logic-apps-with-iac/blob/81f3560869aaf70bd945132e63b7034833216403/bicep/resources.bicep#L73-L83) in the repository.  
+
+Finally everything can be deployed using a simple `az deployment sub create` command.
 
 ## Wrapping up
 
