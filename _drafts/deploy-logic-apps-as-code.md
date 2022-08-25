@@ -90,16 +90,20 @@ resource tableStorageConnection 'Microsoft.Web/connections@2018-07-01-preview' =
 
 ## Creating the Logic App workflow
 
+### Why are Logic Apps *different* ?
 Before jumping into some more IaC code, let's talk about how teams could manage (develop, version and deploy) Logic Apps and why they are different from other Azure resources like Web Apps or Azure Functions.  
 Functions and Web Apps are code-first services whose deployment require two steps:
 - A provisioning step to create the resource in Azure (using IaC, the CLI, the portal, ...)
-- A deployment step to push code to the resource (using a CD pipeline, VS Code,  a git push, ...)
+- A deployment step to push business code to the resource (using a CD pipeline, VS Code,  a git push, ...)
 
-These are two distinct steps, and the IaC code used to create the service and the business code pushed to the service are also distinct: deploying a new version of the business code will not make any change to the infrastructure side of the service.  
+Basically an empty shell is created, and then content is sent into the shell. Both steps can be achieved by different teams using different technologies.  
+Also deploying a new version of the business code does not reflect any change on the infrastructure.
 
-Logic apps is a design-first service, typically you design your workflow in a GUI (like the Azure portal), and it is saved in a JSON "code" tied to the Azure resource. So there is not the same distinction between provisioning and deployment: any change to the business logic will be reflected on the infrastructure side of the service.  
+Logic apps is a design-first service, typically you design your workflow in a GUI (like the Azure portal), and it is saved in a JSON "code" tied to the Azure resource.  
+So there is not the same separation between provisioning and deployment as above: any change to the business logic will be reflected on the infrastructure.  
 In other words, the "code" or the "logic" of the Logic Apps cannot be deployed separately from the creation of the resource itself.  
 
+### Let's develop/deploy this Logic App for good now !
 So how can we develop Logic Apps from the GUI and automate their deployment using IaC ?  
 Here is what I've got in the Azure portal once I've finished developing my Logic App:
 ![Logic App workflow in Azure portal](/02-workflow-portal.png) _A similar experience is available using the VS Code extension_  
@@ -156,3 +160,6 @@ As mentioned earlier, this little demo project has been done in Bicep and Terraf
 
 ## Wrapping up
 
+This post shows a way to achieve a first step in managing Logic Apps *at scale*.  
+There are still many things to cover such as how to run the deployments in a pipeline, how to make a change and bring it from development to production, how to allow changes using the GUI only in development and force the use of pipelines in other environments, etc.  
+I hope this post will help you to bring your Logic Apps to the next level, do not hesitate to reach out if you need, and thanks for reading 🤓
