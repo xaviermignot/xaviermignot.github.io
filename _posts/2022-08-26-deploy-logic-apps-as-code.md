@@ -2,6 +2,7 @@
 title: "Deploy Azure Logic Apps as code"
 tags: [azure, bicep, terraform, logic-apps]
 img_path: /assets/img/logic-apps-iac
+date: 2022-08-26 07:30:00
 ---
 
 I have been playing with Azure Logic Apps on my own lately, and was wondering how these can be managed by teams in an enterprise environment, especially how can we automate the provisioning and deployment of Logic Apps.  
@@ -65,7 +66,7 @@ resource storageTable 'Microsoft.Storage/storageAccounts/tableServices/tables@20
 
 ## Creating the API Connection
 
-To interact with a resource or a service, a Logic App requires a *service connection*, which is basically a wrapper around an API, the Azure table storage API in our case.  
+To interact with a resource or a service, a Logic App requires an *API connection*, which is basically a wrapper around an API, the Azure table storage API in our case.  
 This is one of the key steps of this post, as the service connection contains the way the Logic App authenticates to the Storage Account. I could have used an account key but decided to use a *managed identity* to follow best practices ([this post](https://medium.com/medialesson/deploying-azure-logic-apps-managed-identity-with-bicep-e1354f185e4d) helped me a lot to make this part work).  
 
 Long story short, the trick with the Managed Identity is to use the `2018-07-01-preview` API version of the `Microsoft.Web/connections` resource type. Bicep will show a warning because of this but it's currently the only way to make it work:
@@ -93,8 +94,8 @@ resource tableStorageConnection 'Microsoft.Web/connections@2018-07-01-preview' =
 ### Why are Logic Apps *different* ?
 Before jumping into some more IaC code, let's talk about how teams could manage (develop, version and deploy) Logic Apps and why they are different from other Azure resources like Web Apps or Azure Functions.  
 Functions and Web Apps are code-first services whose deployment require two steps:
-- A provisioning step to create the resource in Azure (using IaC, the CLI, the portal, ...)
-- A deployment step to push business code to the resource (using a CD pipeline, VS Code,  a git push, ...)
+1. A provisioning step to create the resource in Azure (using IaC, the CLI, the portal, ...)
+2. A deployment step to push business code to the resource (using a CD pipeline, VS Code,  a git push, ...)
 
 Basically an empty shell is created, and then content is sent into the shell. Both steps can be achieved by different teams using different technologies.  
 Also deploying a new version of the business code does not reflect any change on the infrastructure.
@@ -105,10 +106,12 @@ In other words, the "code" or the "logic" of the Logic Apps cannot be deployed s
 
 ### Let's develop/deploy this Logic App for good now !
 So how can we develop Logic Apps from the GUI and automate their deployment using IaC ?  
-Here is what I've got in the Azure portal once I've finished developing my Logic App:
+Here is what I've got in the Azure portal once I've finished "developing" my Logic App:
 ![Logic App workflow in Azure portal](/02-workflow-portal.png) _A similar experience is available using the VS Code extension_  
 Switching to the *Code view* allows me to see my workflow in JSON. From there I can copy the `definition` element and save its content a [file](https://github.com/xaviermignot/deploy-logic-apps-with-iac/blob/81f3560869aaf70bd945132e63b7034833216403/logic_apps/insertIntoTableStorage.json) in my repo.  
-Why not taking *all* the content of the code view ? Because the `parameters` element contains the resource id of the API connection (with the subscription id and resource group name) and the Storage Account name, and I don't want these kind of environment-related information to end up in my git repository.
+
+> Why not taking *all* the content of the code view ? Because the `parameters` element contains the resource id of the API connection (with the subscription id and resource group name) and the Storage Account name, and I don't want these kind of environment-related information to end up in my git repository.
+{: .prompt-info }  
  
 Now that my logic is saved (and versioned) alongside my IaC code, I can use it in the `definition` property of my Logic App workflow (using the `loadJsonContent` builtin function):
 ```
