@@ -4,7 +4,7 @@ title: "Microsoft Visio 101: Additional tips"
 tags: [visio]
 img_path: /assets/img/visio-additional-tips
 image: 
-  src: /banner.png
+  path: /banner.png
 ---
 
 This post closes the *Microsoft Visio 101* series after an [introduction to the tools]({% post_url 2021-03-21-visio-tips-tools %}), and a focus on [positioning and aligning shapes]({% post_url 2021-03-28-visio-tips-align-shapes %}).  

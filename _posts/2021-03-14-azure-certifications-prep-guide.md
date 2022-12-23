@@ -4,7 +4,7 @@ title: Preparation guide for Azure certifications
 tags: [azure, certifications]
 img_path: /assets/img/certifications-prep
 image: 
-  src: /banner.png
+  path: /banner.png
 ---
 
 As I have passed several Azure certifications, over the years I have established a routine for my studies before an exam. I will share this in this post alongside all the tips I can think of.

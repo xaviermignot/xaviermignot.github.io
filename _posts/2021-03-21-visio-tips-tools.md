@@ -4,7 +4,7 @@ title: "Microsoft Visio 101: The basic tools"
 tags: [visio]
 img_path: /assets/img/visio-tips-tools
 image: 
-  src: /banner.png
+  path: /banner.png
 ---
 
 A I really enjoy making architecture diagrams using Visio, I want to share in a few posts some tips to help you do the same.  
