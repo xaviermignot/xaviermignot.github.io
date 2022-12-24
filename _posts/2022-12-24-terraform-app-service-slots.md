@@ -2,6 +2,7 @@
 title: "Azure App Service, deployment slots (with configuration !) and Terraform"
 tags: [azure, terraform, app-service]
 img_path: /assets/img/terraform-app-service-slots
+date: 2022-12-24 09:00:00
 ---
 
 When you want to implement blue-green deployment using Azure App Services, deployment slots is the way to go. You can create a _staging_ slot to deploy the new version of your code, test it and _swap_ with the _production_ slot once ready to make the new version go live. All of this without causing downtime.  
@@ -53,7 +54,7 @@ The structure of the repository is very classic:
 - The `infra`folder contains the Terraform files
 - The `.github/workflows` folder contains the GitHub Actions workflows
 
-> I took this demo as an opportunity to level-up my GitHub Actions skills but I won't focus on this, as everything can be done locally or from any CI/CD solution.
+> I took this demo as an opportunity to level-up my GitHub Actions skills but I won't focus on it, as everything can be done locally or from any CI/CD solution.
 {: .prompt-info }
 
 ### Provision resources, and deploy code in both slots
@@ -181,6 +182,7 @@ This is to handle the first apply, as the `output -raw` command returns an error
 
 ## A few words about the `azurerm_web_app_active_slot` resource
 
+Before closing this post, I want to talk a little about another solution I had tried initially but later abandoned.  
 The AzureRm Terraform provider provides the [azurerm_web_app_active_slot](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/web_app_active_slot) resource to perform a swap using Terraform.  
 There is even a [page](https://learn.microsoft.com/en-us/azure/developer/terraform/provision-infrastructure-using-azure-deployment-slots) on Microsoft Learn that explains how to use it and has inspired me to write this post.  
 Initially I had built my demo using this resource like this:
@@ -195,7 +197,7 @@ resource "azurerm_web_app_active_slot" "active_slot" {
 And it worked: applying the configuration with the `active_app` set as `green` did perform a swap.  
 Things got weird when I tried to rollback: applying again with `active_app` as blue removed the `active_slot` resource from the state, but it did not make a swap in the other way. Actually I had to apply the configuration again with `active_app` as _green_ to make the _blue_ app active again 😖  
 And it went crazier when I put app settings in the mix: I always ended up with the blue app settings attached to the green app, and vice-versa...  
-Finally I think that this resource performs an API call to make the swap, aka a one-shot _operation_ that will make changes on the infrastructure described else-where in the code-base.  
+Finally I think that this resource performs an API call to make the swap, aka a one-shot _operation_ that will make changes on the infrastructure _described_ else-where in the code-base.  
 The result is a mix (a mess ?) of:
 - an _imperative_ approach, aka this `active_slot` resource who tells _"do this swap operation !"_ 
 - a _declarative_ approach , aka the rest of my Terraform code-base, who tells _"hey I need this stuff but I let you do your thing to make it happen"_
