@@ -166,7 +166,7 @@ And the blue one has moved to staging:
 ![The blue app in staging](/04-blue-app-staging.png)
 
 ### In case of a rollback...
-To perform a rollback, just run the `azcli-swap` again ! Executing the same steps will put the blue version back in production, and green one in staging, just like before the first swap.  
+To perform a rollback, just run the `azcli-swap` workflow again ! Executing the same steps will put the blue version back in production, and green one in staging, just like before the first swap.  
 In the real world, this is why it's handy to keep the previous version in the staging slot: even if the new bits have been tested in staging, problems can still occur once in production so better be ready to put things back in place !
 
 ### What about other changes to the infrastructure ?
