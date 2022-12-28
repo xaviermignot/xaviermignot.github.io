@@ -89,10 +89,6 @@ assets:
 pwa:
   enabled: true   # the option for PWA feature
 
-app_insights:
-  enabled: false
-  instrumentation_key: 90eb1399-4a98-49ce-ba54-b69979071fbe
-
 counter:
   enabled: true
   username: xaviermignot
