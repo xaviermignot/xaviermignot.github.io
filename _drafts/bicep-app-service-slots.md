@@ -58,7 +58,6 @@ param activeApp string = 'blue'
 ```
 {: file="main.bicep" }
 
-
 The module that creates the App Service is call with the configuration of both version (this is rule n°2):
 ```
 module appService 'modules/appService.bicep' = {
@@ -96,16 +95,12 @@ resource app 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
-var slotAppSettings = activeApp == 'blue' ? greenAppSettings : blueAppSettings
 resource staging 'Microsoft.Web/sites/slots@2022-03-01' = {
   // ...
   properties: {
     siteConfig: {
       // ...
-      appSettings: concat(slotAppSettings, [ {
-            name: 'IsStaging'
-            value: true
-          } ])
+      appSettings: activeApp == 'blue' ? greenAppSettings : blueAppSettings
     }
   }
 }
@@ -116,7 +111,7 @@ Moving forward to the third step of our deployment cycle, we make a first swap b
 ```sh
 az webapp deployment slot swap -g $RG_NAME -n $APP_NAME -s staging
 ```
-This is where things would get messy if we don't follow rule n°1. The workflow does it by getting the previously deployed version, "inverting" it, and performing another deployment with the new version:
+This is where things would get messy if we don't follow rule n°1, which is "always same which version is live somewhere". The workflow does it by getting the previously deployed version, "inverting" it, and performing another deployment with the new version:
 ```sh
 previousVersion=$(az deployment group show -g $RG_NAME -n deploy-bicep-aps-demo-resources --query properties.parameters.activeApp.value -o tsv 2>/dev/null)
 [[ "$previousVersion" == 'green' ]] && versionToUse="blue" || versionToUse="green"
