@@ -14,7 +14,7 @@ The second post will focus on the deployment slots and blue-green deployment stu
 
 As always all code described here can be found on my [GitHub](https://github.com/xaviermignot/bicep-app-service-slots), with all the instructions in a README to run the demo by yourself.  
 The demo consists in an ASP.NET web, Bicep code and GitHub Actions workflows.  
-The repository contains the materials of both posts of the series, in this post I will focus on provisioning a simple Web App (without slots) and on the GitHub Actions parts.
+The repository contains the materials of both posts of the series, in this post I will focus on provisioning a simple Web App (without slots) and on the GitHub Actions parts. I have simplified the code samples in this post to focus only on the first step of the series.
 
 
 ## Creating the Azure resources with Bicep
@@ -49,9 +49,7 @@ output planId string = plan.id // The resource id of the plan will be needed for
 
 Note the few gotchas related to the use of a Linux plan: we must use `app,linux` for the `kind` and set the `reserved` property to `true`.
 
-> Every Bicep module contains at least the following parameters:
-- `project` contains a suffix used in the naming of all resources (following the [guidelines](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations) for the prefixes)
-- `location` contains the Azure region also used for all resources
+> I use at least two parameters in all modules of my projects: `project` contains a suffix used in the naming of all resources (following the [guidelines](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations) for the prefixes), and `location` contains the Azure region I want to use
 {: .prompt-info }
 
 For the App Service, the code is simple but there is another gotcha with the application _stack_, i.e. which platform/language our app will be built with, .NET, Python, Go, etc.     
@@ -63,7 +61,7 @@ Apart from that the code is simple, here is the full resource:
 param location string
 param project string
 
-param appName string
+param appName string // this parameter contains a randomized string to make sure our app name is unique
 param planId string
 
 resource app 'Microsoft.Web/sites@2022-03-01' = {
@@ -200,6 +198,10 @@ The whole workflow can be found in the GitHub [repo](https://github.com/xaviermi
 Finally if you run this workflow and browse the app again you should see the deployed content:
 ![Deployed app](03-deployed-app.png) _Wondering what this blue app thing is about ? This is the topic of the next post_
 
+
 ## Wrapping-up
 
-
+This was the first step of of two-posts series, so far we have created an App Service and deployed code to it, using IaC and GitHub Actions, which is pretty good for a first step.  
+In the next post we will add blue-green deployment on top of that with App Service deployment slots, it might sound like a simple step but it's not as trivial.  
+In the meantime I strongly encourage you to continue to learn GitHub Actions by yourself, don't be afraid to try and break things. We have barely scratch its surface in this post, so go read the [docs](https://docs.github.com/en/actions), add workflows to your projects, try to optimize them, split them into several blocks, etc.  
+I hope you have enjoyed this post, as always don't hesitate to reach out, and happy learning 🤓
