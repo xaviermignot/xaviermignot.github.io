@@ -80,7 +80,7 @@ resource app 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
-output appServiceName string = app.name
+output appServiceName string = app.name // The name of the App Service is returned for later use in the workflows
 ```
 {: file="infra/modules/appService.bicep" }
 
@@ -101,6 +101,7 @@ While we are at setting secrets, add a secret `AZURE_SUBSCRIPTION` with your sub
 
 Let's create a GH workflow to run our Bicep code: the first notable step authenticates to Azure using the `azure/login` action and the secrets we have just created.  
 The next steps will use this authentication so we can add another step for running the Bicep template with the `azure/arm-deploy` action. We specify the scope, template file, parameters and the workflow is ready:
+{% raw %}
 ```yaml
 name: Provision Azure resources
 on:
@@ -126,11 +127,78 @@ jobs:
           parameters: project=bicep-aps-demo location=${{ secrets.AZURE_REGION }}
           deploymentName: apsBicepDemo
 ```
-{: file=".github/workflows/bicep-deploy.yml" }
+{: file=".github/workflows/simple-workflow.yml" }
+{% endraw %}
 The `workflow_dispatch` trigger allows us to manually run the workflow from the GitHub UI, once it's done the resources will be created and the website look like this:
 ![Empty App Service](01-empty-app.png)  
 For now it's an empty shell waiting for our content, we can notice the _Build with .NET_ line, it confirms that the application stack has been properly set, as we can also see in the Azure portal:
 ![Application Stack in Azure portal](02-portal-application-stack.png)
+
+### Time for code deployment !
+To push a package to our new web app we are going to add a second job to our workflow with the following steps/actions:
+- `dotnet publish` to restore, build and package the code in a single command
+- `azure/login` like in the provision job to authenticate to Azure
+- `azure/webapps-deploy` to push the package to the App Service
+
+Let's focus on the latest step, the most important but yet simple:
+{% raw %}
+```yaml
+- name: Deploy to App Service
+  uses: azure/webapps-deploy@v2
+  with: 
+    app-name: ${{ needs.provision.outputs.appServiceName }} 
+    package: ./src/ApsSlotsDemo.App/publish/ApsSlotsDemo.App
+```
+{: file=".github/workflows/simple-workflow.yml" }
+{% endraw %}
+A few words about authentication: there are several ways to authenticate for App Service deployment (check the official [documentation](https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=applevel)). I have chosen to use a _service principal_, basically the same identity is used for provisioning the resources and deploying the code.  
+That's why there is no credential parameter, authentication is handled at the previous step (`azure/login`).  
+
+Notice also that we need to pass the name of the App Service to deploy to. That's because the service principal authentication doesn't target a specific App Service, unlike publish profiles.  
+As the name of the App Service is generated during the provisioning job, we need to pass it from one job to another. To do this we have to set an `id` to the `Bicep deploy` add an output to the `provision` job like this:
+{% raw %}
+```yaml
+    outputs:
+      appServiceName: ${{ steps.bicep-deploy.outputs.appServiceName }}
+```
+{% endraw %}
+Then in the `deploy` job, we add the `needs: provision` line at the job level to indicate that the `provision` must complete first, and to allow the use of its outputs.
+
+Overall the complete `deploy` job looks like this:
+{% raw %}
+```yaml
+  deploy:
+    runs-on: ubuntu-latest
+    needs: provision
+    defaults:
+      run:
+        working-directory: src/ApsSlotsDemo.App
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: blue
+
+      - name: dotnet publish
+        run: dotnet publish -c Release -o publish/ApsSlotsDemo.App
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to App Service
+        uses: azure/webapps-deploy@v2
+        with: 
+          app-name: ${{ needs.provision.outputs.appServiceName }} 
+          package: ./src/ApsSlotsDemo.App/publish/ApsSlotsDemo.App
+```
+{: file=".github/workflows/simple-workflow.yml" }
+{% endraw %}
+
+The whole workflow can be found in the GitHub [repo](https://github.com/xaviermignot/bicep-app-service-slots/blob/main/.github/workflows/simple-workflow.yml).
+
+Finally if you run this workflow and browse the app again you should see the deployed content:
+![Deployed app](03-deployed-app.png) _Wondering what this blue app thing is about ? This is the topic of the next post_
 
 ## Wrapping-up
 
