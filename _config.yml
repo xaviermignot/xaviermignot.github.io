@@ -93,6 +93,10 @@ counter:
   enabled: true
   data-id: 2d107d40-555c-48d3-8ee3-bd4388e8fa84
 
+clarity:
+  enabled: true
+  project-id: frp9kbys89
+
 # ------------ The following options are not recommended to be modified ------------------
 
 kramdown:
