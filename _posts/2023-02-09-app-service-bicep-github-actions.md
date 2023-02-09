@@ -1,9 +1,10 @@
 ---
-title: "Deploy App Services with Bicep & GitHub Actions"
+title: "Deploy to App Services with Bicep & GitHub Actions"
 tags: [azure, bicep, app-service, github-actions]
 img_path: /assets/img/app-service-bicep-github-actions
 image:
   path: banner.png
+date: 2023-02-09 09:00:00
 ---
 
 Following my [previous post]({% post_url 2022-12-24-terraform-app-service-slots %}) about blue-green deployment with Azure App Services and Terraform, I wanted to do the same thing using Bicep.  
