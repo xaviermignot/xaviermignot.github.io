@@ -80,6 +80,15 @@ avatar: /assets/img/xmi.jpg?n=n #the ?n=n is a workaround to fix a 404 bug on th
 # boolean type, the global switch for ToC in posts.
 toc: true
 
+comments:
+  active: giscus        # The global switch for posts comments, e.g., 'disqus'.  Keep it empty means disable
+  # Giscus options › https://giscus.app
+  giscus:
+    repo: xaviermignot/xaviermignot.github.io             # <gh-username>/<repo>
+    repo_id: MDEwOlJlcG9zaXRvcnkzMzI0MzM4NDY=
+    category: General
+    category_id: DIC_kwDOE9CJts4CUIYT
+
 paginate: 10
 
 assets:
