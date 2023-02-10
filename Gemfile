@@ -5,7 +5,7 @@ gem "jekyll-theme-chirpy", "~> 5.5", ">= 5.5.2"
 group :jekyll_plugins do
   # If you have any plugins, put them here!
   # gem "jekyll-xxx", "~> x.y"
-  gem 'jekyll-target-blank'
+  gem "jekyll-link-attributes"
 end
 
 group :test do

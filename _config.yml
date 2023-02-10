@@ -43,13 +43,14 @@ social:
     - https://www.linkedin.com/in/mignotxavier
     - https://twitter.com/_xavierm # change to your twitter homepage
     - https://github.com/xaviermignot # change to your github homepage
+    - https://hachyderm.io/@xavierm
 
 # Only if your site type is GitHub Project sites and doesn't have a custom domain,
 # change below value to '/projectname'.
 baseurl: ''
 
 plugins:
-  - jekyll-target-blank
+  - jekyll-link-attributes
 
 # Prefer color scheme setting.
 #
@@ -96,6 +97,14 @@ counter:
 clarity:
   enabled: true
   project-id: frp9kbys89
+
+external_links:
+  enabled: true
+  rel: external nofollow noopener
+  target: _blank
+  exclude:
+    - https://hachyderm.io/@xavierm
+
 
 # ------------ The following options are not recommended to be modified ------------------
 

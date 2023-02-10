@@ -14,6 +14,10 @@
 -
   type: twitter
   icon: 'fab fa-twitter'
+- 
+  type: mastodon
+  icon: 'fab fa-mastodon'
+  url: https://hachyderm.io/@xavierm
 # -
 #   type: email
 #   icon: 'fas fa-envelope'
