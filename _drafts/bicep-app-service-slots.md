@@ -2,21 +2,23 @@
 title: "Azure App Service, deployment slots (with configuration !) and Bicep"
 tags: [azure, bicep, app-service]
 img_path: /assets/img/bicep-app-service-slots
+image:
+  path: banner.png
 ---
 
-Following my [previous post]({% post_url 2022-12-24-terraform-app-service-slots %}) about blue-green deployment with Azure App Services and Terraform, I wanted to do the same thing using Bicep.  
-I have started from the same demo, rewritten the IaC parts in Bicep, and adapted the GitHub Actions workflows accordingly.
+This is the second and last post of the series about deploying Azure App Services with Bicep. In the [first episode]({% post_url 2023-02-09-app-service-bicep-github-actions %}), we have create an App Service with Bicep, and deployed some code to it, all with the help of GitHub Actions.  
+This time we will add blue-green deployment on top of that, using deployment slots. Why shall we do that ? Because it will make our upcoming deployment smoother, without any downtime. Let's go !
 
 
 ## GitHub repository !
 
 As always all code described here can be found on my [GitHub](https://github.com/xaviermignot/bicep-app-service-slots), with all the instructions in a README to run the demo by yourself.  
-The demo consists in an ASP.NET web, Bicep code and GitHub Actions workflows. I will not dig too much into the App Services parts of the Bicep code in the post, you can check it in the repo if you need.
+The demo consists in an ASP.NET web, Bicep code and GitHub Actions workflows. 
 
 
 ## What is blue-green deployment anyway ?
 
-Blue-green deployment have several definitions, we will stick here to the one from [Wikipedia](https://en.wikipedia.org/wiki/Blue-green_deployment). 
+Blue-green deployment has several definitions, we will stick here to the one from [Wikipedia](https://en.wikipedia.org/wiki/Blue-green_deployment). 
 Let's say we want to manage two version of our application: a _blue_ one and a _green_ one. The lifecycle of our app will follow these steps:
 1. We start with the _blue_ version in production and the _green_ version in staging
 2. _green_ is the future version so we work by making changes on it
