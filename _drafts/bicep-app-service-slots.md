@@ -6,14 +6,8 @@ image:
   path: banner.png
 ---
 
-This is the second and last post of the series about deploying Azure App Services with Bicep. In the [first episode]({% post_url 2023-02-09-app-service-bicep-github-actions %}), we have create an App Service with Bicep, and deployed some code to it, all with the help of GitHub Actions.  
-This time we will add blue-green deployment on top of that, using deployment slots. Why shall we do that ? Because it will make our upcoming deployment smoother, without any downtime. Let's go !
-
-
-## GitHub repository !
-
-As always all code described here can be found on my [GitHub](https://github.com/xaviermignot/bicep-app-service-slots), with all the instructions in a README to run the demo by yourself.  
-The demo consists in an ASP.NET web, Bicep code and GitHub Actions workflows. 
+This is the second and last post of the series about deploying Azure App Services with Bicep. In the [first episode]({% post_url 2023-02-09-app-service-bicep-github-actions %}), we have created an App Service with Bicep, and deployed some code to it, all with the help of GitHub Actions.  
+This time we will add blue-green deployment on top of that, using App Service deployment slots. Why shall we do that ? Because it will make our upcoming deployment smoother, without any downtime. Let's go !
 
 
 ## What is blue-green deployment anyway ?
@@ -22,15 +16,18 @@ Blue-green deployment has several definitions, we will stick here to the one fro
 Let's say we want to manage two version of our application: a _blue_ one and a _green_ one. The lifecycle of our app will follow these steps:
 1. We start with the _blue_ version in production and the _green_ version in staging
 2. _green_ is the future version so we work by making changes on it
-3. Once the _green_ version ready we swap so it goes live and _blue_ in staging
-4. We begin a new cycle of development, but this time  working on the _blue_ version as it's the new next thing
-5. Once ready another swap is made,  _blue_ goes live, _green_ in staging, we are back in step 1 and start a new cycle
+3. Once the _green_ version ready we swap so it goes live and _blue_ moves to staging
+4. We begin a new cycle of development, but this time working on the _blue_ version as it becomes the next version
+5. Once ready another swap is made, _blue_ goes live, _green_ moves to staging, we are back in step 1 and we start over
 
 > Other [sources](https://www.redhat.com/en/topics/devops/what-is-blue-green-deployment) define blue-green as a gradual deployment but that's not what we will be using here.
 {: .prompt-info }
 
 
 ## The problem with deployment slots and IaC
+
+> Deployment slots is a feature of Azure App Services, you can learn more about it [here](https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots) if you're not already familiar with it.
+{: .prompt-info }
 
 Using deployment slots and IaC is simple until you introduce differences between your slots at the infrastructure level. Unfortunately this happens very quick if some of your _app settings_ or your _application stack_ is managed in your IaC code.  
 The problem is that the _swap_ operation uses an _imperative_ approach which conflicts with the _declarative_ approach of your IaC code. As the swap is done using the portal or the CLI, the Bicep code isn't aware of the change, so the next deployment will revert the changes and mess everything up.
@@ -47,6 +44,12 @@ The key point is where do we store the answer of rule n°1. In Terraform we can 
 Before any Bicep deployment, we can use the CLI to retrieve the `activeApp` input of the previous deployment and:
 - use the other value after a swap to _save_ the new answer to _"which version is currently deployed in the production slot ?"_
 - use the same value for any other deployment
+
+
+## GitHub repository !
+
+As always all code described here can be found on my [GitHub](https://github.com/xaviermignot/bicep-app-service-slots), with all the instructions in a README to run the demo by yourself.  
+The demo consists in an ASP.NET web, Bicep code and GitHub Actions workflows. 
 
 
 ## Let's see this in action !
