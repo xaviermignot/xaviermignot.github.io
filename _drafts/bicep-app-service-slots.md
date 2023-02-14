@@ -56,6 +56,12 @@ The demo consists in an ASP.NET web, Bicep code and GitHub Actions workflows.
 
 To start at the first step of the deployment cycle described earlier, we run the [`initial-deployment`](https://github.com/xaviermignot/bicep-app-service-slots/blob/main/.github/workflows/initial-deployment.yml) workflow to provision all the resources in Azure, deploy the _blue_ version of the app in the production slot, and the _green_ version in the staging slot.
 
+This is what we have in production:
+![The blue app in production](/01-blue-app-prod.png)
+
+And in staging:
+![The green app in staging](/02-green-app-staging.png)
+
 In the Bicep code, the rule n°3 (always pass which version is in production) is implemented using this parameter passed from the `main` to the `appService` module:
 ```
 @allowed([ 'blue', 'green' ])
