@@ -54,6 +54,7 @@ The demo consists in an ASP.NET web, Bicep code and GitHub Actions workflows.
 
 ## Let's see this in action !
 
+### First deployment
 To start at the first step of the deployment cycle described earlier, we run the [`initial-deployment`](https://github.com/xaviermignot/bicep-app-service-slots/blob/main/.github/workflows/initial-deployment.yml) workflow to provision all the resources in Azure, deploy the _blue_ version of the app in the production slot, and the _green_ version in the staging slot.
 
 This is what we have in production:
@@ -62,12 +63,12 @@ This is what we have in production:
 And in staging:
 ![The green app in staging](/02-green-app-staging.png)
 
-In the Bicep code, the rule n°3 (always pass which version is in production) is implemented using this parameter passed from the `main` to the `appService` module:
+In the Bicep code, the rule n°3 (always pass which version is in production) is implemented using this parameter passed from the `main` module to the `appService` module:
 ```
 @allowed([ 'blue', 'green' ])
 param activeApp string = 'blue'
 ```
-{: file="main.bicep" }
+{: file="infra/main.bicep" }
 
 The module that creates the App Service is call with the configuration of both version (this is rule n°2):
 ```
@@ -91,7 +92,7 @@ module appService 'modules/appService.bicep' = {
   }
 }
 ```
-{: file="resources.bicep" }
+{: file="infra/resources.bicep" }
 
 And of course the `activeApp` parameter is used to determine which configuration is bound to the production or the staging slot:
 ```
@@ -116,18 +117,46 @@ resource staging 'Microsoft.Web/sites/slots@2022-03-01' = {
   }
 }
 ```
-{: file="modules/appService.bicep" }
+{: file="infra/modules/appService.bicep" }
 
+Lastly the `activeApp` parameter is bound to the Bicep deployment, so it can be retrieved easily and is even visible in the Azure portal:
+![Blue activeApp in the Azure portal](/03-deployment-blue.png)_This help us to implement the rule n°1: save which version is live somewhere_
+
+### Swapping version
 Moving forward to the third step of our deployment cycle, we make a first swap by running the [`azcli-swap`](https://github.com/xaviermignot/bicep-app-service-slots/blob/main/.github/workflows/azcli-swap.yml) workflow which uses the following command:  
 ```sh
 az webapp deployment slot swap -g $RG_NAME -n $APP_NAME -s staging
 ```
-This is where things would get messy if we don't follow rule n°1, which is "always same which version is live somewhere". The workflow does it by getting the previously deployed version, "inverting" it, and performing another deployment with the new version:
+{: file=".github/workflows/azcli-swap.yml" }
+As expected the `swap` command puts the green version in production:
+![The green app in production](/04-green-app-prod.png)
+And the blue one is now in staging:
+![The blue app in staging](/05-blue-app-staging.png)
+Everything looks good but things would get messy if the workflow stopped here, as it still has to follow rule n°1:  "always save which version is live somewhere".  
+This is done in two steps, first the workflow gets the previous `activeApp` value and "inverts" it using Bash:
 ```sh
+# Get the activeApp parameter of the latest deployment
 previousVersion=$(az deployment group show -g $RG_NAME -n deploy-bicep-aps-demo-resources --query properties.parameters.activeApp.value -o tsv 2>/dev/null)
+# "Inverts" the value: blue => green, green => blue
 [[ "$previousVersion" == 'green' ]] && versionToUse="blue" || versionToUse="green"
-az deployment group create -g $RG_NAME -n deploy-bicep-aps-demo-resources -p activeApp=$versionToUse
+# Outputs the inverted value for next job
+echo "appVersion=$versionToUse" >> $GITHUB_OUTPUT
 ```
-Note that this deployment will have no change on the resources in Azure, it will only save the new version for the next deployments.
+{: file=".github/workflows/azcli-swap.yml" }
+Then another deployment has to be made in order to save `green` as the new `activeApp` value:
+{% raw %}
+```yaml
+update-active-app:
+  uses: ./.github/workflows/bicep-deploy.yml
+  needs: swap
+  with:
+    activeApp: ${{ needs.swap.outputs.appVersion }}
+    updateSecrets: false
+  secrets: inherit
+```
+{: file=".github/workflows/azcli-swap.yml" }
+{% endraw %}
+Note that this deployment will have no change on the resources in Azure, it will only save the new version for the next deployments:
+![Green activeApp in the Azure portal](/06-deployment-green.png)
 
 ## Wrapping-up
