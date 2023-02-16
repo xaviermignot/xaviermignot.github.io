@@ -159,4 +159,13 @@ update-active-app:
 Note that this deployment will have no change on the resources in Azure, it will only save the new version for the next deployments:
 ![Green activeApp in the Azure portal](/06-deployment-green.png)
 
+### What about next deployments ?
+Now that our first swap has been made, we are at the step 4 or the deployment cycle described [earlier](#what-is-blue-green-deployment-anyway-) in this post.  
+What could happen next ? In case of a rollback, if we run the `azcli-swap` workflow again, the green app will be put back in staging, and the green one in production. That's an handy benefit of using deployment slots to rollback easily.  
+If any change has to be done on the infrastructure _without_ swapping, we just have to get the `activeApp` value of the latest Bicep deployment, and use the same value.  
+
+
 ## Wrapping-up
+
+This marks the end of this post and this series. I hope this gives you a baseline on how to manage your App Services with Bicep and GitHub Actions.  
+A always feel free to reach out if you have any question, you can even drop a comment below (this is new). Thanks for reading and happy learning 🤓
