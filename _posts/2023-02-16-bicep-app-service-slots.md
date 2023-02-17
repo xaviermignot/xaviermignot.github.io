@@ -1,9 +1,10 @@
 ---
 title: "App Services with Bicep & GitHub Actions, part 2: Deployments slots"
-tags: [azure, bicep, app-service]
+tags: [azure, bicep, app-service, github-actions]
 img_path: /assets/img/bicep-app-service-slots
 image:
   path: banner.png
+date: 2023-02-16 23:00:00
 ---
 
 This is the second and last post of the series about deploying Azure App Services with Bicep. In the [first episode]({% post_url 2023-02-09-app-service-bicep-github-actions %}), we have created an App Service with Bicep, and deployed some code to it, all with the help of GitHub Actions.  

@@ -1,5 +1,5 @@
 ---
-title: "Deploy to App Services with Bicep & GitHub Actions"
+title: "App Services with Bicep & GitHub Actions, part 1: Provision & deploy"
 tags: [azure, bicep, app-service, github-actions]
 img_path: /assets/img/app-service-bicep-github-actions
 image:
