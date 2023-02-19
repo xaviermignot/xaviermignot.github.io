@@ -9,7 +9,7 @@ date: 2023-02-09 09:00:00
 
 Following my [previous post]({% post_url 2022-12-24-terraform-app-service-slots %}) about blue-green deployment with Azure App Services and Terraform, I wanted to do the same thing using Bicep.  
 Starting from the same demo, I will break this in a series of two posts. This is the first one about how to provision the App Service in Bicep and deploy code to it, using GitHub Actions workflows.  
-The second post will focus on the deployment slots and blue-green deployment stuff.
+The [second post]({% post_url 2023-02-16-bicep-app-service-slots %}) focuses on the deployment slots and blue-green deployment stuff.
 
 
 ## GitHub repository !
