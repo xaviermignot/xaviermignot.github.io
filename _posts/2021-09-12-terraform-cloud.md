@@ -7,7 +7,7 @@ img_path: /assets/img/terraform-cloud
 Over the last few years I have been interested by IaC (Infrastructure as Code), and started recently to use Terraform in my professional life. To keep practicing my Terraform skills I also started to use it for POCs and personal projects instead of using the portal.  
 Even if I had to push myself at the beginning, I now have a routine to initialize and manage my Azure resources that I will share in this post. It relies on Terraform Cloud that you can use for free !
 
-> This post has been updated with the use of the `cloud` block added in Terraform 1.10.0
+> This post has been updated with the use of the `cloud` block added in Terraform 1.1.0
 {: .prompt-info }
 
 ## What is Terraform and Terraform Cloud ?
