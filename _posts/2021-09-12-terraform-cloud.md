@@ -7,6 +7,8 @@ img_path: /assets/img/terraform-cloud
 Over the last few years I have been interested by IaC (Infrastructure as Code), and started recently to use Terraform in my professional life. To keep practicing my Terraform skills I also started to use it for POCs and personal projects instead of using the portal.  
 Even if I had to push myself at the beginning, I now have a routine to initialize and manage my Azure resources that I will share in this post. It relies on Terraform Cloud that you can use for free !
 
+> This post has been updated with the use of the `cloud` block added in Terraform 1.10.0
+{: .prompt-info }
 
 ## What is Terraform and Terraform Cloud ?
 
@@ -89,21 +91,30 @@ So you don't have to write the Terraform code for now but you can explore it and
 For simplicity I have put all the files at the root of the repository. In a "full" project I would have several folders dedicated to the Terraform files, the source, the tests, the doc, etc.  
 But there is only Terraform files here so it's pretty simple, we can just note that we have:
 - `az-*.tf` files containing the creation of the Azure resources
-- `tf-*.ft` files containing Terraform configuration such as the variables declaration and the required providers
+- All other `.tf` files contains Terraform configuration following the best practices/naming convention:
+  - `versions.tf` contains the required providers, the backend and the Terraform version
+  - `variables.tf` contains input variables
 
-### Add the `tf-backend.tf` file
-There is one file that you need to add to establish the link between the repo and your Terraform Cloud workspace. Just create the `tf-backend.tf` file with the following structure:
+> To keep following the naming convention I could have used a `outputs.tf` for output variables and a `main.tf` file as the starting point
+{: .prompt-info }
+
+### Link you local repo with Terraform Cloud
+The use of the Terraform Cloud backend is specified by the `cloud` block in the `versions.tf` file:
 ```hcl
 terraform {
-  backend "remote" {
-    organization = "<YOUR ORGANIZATION NAME>"
-
-    workspaces {
-      name = "<YOUR WORKSPACE NAME>"
-    }
-  }
+  # ...
+  cloud {}
 }
 ```
+{: file="versions.tf" }
+
+But it's (intentionally) empty, so to establish the link between the cloned repo and the Terraform Cloud workspace, you need to set 2 environment variables. This can be done by creating a `.env` like this:
+```shell
+export TF_CLOUD_ORGANIZATION="<YOUR ORGANIZATION NAME>"
+export TF_WORKSPACE="<YOUR WORKSPACE NAME>"
+```
+{: file=".env" }
+And running `source .env` from your terminal.  
 This file is git-ignored as it contains the name of the Terraform Cloud organization and workspace. Even if those are not secrets, I consider as good practice not to commit environment-related values like this, especially in public repositories.
 
 ### Let's deploy the resources !
