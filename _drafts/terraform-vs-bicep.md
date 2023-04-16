@@ -18,13 +18,13 @@ One of the most important thing to understand is what is happening on the machin
 #### Using Bicep
 When you give a file to Bicep, it will find the dependant Bicep files, "compile" the whole thing as an ARM template and submit a _deployment_ in a single API call to Azure. From there all the work is done within Azure, the caller (your workstation or CI/CD runner) monitors the status of the deployment and waits for its completion.  
 You can also monitor the execution and see the result from the Azure portal in the deployment blade of the targeted management group, subscription or resource group.  
-![](01-execution-mode-bicep.jpg)
+![Bicep execution sad Escobar meme](01-execution-mode-bicep.jpg){: width="400"}
 
 #### Using Terraform
 When you run `terraform plan` from a folder, it compares the whole _configuration_ (the `*.tf` files) with the _state_ to determine the changes to make on the resources in Azure. Then running `terraform apply` will make the changes on the resources and reflect them in the state.  
 For both commands there is no _deployment_ submitted to Azure, but a lot of calls to the management API are made to create/read/update/delete the resources in Azure. The order of the API calls is determined by the logic of Terraform and its providers, this logic is executed on the machine running the Terraform CLI (your workstation or CI/CD runner).  
 Once the configuration has been applied you won't see any _deployment_ in the Azure portal, as the AzureRM provider of Terraform doesn't use them. Instead you can see a bunch of entries in the _Activity log_ of the affected resources.  
-![](02-execution-mode-terraform.jpg)
+![Terraform execution conspiracy whiteboard meme](02-execution-mode-terraform.jpg){: width="400"}
 
 ### The state
 The state is a key-concept specific to Terraform. Basically it's an abstract layer used to map real world resources to the configuration. It's something you might dislike at first for the following reasons:
@@ -34,9 +34,11 @@ Depending on the situation it can be trivial or tricky to address, but you shoul
 
 But once familiar with the state you'll become confident in dealing these and you'll appreciate the features it brings.
 Of course in Bicep, there is no state, we can say that the infrastructure is the sate, which is simpler to handle at first but you will see in the rest of this post the features you might miss.  
-![](03-no-state.jpg)
+![No state no drift meme](03-no-state.jpg){: width="400"}
+
 
 ## The resulting differences
+Now that the mothers of differences have been settled, in this section we will go through the _resulting_ differences.
 
 ### The multi-tool issue
 
