@@ -1,7 +1,10 @@
 ---
 title: "Quick tip: Try Azure Resource Graph"
-tags: [azure, quick-tip]
+tags: [azure, quick-tip, azure-monitor]
 img_path: /assets/img/try-azure-resource-graph-tip
+image:
+  path: banner.png
+date: 2023-05-14 18:30:00
 ---
 
 This a quick post to share a service I have discovered this week: Azure Resource _Graph_ Explorer.  
@@ -13,11 +16,11 @@ Until now when I needed to dig into my resources I used Azure Resource Explorer 
 Using Azure Resource _Graph_ is much easier and powerful, if you want to know more about how to get started with it I recommend checkout the [documentation](https://learn.microsoft.com/en-us/azure/governance/resource-graph/).
 
 ## What can we do with it
-For now I have barely scratched the capabilities of the service but I can already share a couple of use-cases.
+For now I have barely scratched the surface of the service but I can already share a couple of use-cases.
 
 ### Query resources across subscriptions
 The first thing you can do right away is query your Azure resources, and the power of the tool is that you can do this across _all_ the subscriptions you have access to. This is extremely useful in an enterprise environment with a bunch of subscriptions for your various landing zones (with the CLI or PowerShell, you have to change your context to achieve this).  
-With Azure Resource Explorer, a simple KQL request on the `resources` table will give you everything, and then you can refine the results by type, and do things like getting the number of VMs by size, location, etc.  
+With Azure Resource Graph, a simple KQL request on the `resources` table will give you everything, and then you can refine the results by type, and do things like getting the number of VMs by size, location, etc.  
 
 > This [blog post](https://techcommunity.microsoft.com/t5/itops-talk-blog/azure-resource-graph-zero-to-hero/ba-p/2303572) is a great read to find out how you can query your resources using Graph Explorer.  
 {: .prompt-info }
@@ -28,7 +31,7 @@ With Azure Resource Explorer, a simple KQL request on the `resources` table will
 ### Get the payload of an Azure Monitor alert
 Working with Azure Monitor, you often need to check the payload of an alert for troubleshooting reasons. Until now I was doing it with an action group and a webhook to a service like [Webhook.site](https://webhook.site/). But there is a better way.  
 From the Azure Monitor Alerts blade in the portal, select the occurrence of your alert and copy its _id_:
-![azure-monitor-get-alert-id](/01-get-alert-id.png)
+![azure-monitor-get-alert-id](/01-get-alert-id.png)_I have cropped the screenshot and masked some details_
 
 Then go to the Azure Resource Graph Explorer blade, and copy this query with your alert id:
 ```kusto
