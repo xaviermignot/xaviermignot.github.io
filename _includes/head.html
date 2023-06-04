@@ -42,16 +42,16 @@
 
   {% if site.resources.ignore_env != jekyll.environment and site.resources.self_hosted %}
 
-    <link href="{{ site.data.assets[origin].webfonts | relative_url }}" rel="stylesheet">
+    <link href="{{ site.data.origin[type].webfonts | relative_url }}" rel="stylesheet">
 
   {% else %}
 
-    {% for cdn in site.data.assets[origin].cdns %}
+    {% for cdn in site.data.origin[type].cdns %}
       <link rel="preconnect" href="{{ cdn.url }}" {{ cdn.args }}>
       <link rel="dns-prefetch" href="{{ cdn.url }}" {{ cdn.args }}>
     {% endfor %}
 
-    <link rel="stylesheet" href="{{ site.data.assets[origin].webfonts }}">
+    <link rel="stylesheet" href="{{ site.data.origin[type].webfonts }}">
 
   {% endif %}
 
@@ -73,25 +73,25 @@
   {% endif %}
 
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="{{ site.data.assets[origin].bootstrap.css }}">
+  <link rel="stylesheet" href="{{ site.data.origin[type].bootstrap.css }}">
 
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="{{ site.data.assets[origin].fontawesome.css }}">
+  <link rel="stylesheet" href="{{ site.data.origin[type].fontawesome.css }}">
 
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 
   {% if site.toc and page.toc %}
-    <link rel="stylesheet" href="{{ site.data.assets[origin].bootstrap-toc.css }}">
+    <link rel="stylesheet" href="{{ site.data.origin[type].bootstrap-toc.css }}">
   {% endif %}
 
   {% if page.layout == 'page' or page.layout == 'post' %}
     <!-- Manific Popup -->
-    <link rel="stylesheet" href="{{ site.data.assets[origin].magnific-popup.css }}">
+    <link rel="stylesheet" href="{{ site.data.origin[type].magnific-popup.css }}">
   {% endif %}
 
   <!-- JavaScript -->
 
-  <script src="{{ site.data.assets[origin].jquery.js }}"></script>
+  <script src="{{ site.data.origin[type].jquery.js }}"></script>
 
   {% unless site.theme_mode %}
     {% include mode-toggle.html %}
