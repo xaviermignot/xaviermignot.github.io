@@ -19,10 +19,10 @@ timezone: Europe/Paris
 
 title: Xavier Mignot # the main title
 
-tagline: Azure, IoT & other things # it will display as the sub-title
+tagline: Azure, IaC & other things # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
-  Xavier Mignot blog about Azure, IoT
+  Xavier Mignot's blog about Azure, GitHub, Terraform, Bicep, IaC and IoT
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: 'https://blog.xmi.fr'
