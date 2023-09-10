@@ -13,7 +13,7 @@
   url:  'https://www.linkedin.com/in/mignotxavier/'                  # Fill with your Linkedin homepage
 -
   type: twitter
-  icon: 'fab fa-twitter'
+  icon: 'fa-brands fa-x-twitter'
 - 
   type: mastodon
   icon: 'fab fa-mastodon'
