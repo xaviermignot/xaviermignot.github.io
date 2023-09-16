@@ -4,7 +4,7 @@ tags: [azure-devops, azure-pipelines, ci/cd]
 img_path: /assets/img/azdo-pipeline-object
 image:
   path: banner.jpg
-  alt: Photo by <a href="https://unsplash.com/photos/RIQdGGU2US0">karosu</a> on <a href="https://unsplash.com">Unsplash</a>
+  alt: Photo by karosu on Unsplash
 ---
 
 In this quick post I will share a trick I have found recently to store an object in an Azure Pipelines variable from a PowerShell script.  
