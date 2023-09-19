@@ -5,6 +5,7 @@ img_path: /assets/img/azdo-pipeline-object
 image:
   path: banner.jpg
   alt: Photo by karosu on Unsplash
+date: 2023-09-18 21:00:00
 ---
 
 In this quick post I will share a trick I have found recently to store an object in an Azure Pipelines variable from a PowerShell script.  
@@ -19,7 +20,7 @@ steps:
   - pwsh: |
       Write-Host "Value from previous step: $(variableName)"
 ```
-But it's a little bit trickier for complex variables likes objects, arrays, or object arrays.  
+But it's a little bit trickier for complex variables likes objects, arrays, or arrays of objects.  
 As an example, let's say I want to retrieve the name, type and resource group of all the resources in an Azure subscription like this:
 ```powershell
 $resources = Get-AzResource | Select-Object -Property Name,Type,ResourceGroupName
