@@ -89,8 +89,7 @@ paginate: 10
 
 assets:
   self_host:
-    enabled:
-    env:
+    enabled: true
 
 pwa:
   enabled: true   # the option for PWA feature
