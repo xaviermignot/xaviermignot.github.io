@@ -9,6 +9,15 @@ platforms:
   - type: Mastodon
     icon: "fab fa-mastodon"
     link: "https://mastodon.social/share?text=TITLE&url=URL"
+    instances:
+      - label: mastodon.social
+        link: "https://mastodon.social/"
+      - label: mastodon.online
+        link: "https://mastodon.online/"
+      - label: hachyderm.io
+        link: "https://hachyderm.io/"
+      - label: fosstodon.org
+        link: "https://fosstodon.org/"
 
   - type: Twitter
     icon: "fa-brands fa-twitter"
