@@ -66,6 +66,7 @@ For the creation of the Container App I will walk through the GitHub Action work
 ### Generate an access token
 As mentioned earlier, self-hosted runners need to authenticate against the GitHub REST API, that's where the GitHub App comes in.  
 But the private key generated earlier is not passed to the Container App, it is used to generate a short-lived token that we pass to the runner. This is done by the following step in the workflow:
+{% raw %}
 ```yaml
 - name: Generate access token
   id: generate-access-token
@@ -76,12 +77,15 @@ But the private key generated earlier is not passed to the Container App, it is 
     skip-token-revoke: true
 ``` 
 {: file=".github/workflow/provision-runners.yml" }
+{% endraw %}
 A few interesting things here:
 - The GitHub App id is stored in an action _variable_ (as it's not sensitive), the private key in an action _secret_ (as it's of course sensitive)
 - This step uses a verified action from the [marketplace](https://github.com/marketplace/actions/create-github-app-token)
 - Note the use of the `skip-token-revoke` property: by default the generated token is automatically revoked at the end of the workflow. We don't want that here as the token will be used after the deployment and we want to avoid [401](https://http.cat/401) errors.
 
-### Run the Bicep deployment from GitHub Actions
+### Provision the runner
+Then the deployment of the runner is triggered by this step in the workflow:
+{% raw %}
 ```yaml
 - name: Bicep deploy
   uses: azure/arm-deploy@v1
@@ -99,28 +103,20 @@ A few interesting things here:
     deploymentName: deploy-aca-gh-runners-app
 ``` 
 {: file=".github/workflow/provision-runners.yml" }
+{% endraw %}
+Nothing uncommon here, we notice that the previously generated token is retrieved as an output of the `generate-access-token` step and passed as a parameter to the Bicep deployment. We have to send it up to the container alongside the name of our organization, found in the [`github`](https://docs.github.com/en/actions/learn-github-actions/contexts#github-context) context.  
+
+In the Bicep code (stripped down for readability, full version is [here](https://github.com/xmi-cs/aca-gh-actions-runner/blob/main/infra/modules/containerApp.bicep)), you can see how the values are passed to the container:
 
 ```
 resource acaApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: 'ca-${project}'
-  location: location
-  tags: tags
-  identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {
-      '${acaMsi.id}': {}
-    }
-  }
+  // ...
   properties: {
     managedEnvironmentId: acaEnv.id
     configuration: {
       activeRevisionsMode: 'Single'
-      registries: [
-        {
-          server: acr.properties.loginServer
-          identity: acaMsi.id
-        }
-      ]
+      // ...
       secrets: [
         {
           name: 'github-access-token'
@@ -133,10 +129,7 @@ resource acaApp 'Microsoft.App/containerApps@2023-05-01' = {
         {
           name: 'github-runner'
           image: '${acr.properties.loginServer}/runners/github/linux:${imageTag}'
-          resources: {
-            cpu: json(containerCpu)
-            memory: containerMemory
-          }
+          // ...
           env: [
             {
               name: 'ACCESS_TOKEN'
@@ -150,14 +143,7 @@ resource acaApp 'Microsoft.App/containerApps@2023-05-01' = {
               name: 'ORG_NAME'
               value: gitHubOrganization
             }
-            {
-              name: 'EPHEMERAL'
-              value: '1'
-            }
-            {
-              name: 'RUNNER_NAME_PREFIX'
-              value: project
-            }
+            // ...
           ]
         }
       ]
@@ -166,6 +152,55 @@ resource acaApp 'Microsoft.App/containerApps@2023-05-01' = {
 }
 ```
 {: file="infra/modules/containerApp.bicep" }
+We are using environment variables, some of them are hard-coded, such as the `RUNNER_SCOPE`, set to `org` as we are in an _organization_ context. The `ORG_NAME` variable receives its value (the name of the organization) from a Bicep parameter.  
+Most of the variables are _plain_ text, except the `ACCESS_TOKEN` where a reference to a Container App [secret](https://learn.microsoft.com/en-us/azure/container-apps/manage-secrets?tabs=arm-template#store-secret-value-in-container-apps) is used for the access token. A Key Vault can be used here for increased security, but simplicity was preferred for this demo.
 
+## See the runner in action
+Once the deployment is complete (and successful 🤞), a single runner should be visible in GitHub both from the settings of your fork and your org:
+![Runner from the GitHub settings](/02-github-idle-runner.png)_This is from the settings of my repo_
+
+In the Azure portal, the runner output is visible from the _Log stream_ panel of the Container App:
+```
+Runner reusage is disabled
+Obtaining the token of the runner
+Ephemeral option is enabled
+Configuring
+--------------------------------------------------------------------------------
+|        ____ _ _   _   _       _          _        _   _                      |
+|       / ___(_) |_| | | |_   _| |__      / \   ___| |_(_) ___  _ __  ___      |
+|      | |  _| | __| |_| | | | | '_ \    / _ \ / __| __| |/ _ \| '_ \/ __|     |
+|      | |_| | | |_|  _  | |_| | |_) |  / ___ \ (__| |_| | (_) | | | \__ \     |
+|       \____|_|\__|_| |_|\__,_|_.__/  /_/   \_\___|\__|_|\___/|_| |_|___/     |
+|                                                                              |
+|                       Self-hosted runner registration                        |
+|                                                                              |
+--------------------------------------------------------------------------------
+# Authentication
+√ Connected to GitHub
+# Runner Registration
+√ Runner successfully added
+√ Runner connection is good
+# Runner settings
+√ Settings Saved.
+√ Connected to GitHub
+Current runner version: '2.311.0'
+2023-11-22 15:48:14Z: Listening for Jobs
+```
+
+To test the runner, I have prepared a very simple [workflow](https://github.com/xmi-cs/aca-gh-actions-runner/blob/main/.github/workflows/test-self-hosted-runner.yml) to run a few Azure CLI commands.  
+The most important lines are here, it's how we tell that a job must be picked-up by a self-hosted runner:
+```yaml
+jobs:
+  test:
+    runs-on: self-hosted
+```
+{: file=".github/workflow/test-self-hosted-runner.yml" }
+In the other workflows, the `runs-on` property is set to `ubuntu-latest`, so that the job is picked by runner managed by GitHub.
+
+Once the `Test self-hosted runners` workflow has started, the GitHub UI shows that the self-hosted runner picks the job and becomes active:
+![Active runner](/03-github-active-runner.png)_Entering active mode..._
+
+Digging in the workflow run UI, we can see in the output of the `Set up job` step the name of the runner and that the machine name matches with the _revision_ of the Container App:
+![Set up job output](/04-github-set-up-job.png)_The machine name is indeed the name of the replica_
 
 ## Wrapping-up
