@@ -16,11 +16,12 @@ This is a two-part series, the second part focuses on the scaling aspect of Cont
 
 ## GitHub repository and organization
 For the purpose of this series I have created my very own GitHub organization (for free, you can [create](https://github.com/account/organizations/new) your own too !), and carefully crafted [a repository](https://github.com/xmi-cs/aca-gh-actions-runner). I will show only the most important snippets of the code in the post, you can still browse the repo for more context.  
-The repo contains a Dockerfile, GitHub workflows and Bicep code to create the necessary resources in Azure, and run a "hello world" Azure CLI script on the self-hosted runners. 
+The repo contains a Dockerfile, GitHub workflows and Bicep code to create the necessary resources in Azure, and run a "hello world" Azure CLI script on the self-hosted runners.  
 
+This diagram show how these components interact together:
 ![Architecture diagram](/01-diagram.png) _This is what the architecture looks like_
 
-> If you need a step-by-step, tutorial approach, you can follow the instructions in the [README](https://github.com/xmi-cs/aca-gh-actions-runner/blob/main/README.md) of the repo. In the rest of the post I will explain _how it works_, not _how to deploy it_ in your organization.  
+> You can follow the instructions in the [README](https://github.com/xmi-cs/aca-gh-actions-runner/blob/main/README.md) of the repo to deploy runners in your environment. The rest of the post will explain how the solution works, not how to deploy it step by step.   
 {: .prompt-info }
 
 ## Create a Dockerfile (or use another one as a base)
@@ -110,12 +111,10 @@ In the Bicep code (stripped down for readability, full version is [here](https:/
 
 ```
 resource acaApp 'Microsoft.App/containerApps@2023-05-01' = {
-  name: 'ca-${project}'
   // ...
   properties: {
-    managedEnvironmentId: acaEnv.id
+    // ...
     configuration: {
-      activeRevisionsMode: 'Single'
       // ...
       secrets: [
         {
@@ -129,7 +128,6 @@ resource acaApp 'Microsoft.App/containerApps@2023-05-01' = {
         {
           name: 'github-runner'
           image: '${acr.properties.loginServer}/runners/github/linux:${imageTag}'
-          // ...
           env: [
             {
               name: 'ACCESS_TOKEN'
@@ -204,3 +202,13 @@ Digging in the workflow run UI, we can see in the output of the `Set up job` ste
 ![Set up job output](/04-github-set-up-job.png)_The machine name is indeed the name of the replica_
 
 ## Wrapping-up
+This concludes the first step in the series about GitHub self-hosted runners and Azure Container Apps.  
+The next episode will add scaling on top of that, this is where Azure Container shines in this scenario.  
+
+In the meantime, keep in mind that this is a first step and there are many things to consider when managing you own runners in containers:
+- You might have several kinds of runners to manage, depending on software requirements and/or RBAC. You'll have to organize these using [labels](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/using-labels-with-self-hosted-runners).
+- You will also need several container images for your runners, with a common base-layer of you own. This mean you will have to update these images frequently, re-build them, test them, etc.
+- All runners may not have the same level of access in your Azure environment, you can implement that using different [managed identities](https://learn.microsoft.com/en-us/azure/container-apps/managed-identity) for your Container Apps and [runner groups](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/managing-access-to-self-hosted-runners-using-groups) in GitHub.
+- One the main reason to use your own runners is to integrate them in your [virtual network](https://learn.microsoft.com/en-us/azure/container-apps/vnet-custom-internal), you can do that on the Container App Environment
+
+This how it begins, thanks for reading this far, see you soon for the second part 👀
