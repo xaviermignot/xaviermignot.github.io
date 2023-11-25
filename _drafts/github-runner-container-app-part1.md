@@ -2,6 +2,8 @@
 title: "Host your org's GitHub runners in Azure Container Apps"
 tags: [github-actions, azure, container-apps, bicep]
 img_path: /assets/img/gh-runner-aca
+image:
+  path: banner.png
 ---
 
 Getting started with GitHub Actions is easy with the GitHub-hosted runners. But once the testing phase done, most organizations want to use their own machines to run the workflows for customization, governance, security and/or cost reasons.  
