@@ -6,7 +6,7 @@ image:
   path: banner.png
 ---
 
-Getting started with GitHub Actions is easy with the GitHub-hosted runners. But once the testing phase done, most organizations want to use their own machines to run the workflows for customization, governance, security and/or cost reasons.  
+Getting started with GitHub Actions is easy with the GitHub-hosted runners: you write your workflow and run it instantly on GitHub's infrastructure. But many organizations want to use their own machines to run the workflows for customization, governance, security and/or cost reasons.  
 What if your could use a managed service like Azure Container Apps instead of virtual machines for that ? In this post I will show you how to do that with Bicep and GitHub Actions.  
 This is a two-part series, the second part focuses on the scaling aspect of Container Apps.
 
@@ -17,13 +17,13 @@ This is a two-part series, the second part focuses on the scaling aspect of Cont
 {: .prompt-tip }
 
 ## GitHub repository and organization
-For the purpose of this series I have created my very own GitHub organization (for free, you can [create](https://github.com/account/organizations/new) your own too !), and carefully crafted [a repository](https://github.com/xmi-cs/aca-gh-actions-runner). I will show only the most important snippets of the code in the post, you can still browse the repo for more context.  
+For the purpose of this series I have created my very own GitHub organization (for free, you can [create](https://github.com/account/organizations/new) your own too !), and carefully crafted [a repository](https://github.com/xmi-cs/aca-gh-actions-runner). I will show only the most important snippets of the code in the post, you can still browse the repo to grap all the details.  
 The repo contains a Dockerfile, GitHub workflows and Bicep code to create the necessary resources in Azure, and run a "hello world" Azure CLI script on the self-hosted runners.  
 
-This diagram show how these components interact together:
+This diagram shows how these components interact together:
 ![Architecture diagram](/01-diagram.png) _This is what the architecture looks like_
 
-> You can follow the instructions in the [README](https://github.com/xmi-cs/aca-gh-actions-runner/blob/main/README.md) of the repo to deploy runners in your environment. The rest of the post will explain how the solution works, not how to deploy it step by step.   
+> You can follow the instructions in the [README](https://github.com/xmi-cs/aca-gh-actions-runner/blob/main/README.md) of the repo to deploy runners in your environment. The rest of the post explains how the solution works, not how to deploy it step by step.   
 {: .prompt-info }
 
 ## Create a Dockerfile (or use another one as a base)
@@ -38,7 +38,7 @@ RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 The base container image is very flexible and requires several environment variables, but we'll get into that later.
 
 ## Create a GitHub App
-Self-hosted runners use the GitHub REST API to register themselves and query to jobs they have to run. For organizations, the recommended authentication method is to use a GitHub App: the workflows will use a private key to generate tokens to use to authenticate against the REST API.  
+Self-hosted runners use the GitHub REST API to register themselves and query the jobs they have to run. For organizations, the recommended authentication method is to use a GitHub App: the workflows will use a private key to generate tokens to use to authenticate against the REST API.  
 
 The creation a GitHub App starts from the _Developer Settings_ of your organization. The most important settings are the _permissions_, for this project we need the following scopes:
 - In _Repository permissions_:
@@ -64,7 +64,7 @@ You can create these from the portal, or if you have forked the repo run the wor
 Then after building and pushing the container image to the registry (using the `az acr build` command) we can move on to create the Container App.
 
 ## Provision the runners
-For the creation of the Container App I will walk through the GitHub Action workflow that as there are a few _gotchas_ along the way.
+For the creation of the Container App I will walk through the related GitHub Action workflow as there are a few _gotchas_ along the way.
 
 ### Generate an access token
 As mentioned earlier, self-hosted runners need to authenticate against the GitHub REST API, that's where the GitHub App comes in.  
