@@ -203,9 +203,52 @@ Once the `Test self-hosted runners` workflow has started, the GitHub UI shows th
 Digging in the workflow run UI, we can see in the output of the `Set up job` step the name of the runner and that the machine name matches with the _revision_ of the Container App:
 ![Set up job output](/04-github-set-up-job.png){: width="500"}_The machine name is indeed the name of the replica_
 
+## One last word about Managed Identities
+One thing I did not mention is that the workflows running on GitHub-hosted runners are authenticated to Azure using the `azure/login` action, like this:
+```yaml
+- name: Azure Login
+  uses: azure/login@v1
+  with:
+    client-id: ${{ vars.AZURE_CLIENT_ID }}
+    tenant-id: ${{ vars.AZURE_TENANT_ID }}
+    subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+```
+{: file=".github/workflow/provision-runners.yml" }
+Of course it uses the federated mechanism (without secret), which is great.
+
+For the testing workflow, running on self-hosted container, I wanted to skip this step and authenticate to Azure using the user-assigned managed identity already associated with the Container App for pulling images from the registry.  
+This was not as easy as it sound, I ran into the following issues:
+- `az login --identity` did not work even if a single managed identity is assigned (despite what I understood from the [docs](https://learn.microsoft.com/en-us/cli/azure/authenticate-azure-cli-managed-identity))
+- Specifying the `clientId` like this `az login --identity -u <clientId>` did not work either, resulting in `Failed to connect to MSI. Please make sure MSI is configured correctly.` errors 🤔
+
+Research lead me to [this](https://github.com/microsoft/azure-container-apps/issues/502) issue on GitHub, explaining that the problem comes from the Python SDK, so that Azure CLI uses the wrong endpoint for authentication.  
+A nifty workaround is to set an environment variable to trick Azure CLI into thinking it's running in an App Service container, as App Services use the same endpoint as Container Apps.
+
+So the overall solution consists in adding these two environment variables in the Bicep code creating the Container App:
+```
+{
+  // This is for tricking az cli (the value doesn't matter)
+  name: 'APPSETTING_WEBSITE_SITE_NAME'
+  value: 'az-cli-workaround'
+}
+{
+  // This is the client id of the user-assigned managed identity
+  name: 'MSI_CLIENT_ID'
+  value: acaMsi.properties.clientId
+}
+```
+{: file="infra/modules/containerApp.bicep" }
+
+And in the workflow running on the self-hosted runner, the Azure CLI script look like this (and doesn't uses the `azure/login` step):
+```bash
+az login --identity -u $MSI_CLIENT_ID
+az account show
+```
+{: file=".github/workflow/test-self-hosted-runner.yml" }
+
 ## Wrapping-up
-This concludes the first step in the series about GitHub self-hosted runners and Azure Container Apps.  
-The next episode will add scaling on top of that, this is where Azure Container shines in this scenario.  
+This concludes the first step in the series about GitHub self-hosted runners and Azure Container Apps. This was quite a consistent step (and a long post !) as it covers the essentials of the solution.    
+The next episode will add scaling on top of that, this is where Azure Container Apps shine in this scenario. It should consist in a shorter post 😅  
 
 In the meantime, keep in mind that this is a first step and there are many things to consider when managing you own runners in containers:
 - You might have several kinds of runners to manage, depending on software requirements and/or RBAC. You'll have to organize these using [labels](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/using-labels-with-self-hosted-runners).
