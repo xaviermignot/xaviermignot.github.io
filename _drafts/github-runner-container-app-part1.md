@@ -201,7 +201,7 @@ Once the `Test self-hosted runners` workflow has started, the GitHub UI shows th
 ![Active runner](/03-github-active-runner.png)_Entering active mode..._
 
 Digging in the workflow run UI, we can see in the output of the `Set up job` step the name of the runner and that the machine name matches with the _revision_ of the Container App:
-![Set up job output](/04-github-set-up-job.png)_The machine name is indeed the name of the replica_
+![Set up job output](/04-github-set-up-job.png){: width="500"}_The machine name is indeed the name of the replica_
 
 ## Wrapping-up
 This concludes the first step in the series about GitHub self-hosted runners and Azure Container Apps.  
