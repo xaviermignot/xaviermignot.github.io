@@ -1,7 +1,7 @@
 ---
 title: "Host your org's GitHub runners in Azure Container Apps"
 tags: [github-actions, azure, container-apps, bicep]
-img_path: /assets/img/gh-runner-aca
+img_path: /assets/img/gh-runner-aca-part-1
 image:
   path: banner.png
 ---
@@ -204,7 +204,7 @@ Digging in the workflow run UI, we can see in the output of the `Set up job` ste
 ![Set up job output](/04-github-set-up-job.png){: width="500"}_The machine name is indeed the name of the replica_
 
 ## One last word about Managed Identities
-One thing I did not mention is that the workflows running on GitHub-hosted runners are authenticated to Azure using the `azure/login` action, like this:
+One thing I did not mention is that the workflows running on GitHub-hosted runners authenticate to Azure using the `azure/login` action, like this:
 ```yaml
 - name: Azure Login
   uses: azure/login@v1
@@ -214,15 +214,15 @@ One thing I did not mention is that the workflows running on GitHub-hosted runne
     subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
 ```
 {: file=".github/workflow/provision-runners.yml" }
-Of course it uses the federated mechanism (without secret), which is great.
+Of course it uses the federated mechanism (without secret), which is awesome and can be automated if you follow [this post](https://www.techwatching.dev/posts/scripting-azure-ready-github-repository) from my friend Alexandre 👌.
 
-For the testing workflow, running on self-hosted container, I wanted to skip this step and authenticate to Azure using the user-assigned managed identity already associated with the Container App for pulling images from the registry.  
+For the testing workflow, running on the self-hosted container, I wanted to skip this step and authenticate to Azure using the user-assigned managed identity (already associated with the Container App for pulling images from the registry).  
 This was not as easy as it sound, I ran into the following issues:
 - `az login --identity` did not work even if a single managed identity is assigned (despite what I understood from the [docs](https://learn.microsoft.com/en-us/cli/azure/authenticate-azure-cli-managed-identity))
 - Specifying the `clientId` like this `az login --identity -u <clientId>` did not work either, resulting in `Failed to connect to MSI. Please make sure MSI is configured correctly.` errors 🤔
 
 Research lead me to [this](https://github.com/microsoft/azure-container-apps/issues/502) issue on GitHub, explaining that the problem comes from the Python SDK, so that Azure CLI uses the wrong endpoint for authentication.  
-A nifty workaround is to set an environment variable to trick Azure CLI into thinking it's running in an App Service container, as App Services use the same endpoint as Container Apps.
+A nifty workaround is to set an environment variable to trick Azure CLI into thinking it's running in an App Service container, as App Services fortunately use the same endpoint as Container Apps.
 
 So the overall solution consists in adding these two environment variables in the Bicep code creating the Container App:
 ```
