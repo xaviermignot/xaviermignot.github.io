@@ -4,6 +4,7 @@ tags: [github-actions, azure, container-apps, bicep]
 img_path: /assets/img/gh-runner-aca-part-1
 image:
   path: banner.png
+date: 2023-11-27 15:45:00
 ---
 
 Getting started with GitHub Actions is easy with the GitHub-hosted runners: you write your workflow and run it instantly on GitHub's infrastructure. But many organizations want to use their own machines to run the workflows for customization, governance, security and/or cost reasons.  
