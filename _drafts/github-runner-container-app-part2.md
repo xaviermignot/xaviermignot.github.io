@@ -16,7 +16,10 @@ If you haven't my previous post you can check out [this section]({% post_url 202
 
 ## The KEDA GitHub runner scaler
 [KEDA](https://keda.sh/) is the de-facto autoscaler of the Kubernetes ecosystem. It can sale workloads in a cluster based on event-driven sources called _scalers_. Among the many available scalers there is the [GitHub Runner Scaler](https://keda.sh/docs/latest/scalers/github-runner/), and like any KEDA scaler, we can use it to scale our Container App.  
-It works by querying the GitHub REST API to get the number of queued jobs, and will add or remove _replicas_ to the Container App accordingly. This means we need to configure how the scaler will authenticate against the GitHub REST API, and which filters to count the jobs that are worth a scale. 
+It works by querying the GitHub REST API to get the number of queued jobs, and will add or remove _replicas_ to the Container App accordingly. This means we need to configure how the scaler will authenticate against the GitHub REST API, and which filters to count the jobs that are worth a scale.  
+
+If you like to see things on a diagram, here is one:
+![Architecture diagram](/01-diagram.png)_This is when the scaler creates replicas_
 
 ## Adding the scaler in the Bicep code
 Before jumping into some Bicep code, let me save you some time by telling a little trap I have fallen into while preparing this post.
