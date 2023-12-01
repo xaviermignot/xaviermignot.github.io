@@ -28,8 +28,12 @@ This diagram shows how these components interact together:
 {: .prompt-info }
 
 ## Create a Dockerfile (or use another one as a base)
-The first thing that surprised me when I started working on this, is that there is no official Docker image provided by GitHub.  
-You can either create you own Dockerfile from an OS base (as I first did [here](https://github.com/xmi-cs/aca-gh-actions-runner/blob/main/src/Dockerfile.from-ubuntu)), or use a third-party as a base like one from this excellent [repo](https://github.com/myoung34/docker-github-actions-runner). I choose the second option so my Dockerfile is very simple:
+A Dockerfile is required to build the image of the runners, there are several options for that:
+1. Use an [image provided by GitHub](https://github.com/actions/runner/pkgs/container/actions-runner) as a base. Unfortunately I have discovered this _after_ writing this post so I haven't tried it now 🫠
+2. Create you own Dockerfile from an OS base (as I first did [here](https://github.com/xmi-cs/aca-gh-actions-runner/blob/main/src/Dockerfile.from-ubuntu))
+3. Use a third-party as a base like one from this excellent [repo](https://github.com/myoung34/docker-github-actions-runner).
+
+I have chosen the third option so my Dockerfile is very simple:
 ```dockerfile
 FROM myoung34/github-runner:ubuntu-jammy
 
