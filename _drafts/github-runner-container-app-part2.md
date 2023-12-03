@@ -7,7 +7,7 @@ image:
 ---
 
 This is the second post of the series about hosting your GitHub org's self-hosted runners in Azure Container Apps. The [first episode]({% post_url 2023-11-27-github-runner-container-app-part1 %}) covers the essentials of the solution, concluding with a testing workflow running in an Azure Container App.  
-This post will focus on _scaling_ the self-hosted runners, using the builtin KEDA integration of Azure Container Apps.
+This post will focus on _scaling_ the self-hosted runners, combining two features of Azure Container Apps: jobs and the builtin KEDA integration.
 
 ## In the previous episode...
 If you haven't read my previous post you can check out [this section]({% post_url 2023-11-27-github-runner-container-app-part1 %}#github-repository-and-organization) that presents the solution used in this series.  
@@ -29,7 +29,7 @@ Before I understood this, I was trying to use the scaler's authentication with a
 ## About ephemeral runners
 GitHub [recommends](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/autoscaling-with-self-hosted-runners#using-ephemeral-runners-for-autoscaling) the use of _ephemeral_ runners for autoscaling. It means that each runner processes a single job, and each job is processed by a fresh runner. This makes job execution more predictable and prevent the risk of using a compromised runner or exposing sensitive information.  
 
-The use of ephemeral runners depends on the container image we use. The [image]({% post_url 2023-11-27-github-runner-container-app-part1 %}#create-a-dockerfile-or-use-another-one-as-a-base) used in the previous post requires the `EPHEMERAL` environment variable set to `1`.
+The use of ephemeral runners depends on the container image we use. The [image]({% post_url 2023-11-27-github-runner-container-app-part1 %}#create-a-dockerfile-or-use-another-one-as-a-base) used in the previous post requires the `EPHEMERAL` environment variable set to `1`. At the end it's just a flag passed to a script when the runner is initialized.
 
 ## Container Apps Jobs
 In the previous post a Container App has been set-up a single self-hosted runner. The App was always running, regularly polling the GitHub REST API for jobs to run, and the same runner was processing all the jobs.  
@@ -38,7 +38,10 @@ At first I wanted to add a scaling rule on top of that but after some research t
 Jobs are designed for containerized tasks with a finite duration just like our ephemeral runners.  
 They also support event triggers from KEDA scalers so it's definitively a good fit for this scenario.
 
-Before jumping into some code, this little diagram show what will happen once the runners will scale:
+> This [page](https://learn.microsoft.com/en-us/azure/container-apps/jobs?tabs=azure-cli#example-scenarios) in the docs might help if you're hesitating between apps or jobs for another scenario.
+{: .prompt-tip }
+
+Before jumping into the code, this little diagram shows what will happen once the runners will scale out:
 ![Diagram](/02-diagram.png)_It also shows the changes from the diagram of the previous post_
 
 ## Update the Bicep code
@@ -91,7 +94,7 @@ resource acaJob 'Microsoft.App/jobs@2023-05-01' = {
 ```
 {: file="infra/modules/containerAppJob.bicep" }
 
-> The whole code is available in the GitHub repo, by default the Container App Job [module](https://github.com/xmi-cs/aca-gh-actions-runner/blob/feat/add-scaling/infra/modules/containerAppJob.bicep) is selected, you can still check/compare with the Container App [module](https://github.com/xmi-cs/aca-gh-actions-runner/blob/main/infra/modules/containerApp.bicep).
+> The whole code is available in the GitHub repo, by default the Container App Job [module](https://github.com/xmi-cs/aca-gh-actions-runner/blob/main/infra/modules/containerAppJob.bicep) is selected, you can still check/compare with the Container App [module](https://github.com/xmi-cs/aca-gh-actions-runner/blob/main/infra/modules/containerApp.bicep).
 {: .prompt-info }
 
 ## Testing the runner at scale
@@ -100,15 +103,15 @@ Once a deployment has been made with the new version of the Bicep code, no runne
 
 In the Azure portal, we can see the triggered jobs in the _Execution history_ blade:
 ![Execution history](/04-portal-execution-history.png)_This is where we can monitor current and past runs_
-From here we can also troubleshoot in the logs, sadly the _Log stream_ blade is not (yet ?) available for jobs so we have to run queries in Log Analytics for that.
+From here we can also troubleshoot in the logs, sadly the _Log stream_ blade is not available for jobs (yet ?) so we have to run queries in Log Analytics for that.
 
-Once all the jobs have finished, everything is marked as _completed_ in the Azure portal, and no runner appear in the GitHub UI as the KEDA scaler have scaled them to 0.
+Once all the jobs have finished, everything is marked as ✅ _Succeded_ (or ❌ _Failed_) in the Azure portal, and no runner appears anymore in the GitHub UI as the KEDA scaler have scaled them to 0.
 
-> I have kept the default scaling parameters (0 to 10 instances). This can be changed and even combined with other rules like a [CRON](https://keda.sh/docs/latest/scalers/cron) one if you want to keep at least one instance alive during the day for faster startup and usage optimization
+> I have kept the default scaling parameters (0 to 10 instances). This can be changed and even combined with other rules like a [CRON](https://keda.sh/docs/latest/scalers/cron) one if you want to keep at least one instance ready during the day for faster startup and usage optimization
 {: .prompt-tip }
 
 ## One last word about GitHub tokens
-At the time of publishing this post, to be honest I still have an issue regarding authentication against the GitHub REST API: after a few hours, the scaler gets 401 errors and the runners don't register.  
+At the time of publishing this post, to be honest I still have an issue regarding authentication against the GitHub REST API: after a few hours the generated token expires, the scaler gets 401 errors and the runners don't register.  
 To workaround this I re-deploy the runners to get a fresh GitHub installation token (I could also use a [schedule](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule)).
 
 I have tried several ways to fix this, without success for now. There is an [optional feature](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens#configuring-your-app-to-use-user-access-tokens-that-expire) in GitHub Apps regarding expiration that I have disabled, but it didn't make any change (it might target user tokens only, I am using installation tokens).  
@@ -116,6 +119,11 @@ I have tried several ways to fix this, without success for now. There is an [opt
 I guess another way will be to pass the GitHub App private key to the container and let it generate its tokens. The image I'm using supports that but not the scaler yet so I still need to generate tokens.  
 And of course I won't do that without putting the key in an Azure Key Vault. This could be an opportunity to automate this part, maybe in another post 😏
 
-If you have lead for me please let me know in the comments 🤗
+If you have any lead for me please let me know in the comments 🤗
 
 ## Wrapping-up
+This marks the end of the series about GitHub self-hosted runners in Azure Container Apps. This second post is longer that I have first imagined as I decided to switch to jobs half-way through the writing process.
+
+Anyway, I hope this series is useful I you want to test this solution. The goal was to provide enough information to start, avoid some mistakes I made along the way, and let you adapt it to your organization/environment.
+
+Thanks again for reading, don't hesitate to reach out in the comments below if you have any questions or anything to share on this topic !
