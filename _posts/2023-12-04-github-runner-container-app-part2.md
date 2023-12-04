@@ -4,6 +4,7 @@ tags: [github-actions, azure, container-apps, bicep]
 img_path: /assets/img/gh-runner-aca-part-2
 image:
   path: banner.png
+date: 2023-12-04 13:20:00
 ---
 
 This is the second post of the series about hosting your GitHub org's self-hosted runners in Azure Container Apps. The [first episode]({% post_url 2023-11-27-github-runner-container-app-part1 %}) covers the essentials of the solution, concluding with a testing workflow running in an Azure Container App.  
