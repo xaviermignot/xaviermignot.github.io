@@ -9,7 +9,7 @@ date: 2023-11-27 15:45:00
 
 Getting started with GitHub Actions is easy with the GitHub-hosted runners: you write your workflow and run it instantly on GitHub's infrastructure. But many organizations want to use their own machines to run the workflows for customization, governance, security and/or cost reasons.  
 What if your could use a managed service like Azure Container Apps instead of virtual machines for that ? In this post I will show you how to do that with Bicep and GitHub Actions.  
-This is a two-part series, the second part focuses on the scaling aspect of Container Apps.
+This is a two-part series, the [second part]({% post_url 2023-12-04-github-runner-container-app-part2 %}) focuses on the scaling aspect of Container Apps.
 
 > Note that this post is dedicated to runners for an _organization_, not for your _personal_ account. There are still many things in common, and some differences (regarding authentication mostly).
 {: .prompt-info }
@@ -261,4 +261,4 @@ In the meantime, keep in mind that this is a first step and there are many thing
 - All runners may not have the same level of access in your Azure environment, you can implement that using different [managed identities](https://learn.microsoft.com/en-us/azure/container-apps/managed-identity) for your Container Apps and [runner groups](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/managing-access-to-self-hosted-runners-using-groups) in GitHub.
 - One the main reason to use your own runners is to integrate them in your [virtual network](https://learn.microsoft.com/en-us/azure/container-apps/vnet-custom-internal), you can do that on the Container App Environment
 
-This how it begins, thanks for reading this far, see you soon for the second part 👀
+This how it begins, thanks for reading this far, see you soon for the [second part]({% post_url 2023-12-04-github-runner-container-app-part2 %}) 👀
