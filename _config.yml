@@ -73,6 +73,10 @@ img_cdn: ''
 
 avatar: /assets/img/avatar.png?n=n #the ?n=n is a workaround to fix a 404 bug on the avatar
 
+# The URL of the site-wide social preview image used in SEO `og:image` meta tag.
+# It can be overridden by a customized `page.image` in front matter.
+social_preview_image: # string, local or CORS resources
+
 # boolean type, the global switch for ToC in posts.
 toc: true
 
