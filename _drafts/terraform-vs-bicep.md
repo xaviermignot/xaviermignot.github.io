@@ -23,6 +23,14 @@ For both commands there is no _deployment_ submitted to Azure, but a lot of call
 Once the configuration has been applied you won't see any _deployment_ in the Azure portal, as the AzureRM provider of Terraform doesn't use them. Instead you can see a bunch of entries in the _Activity log_ of the affected resources.  
 ![Terraform execution conspiracy whiteboard meme](02-execution-mode-terraform.jpg){: width="400"}
 
+### What does it change ?
+
+#### The ability to interact with other tools, APIs, or clouds
+
+#### Code organization
+
+#### The need to determine values at the start of deployment
+
 ## Second difference: state vs no state
 The state is a key-concept specific to Terraform. Basically it's an abstract layer used to map real world resources to the configuration. It's something you might dislike at first for the following reasons:
 - As it contains a representation of you infrastructure, including sensitive data, it's something that you need to secure. Whether you put it in a storage account, use Terraform Cloud or another _backend_, this is an important governance choice to make, and it can be complicated depending on you organization
@@ -33,24 +41,26 @@ But once familiar with the state you'll become confident in dealing these and yo
 Of course in Bicep, there is no state, we can say that the infrastructure is the sate, which is simpler to handle at first but you will see in the rest of this post the features you might miss.  
 ![No state no drift meme](03-no-state.jpg){: width="400"}
 
+### What does it change ?
 
-## The resulting differences
-Now that the mothers of differences have been settled, in this section we will go through the _resulting_ differences.
+#### Destroying resources
 
-### The multi-tool issue
+#### Behavior regarding outside changes 
 
-### The ability to destroy resources
+#### Ease of refactoring
 
-### The ease of refactoring
+#### Storing non-resources stuff
 
-### The behavior or random features
+## Other minor differences
 
-### Integration with VS Code
+### Language features
+
+### VS Code integration
+
+### Tooling
 
 ## Some statements to debunk
 
 ### "Bicep always gets new features support first"
-
-### ""
 
 ## Wrapping up
