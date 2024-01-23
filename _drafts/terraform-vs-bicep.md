@@ -24,10 +24,26 @@ Once the configuration has been applied you won't see any _deployment_ in the Az
 ![Terraform execution conspiracy whiteboard meme](02-execution-mode-terraform.jpg){: width="400"}
 
 ### What does it change ?
+Once this explained, let's dig in what this difference changes with several examples.
 
 #### The ability to interact with other tools, APIs, or clouds
+First, Bicep's execution mode limits its capability to interact with other things: as the whole deployment is done remotely you can't for instance insert a delay between two resources. You can't either interact with another API, or another cloud.  
+In fact, as Bicep compiles into an ARM template, it is de-facto limited to what ARM templates can do, which is what the Azure Resource Manager API can do. So you can do anything as long as it's related to an Azure _resource_, which excludes:
+- Uploading a blob to a storage account (a blob is a data, not a resource)
+- Interact with Azure AD/Entra ID:
+  - You can't activate Easy Auth on an App Service as you'll need to create an App Registration
+  - You can't get existing AAD objects like groups from their names to assign roles (you have to provide ids)
+
+You can still work around these limitations either by:
+- Using Azure CLI and providing input values to the Bicep deployment
+- Using [deployments scripts](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deployment-script-bicep), which means uploading a script to a storage account, and spin a container instance to run it. Kinda overkill in my opinion, and something you should avoid if possible, just like Terraform's [provisioners](https://developer.hashicorp.com/terraform/language/resources/provisioners/syntax).
 
 #### Code organization
+Another thing to notice is how each tool gets the code to apply. Bicep requires a file as the deployment entry point, and will treat all _called_ `.bicep` files as _nested_ templates. 
+Terraform doesn't need a starting file, it will read all `*.tf` files in the current directory and find called modules from there (the name `main.tf` as the root module is a naming convention, not a constraint).  
+
+Basically Terraform doesn't care very much how your code is organized: within a module (including the root module) you can split your code into several `.tf` files as you wish.  
+On the other hand, Bicep considers each `.bicep` file (except the entry point) as a _module_. So if you want to split a file for readability reasons, you have to break it into several modules (maybe for the better if that file is too long).
 
 #### The need to determine values at the start of deployment
 
