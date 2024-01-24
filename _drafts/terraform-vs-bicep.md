@@ -15,13 +15,13 @@ One of the most important thing to understand is what is happening on the machin
 ### Using Bicep
 When you give a file to Bicep, it will find the dependant Bicep files, "compile" the whole thing as an ARM template and submit a _deployment_ in a single API call to Azure. From there all the work is done within Azure, the caller (your workstation or CI/CD runner) monitors the status of the deployment and waits for its completion.  
 You can also monitor the execution and see the result from the Azure portal in the deployment blade of the targeted management group, subscription or resource group.  
-![Bicep execution sad Escobar meme](01-execution-mode-bicep.jpg){: width="400"}
+![Bicep execution sad Escobar meme](01-execution-mode-bicep.jpg){: width="400"} _As the deployment is made by Azure, pretty much nothing happens on your machine_
 
 ### Using Terraform
 When you run `terraform plan` from a folder, it compares the whole _configuration_ (the `*.tf` files) with the _state_ to determine the changes to make on the resources in Azure. Then running `terraform apply` will make the changes on the resources and reflect them in the state.  
 For both commands there is no _deployment_ submitted to Azure, but a lot of calls to the management API are made to create/read/update/delete the resources in Azure. The order of the API calls is determined by the logic of Terraform and its providers, this logic is executed on the machine running the Terraform CLI (your workstation or CI/CD runner).  
 Once the configuration has been applied you won't see any _deployment_ in the Azure portal, as the AzureRM provider of Terraform doesn't use them. Instead you can see a bunch of entries in the _Activity log_ of the affected resources.  
-![Terraform execution conspiracy whiteboard meme](02-execution-mode-terraform.jpg){: width="400"}
+![Terraform execution conspiracy whiteboard meme](02-execution-mode-terraform.jpg){: width="400"} _When using Terraform, a lot of calls are made from your machine_
 
 ### What does it change ?
 Once this explained, let's dig in what this difference changes with several examples.
@@ -46,6 +46,11 @@ Basically Terraform doesn't care very much how your code is organized: within a 
 On the other hand, Bicep considers each `.bicep` file (except the entry point) as a _module_. So if you want to split a file for readability reasons, you have to break it into several modules (maybe for the better if that file is too long).
 
 #### The need to determine values at the start of deployment
+Lastly, as Bicep compiles everything in a single ARM template and sends it to Azure, this single template has to be _predictable_.  
+This implies limits on looping, for instance as stated here in the [documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/loops#loop-limits): _"Bicep loops only work with values that can be determined at the start of deployment."_. It is also not possible to iterate on a module or resource collection (an index must be applied here).  
+Another aspect of this relates to file management: for all file [functions](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-files), the `filePath` parameter can't include variables. This is because Bicep reads the whole file and put the content in a string in the generated ARM template. This happens at compilation time and can't be done once the template has been sent to Azure.
+
+Once again, nothing very limiting here, only things that can be worked around, but good to know to understand how each tool work. Let's move on to the second difference.
 
 ## Second difference: state vs no state
 The state is a key-concept specific to Terraform. Basically it's an abstract layer used to map real world resources to the configuration. It's something you might dislike at first for the following reasons:
@@ -53,13 +58,18 @@ The state is a key-concept specific to Terraform. Basically it's an abstract lay
 - If a change is made without Terraform on a resource previously created with Terraform, it will introduce a _drift_, aka a difference between the state and the real world infrastructure. This can be made by humans using the portal, but also by Azure itself: for instance when a managed certificated is automatically renewed by Azure, the new thumbprint is not updated in Terraform's state.  
 Depending on the situation it can be trivial or tricky to address, but you should be prepared as it will very likely happen.
 
+![No state no drift meme](03-no-state.jpg){: width="400"} _Of course Bicep can't have drift problems_
+
 But once familiar with the state you'll become confident in dealing these and you'll appreciate the features it brings.
 Of course in Bicep, there is no state, we can say that the infrastructure is the sate, which is simpler to handle at first but you will see in the rest of this post the features you might miss.  
-![No state no drift meme](03-no-state.jpg){: width="400"}
 
 ### What does it change ?
+Let's add some details on what the state brings in terms of features and potential problems.
 
 #### Destroying resources
+First, the state tracks resources created with Terraform. So if you remove an already created resources from your _configuration_ (your code), and run `terraform apply` again, the resource will be removed from your infrastructure as well.  
+With Bicep, assuming you're using the default incremental [deployment mode](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-modes), the same test will not remove the resource from the infrastructure, as Bicep don't know if it has created the resource or not.  
+Generally, Bicep/ARM will never attempt to delete a resource, whereas Terraform will consider that changing certain properties (like the name or location) will force the resource to be deleted and created again.
 
 #### Behavior regarding outside changes 
 
