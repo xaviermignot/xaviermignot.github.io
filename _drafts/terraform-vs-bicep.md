@@ -71,9 +71,26 @@ First, the state tracks resources created with Terraform. So if you remove an al
 With Bicep, assuming you're using the default incremental [deployment mode](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-modes), the same test will not remove the resource from the infrastructure, as Bicep don't know if it has created the resource or not.  
 Generally, Bicep/ARM will never attempt to delete a resource, whereas Terraform will consider that changing certain properties (like the name or location) will force the resource to be deleted and created again.
 
-#### Behavior regarding outside changes 
-
 #### Ease of refactoring
+A consequence of the previous point is what can happen when you refactor your code.  
+For instance in your Terraform code if you change this:
+```hcl
+resource "azurerm_resource_group" "rg" {
+  name     = "rg-my-resources"
+}
+```
+To that:
+```hcl
+resource "azurerm_resource_group" "rg_renamed" {
+  name     = "rg-my-resources"
+}
+```
+The resource group `rg-my-resources` will be deleted and re-created during the next `apply`, even if the name in Azure doesn't change. Same thing will happen if you move a resource from a module to another.  
+To prevent this to happen you the best way is to use the `moved` [block](https://developer.hashicorp.com/terraform/language/modules/develop/refactoring).
+
+Refactoring Bicep code is simpler, the same kind of action will not impact your Azure resources.
+
+#### Behavior regarding outside changes 
 
 #### Storing non-resources stuff
 
