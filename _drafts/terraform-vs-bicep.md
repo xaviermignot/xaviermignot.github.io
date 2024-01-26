@@ -93,6 +93,12 @@ Refactoring Bicep code is simpler, the same kind of action will not impact your 
 #### Behavior regarding outside changes 
 
 #### Storing non-resources stuff
+Another feature the state brings is the ability to store resources that don't exist in the infrastructure.  For instance the [random](https://registry.terraform.io/providers/hashicorp/random/latest/docs) provider generates random values (GUIDs, passwords, pet names, etc.). Each value is stored as a resource in the state, so the values are re-used by the upcoming runs until the resources are destroyed.  
+
+Bicep handles randomness in a different but clever way: the `uniqueString` [function](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-string#uniquestring) generates a deterministic hash depending on the provided parameters. I always use it with at least my `subscriptionId` in my open-source repos, so anybody can use my code in their subscription and will get a different and unique value.
+
+> Keep in mind that the randomness behavior is different for each tool: Terraform will generate a new value every time the random resources is created, but Bicep will always generate the same value unless the parameters change.
+{: .prompt-warning }
 
 ## Other minor differences
 
