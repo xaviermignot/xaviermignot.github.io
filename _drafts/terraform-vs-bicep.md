@@ -91,6 +91,7 @@ To prevent this to happen you the best way is to use the `moved` [block](https:/
 Refactoring Bicep code is simpler, the same kind of action will not impact your Azure resources.
 
 #### Behavior regarding outside changes 
+Generally Bicep is more tolerant to changes made by other actors. By actors I mean humans using the portal or other services working in the background.  
 
 #### Storing non-resources stuff
 Another feature the state brings is the ability to store resources that don't exist in the infrastructure.  For instance the [random](https://registry.terraform.io/providers/hashicorp/random/latest/docs) provider generates random values (GUIDs, passwords, pet names, etc.). Each value is stored as a resource in the state, so the values are re-used by the upcoming runs until the resources are destroyed.  
@@ -101,6 +102,7 @@ Bicep handles randomness in a different but clever way: the `uniqueString` [func
 {: .prompt-warning }
 
 ## Other minor differences
+There are less important differences between that should not been considering when choosing one the other, but still are worth mentioning.
 
 ### Language features
 
