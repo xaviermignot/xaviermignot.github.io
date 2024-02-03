@@ -92,6 +92,8 @@ Refactoring Bicep code is simpler, the same kind of action will not impact your 
 
 #### Behavior regarding outside changes 
 Generally Bicep is more tolerant to changes made by other actors. By actors I mean humans using the portal or other services working in the background.  
+Let's take the example of App Service certificates again: whether they are managed or retrieved from a Key Vault, they are retrieved by a service principal associated to App Service in your tenant, automatically in the background. And as the Terraform state and the resource associated to the certificate contains the thumbprint, the next apply after a renewal can remove and try to re-create the certificate with the previous thumbprint (trust me, I have already broken production like this 😭).  
+This cannot happen using Bicep as it doesn't track those kind of information in its state (as it doesn't have one).
 
 #### Storing non-resources stuff
 Another feature the state brings is the ability to store resources that don't exist in the infrastructure.  For instance the [random](https://registry.terraform.io/providers/hashicorp/random/latest/docs) provider generates random values (GUIDs, passwords, pet names, etc.). Each value is stored as a resource in the state, so the values are re-used by the upcoming runs until the resources are destroyed.  
@@ -105,13 +107,25 @@ Bicep handles randomness in a different but clever way: the `uniqueString` [func
 There are less important differences between that should not been considering when choosing one the other, but still are worth mentioning.
 
 ### Language features
+As Terraform is older that Bicep (created in 2014 vs 2020), and is less limited by its execution mode, it naturally comes with more features: more built-in functions, more looping capabilities, a `console` command to experiment in your terminal, etc.  
+But Bicep is steadily catching up, and some of the latest features greatly improve the coding experience, for instance [user-defined types](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/user-defined-data-types), [null-forgiving](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/operator-null-forgiving) and [safe-dereference](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/operator-safe-dereference) operators, [user-defined functions](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/user-defined-functions).
+
+> At the time of writing this post, user-defined functions and types import are still in preview.
+{: .prompt-info }
 
 ### VS Code integration
+I have been using Visual Studio Code as my main IDE for many years now, and I use the following extensions for Bicep and Terraform code:
+- The official Bicep [extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep) by Microsoft
+- The pre-release version of the Terraform [extension](https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform) by HashiCorp
+
+At the time of writing this post, I definitively prefer the experience brought by the Bicep extension. Overall, writing Bicep code is very nice: the intellisense is blazing fast, always relevant, it never gets in the way of my _"flow"_, it just works flawlessly.  
+I really hope the Terraform extension will reach this level as currently I feel that I need to manually trigger a snippet to get some intellisense, and it often feels like it show a list of keywords without considering the context.  
+
+Also, it's a personal preference but as both syntax are similar, and Bicep's is strongly inspired by Terraform's, I find Bicep's syntax easier to read, more elegant and minimalistic.
 
 ### Tooling
 
-## Some statements to debunk
+### Support of new Azure services or features at launch
 
-### "Bicep always gets new features support first"
 
 ## Wrapping up
