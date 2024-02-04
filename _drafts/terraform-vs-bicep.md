@@ -124,8 +124,14 @@ I really hope the Terraform extension will reach this level as currently I feel 
 Also, it's a personal preference but as both syntax are similar, and Bicep's is strongly inspired by Terraform's, I find Bicep's syntax easier to read, more elegant and minimalistic.
 
 ### Tooling
+The wide use and open-source (initially at least 😏) nature of Terraform have made the community build many tools over the years: [Checkov](https://www.checkov.io/) or [Terrascan](https://runterrascan.io/) for compliance, [terraform-docs](https://terraform-docs.io/) for generating module documentation, [Infracost](https://www.infracost.io/) for FinOps, and even [Carbonifer](https://carbonifer.io/) to estimate the carbon footprint of your changes !  
+
+As Bicep is Azure-only, less tools have been built around its usage. I have already used [Template Analyzer](https://github.com/Azure/template-analyzer) who works for ARM templates and Bicep files. Also Bicep comes with a built-in [linter](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/linter) who checks for best practices and coding standard violations at compile time and while editing in VS Code.
 
 ### Support of new Azure services or features at launch
+This is something that comes often when comparing Terraform and Bicep: if you want first day support for new services and features, you better have to use Bicep over Terraform. This make sense as Bicep calls directly the ARM API, and Terraform requires its azurerm provider to be updated accordingly.  
+The best example of this is Azure Container Apps, their support in the Terraform provider took weeks after the GA (General Availability) of the service.  
+
 
 
 ## Wrapping up
