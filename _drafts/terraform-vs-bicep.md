@@ -6,16 +6,20 @@ image:
   path: banner.png
 ---
 
-For a little bit more than a year my professional coding time has been dedicated to writing Infrastructure-as-Code and CI/CD pipelines for several customers working with Azure. I now have some real-world experience in both Terraform and Bicep and as I have read several posts comparing the two, I want to share my opinion on this.  
-If there is one thing to retain it would be this: this is a not a mono or multi cloud issue, you have to think beyond that. To elaborate on this, this post will focus on two differences that are not talked about enough.
+For a few years now my professional coding time has been dedicated to writing Infrastructure-as-Code and CI/CD pipelines for several customers working with Azure. I now have some real-world experience in both Terraform and Bicep and as I have read several posts comparing the two, I want to share my opinion on this.  
+If there is one thing to keep from this post it would be this: this is a not a mono or multi cloud issue, you have to think beyond that. To elaborate on this, I will focus on two differences that are not talked about enough.
+
+> I have started to work on this article before Terraform licence's change and the rise of OpenTofu (yes, I needed time for this one), so everything written here about Terraform applies to OpenTofu as well.
+{: .prompt-info }
 
 ## First difference: the execution mode
 One of the most important thing to understand is what is happening on the machine executing Terraform or Bicep (note that the machine could be your workstation or a CI/CD runner).  
 
 ### Using Bicep
 When you give a file to Bicep, it will find the dependant Bicep files, "compile" the whole thing as an ARM template and submit a _deployment_ in a single API call to Azure. From there all the work is done within Azure, the caller (your workstation or CI/CD runner) monitors the status of the deployment and waits for its completion.  
-You can also monitor the execution and see the result from the Azure portal in the deployment blade of the targeted management group, subscription or resource group.  
 ![Bicep execution sad Escobar meme](01-execution-mode-bicep.jpg){: width="400"} _As the deployment is made by Azure, pretty much nothing happens on your machine_
+You can also monitor the execution and see the result from the Azure portal in the deployment blade of the targeted management group, subscription or resource group:
+![Deployment in Azure portal](04-portal-deployment.png) _Viewing this in the portal will not happen if you use Terraform_
 
 ### Using Terraform
 When you run `terraform plan` from a folder, it compares the whole _configuration_ (the `*.tf` files) with the _state_ to determine the changes to make on the resources in Azure. Then running `terraform apply` will make the changes on the resources and reflect them in the state.  
@@ -63,6 +67,9 @@ Depending on the situation it can be trivial or tricky to address, but you shoul
 But once familiar with the state you'll become confident in dealing these and you'll appreciate the features it brings.
 Of course in Bicep, there is no state, we can say that the infrastructure is the sate, which is simpler to handle at first but you will see in the rest of this post the features you might miss.  
 
+> The state is not an easy topic, to better understand it I recommend reading [this page](https://developer.hashicorp.com/terraform/language/state) from the official documentation and also [this one](https://developer.hashicorp.com/terraform/language/state/purpose) who explains why it is required
+{: .prompt-tip }
+
 ### What does it change ?
 Let's add some details on what the state brings in terms of features and potential problems.
 
@@ -108,7 +115,7 @@ There are less important differences between that should not been considering wh
 
 ### Language features
 As Terraform is older that Bicep (created in 2014 vs 2020), and is less limited by its execution mode, it naturally comes with more features: more built-in functions, more looping capabilities, a `console` command to experiment in your terminal, etc.  
-But Bicep is steadily catching up, and some of the latest features greatly improve the coding experience, for instance [user-defined types](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/user-defined-data-types), [null-forgiving](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/operator-null-forgiving) and [safe-dereference](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/operator-safe-dereference) operators, [user-defined functions](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/user-defined-functions).
+But Bicep is steadily catching up, and some of the latest features greatly improve the coding experience, for instance [user-defined types](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/user-defined-data-types), [null-forgiving](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/operator-null-forgiving) and [safe-dereference](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/operator-safe-dereference) operators, or [user-defined functions](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/user-defined-functions).
 
 > At the time of writing this post, user-defined functions and types import are still in preview.
 {: .prompt-info }
@@ -118,7 +125,7 @@ I have been using Visual Studio Code as my main IDE for many years now, and I us
 - The official Bicep [extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep) by Microsoft
 - The pre-release version of the Terraform [extension](https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform) by HashiCorp
 
-At the time of writing this post, I definitively prefer the experience brought by the Bicep extension. Overall, writing Bicep code is very nice: the intellisense is blazing fast, always relevant, it never gets in the way of my _"flow"_, it just works flawlessly.  
+At the time of writing this post, I definitively prefer the experience brought by the Bicep extension. Overall, writing Bicep code is very nice: the intellisense is blazing fast, always relevant, it never gets in the way of my _"flow"_, it just works flawlessly. And renaming elements is supported !  
 I really hope the Terraform extension will reach this level as currently I feel that I need to manually trigger a snippet to get some intellisense, and it often feels like it show a list of keywords without considering the context.  
 
 Also, it's a personal preference but as both syntax are similar, and Bicep's is strongly inspired by Terraform's, I find Bicep's syntax easier to read, more elegant and minimalistic.
@@ -147,7 +154,7 @@ Initially it was for a talk on this very same topic, you can check it out, compa
 ## Wrapping up
 Let's finish this long article by making a choice between the two. Personally, at the time of writing this, Terraform is my go-to IaC solution. I have seen comments stating that Terraform has won the "IaC war", and I guess it's true for now: the integration with many tools and a the ability to destroy resources removed from the code are hard to beat.  
 
-I also think that Bicep strongly deserves more than a look. From what I have also seen in the Bicep's repo, the people building it are brilliant, and I'm quite amazed on how they achieve to make the language evolve, considering it's built on ARM template foundations.  
+I also think that Bicep strongly deserves more than a look. From what I have also seen in the Bicep's [repo](https://github.com/Azure/bicep), the people building it are brilliant, and I'm quite amazed on how they achieve to make the language evolve, considering it's built on ARM template foundations.  
 I guess they believe in what they do and have good reasons to do so: it's a well designed language and big upcoming features could become game changers: [deployment stacks](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deployment-stacks) for resource lifecycle, and extensibility is also on the way (checkout the discussion [here](https://github.com/Azure/bicep/issues/7724) and [this page](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-extensibility-kubernetes-provider) of the docs).
 
 For some use-cases I'll choose Bicep over Terraform, for instance small projects/customers (especially if no one will do IaC when I'll leave) or chicken and eggs problems (like provisioning the storage account holding Terraform's state).  
