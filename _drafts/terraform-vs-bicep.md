@@ -129,9 +129,26 @@ The wide use and open-source (initially at least 😏) nature of Terraform have 
 As Bicep is Azure-only, less tools have been built around its usage. I have already used [Template Analyzer](https://github.com/Azure/template-analyzer) who works for ARM templates and Bicep files. Also Bicep comes with a built-in [linter](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/linter) who checks for best practices and coding standard violations at compile time and while editing in VS Code.
 
 ### Support of new Azure services or features at launch
-This is something that comes often when comparing Terraform and Bicep: if you want first day support for new services and features, you better have to use Bicep over Terraform. This make sense as Bicep calls directly the ARM API, and Terraform requires its azurerm provider to be updated accordingly.  
-The best example of this is Azure Container Apps, their support in the Terraform provider took weeks after the GA (General Availability) of the service.  
+This is something that comes often when comparing Terraform and Bicep:
+> If you want first day support for new services and features, you better have to use Bicep over Terraform.
 
+This make sense as Bicep calls directly the ARM API, and Terraform requires its azurerm provider to be updated accordingly. The best example of this is Azure Container Apps, their support in the Terraform provider took months after the service went GA (General Availability).  
 
+This statement was surely true a few years ago, now it's much less obvious as a new service has to be supported in the Terraform azurerm provider to be GA in Azure (it has been announced at Build 2023 in [this session](https://build.microsoft.com/en-US/sessions/72a5d5bd-9b4a-4c40-8d3b-0fb451167f92)).  
+Also the [AzApi](https://registry.terraform.io/providers/Azure/azapi/latest) provider is a good alternative for services not already supported by the provider, much better than using provisioners. So even if you need to use a feature that is not supported by the provider yet, you should be able to work around that quite easily before proper support is added.
+
+I also like to bring a counter-example to this statement: the [static website](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-static-website) feature of storage accounts. It's not a new feature at all, but it's still not supported by ARM templates, thus not by Bicep. You have to use Azure CLI to enable or disable it, this means using a deployment script in Bicep.  
+The azurerm Terraform providers works around that limitation so that this feature is natively [supported](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account#static_website).
+
+## GitHub repository !
+Speaking about static websites in Azure storage accounts, I have prepared [this repository](https://github.com/xaviermignot/azure-terraform-vs-bicep) that shows how to create one both in Bicep and Terraform.  
+Initially it was for a talk on this very same topic, you can check it out, compare both usage and mess up with the code !
 
 ## Wrapping up
+Let's finish this long article by making a choice between the two. Personally, at the time of writing this, Terraform is my go-to IaC solution. I have seen comments stating that Terraform has won the "IaC war", and I guess it's true for now: the integration with many tools and a the ability to destroy resources removed from the code are hard to beat.  
+
+I also think that Bicep strongly deserves more than a look. From what I have also seen in the Bicep's repo, the people building it are brilliant, and I'm quite amazed on how they achieve to make the language evolve, considering it's built on ARM template foundations.  
+I guess they believe in what they do and have good reasons to do so: it's a well designed language and big upcoming features could become game changers: [deployment stacks](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deployment-stacks) for resource lifecycle, and extensibility is also on the way (checkout the discussion [here](https://github.com/Azure/bicep/issues/7724) and [this page](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-extensibility-kubernetes-provider) of the docs).
+
+For some use-cases I'll choose Bicep over Terraform, for instance small projects/customers (especially if no one will do IaC when I'll leave) or chicken and eggs problems (like provisioning the storage account holding Terraform's state).  
+For the rest, I'll stick with Terraform as it keeps people from using the portal too much and generally, it _scales_ better... for now 😏
