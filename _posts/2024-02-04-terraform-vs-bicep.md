@@ -4,7 +4,7 @@ tags: [azure, bicep, terraform]
 img_path: /assets/img/terraform-vs-bicep
 image:
   path: banner.png
-date: 2024-02-04 22:40:00
+date: 2024-02-05 22:40:00
 ---
 
 For a few years now my professional coding time has been dedicated to writing Infrastructure-as-Code and CI/CD pipelines for several customers working with Azure. I now have some real-world experience in both Terraform and Bicep and as I have read several posts comparing the two, I want to share my opinion on this.  
