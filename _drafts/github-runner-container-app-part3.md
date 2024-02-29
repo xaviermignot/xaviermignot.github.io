@@ -20,8 +20,8 @@ The first good news is the version of KEDA which has been updated to `2.12` on m
 
 This is a big deal as authentication using a GitHub App key was introduced in the `2.11` version of the scaler. In the previous post I still had to use a token for authentication because of the `2.10` version of the scaler.
 
-## Put the GitHub App Key in a Key Vault
-Instead of setting the GitHub App Key in a secret reference, it's better to store it in a Key Vault as it's super sensitive.  
+## Put the GitHub App key in a Key Vault
+Instead of setting the GitHub App key in a secret reference, it's better to store it in a Key Vault as it's super sensitive.  
 This is very easy to do using Bicep, the only thing to notice is that even if it's a _key_, we have to store it in a Key Vault _secret_ so the Container App Job can reference it.  
 
 > RBAC has also been updated to grant the _Secret User_ role on the Key Vault to the Managed Identity linked to the Container App Job.
@@ -107,8 +107,54 @@ resource acaJob 'Microsoft.App/jobs@2023-05-01' = {
 ```
 {: file="infra/modules/containerAppJob.bicep" }
 
-The snippets in this section highlights what has changed since the previous post, but the whole code is available [here](https://github.com/xmi-cs/aca-gh-actions-runner/blob/main/infra/modules/containerAppJob.bicep).
+> The snippets in this section highlights what has changed since the previous post, but the whole code is available [here](https://github.com/xmi-cs/aca-gh-actions-runner/blob/main/infra/modules/containerAppJob.bicep).
+{: .prompt-info }
+
+## Testing the updated runners
+After deploying the new version of the Bicep code, I have tested it just like I did for the [previous post]({% post_url 2023-12-04-github-runner-container-app-part2 %}#testing-the-runner-at-scale).  
+It worked out of the box, then I have waited a few hours, then a few days, and it continued to work ! So the problem I was having is definitively gone, and the solution is fully functional 🥳
 
 ## What next ?
+Now that the main remaining issue is solved, where could the focus go in the future ? Of course there are many improvements to do 🤓
+
+### Automating the generation of the GitHub App key
+At first I wanted to automate the generation of the GitHub App Key and put it in the Key Vault using a workflow instead of manually update a GitHub Action secret. It would be a cool _zero-touch_ approach but it turns out there is no endpoint in the REST API for generating an App key.  
+
+The closest way would be to implement the GitHub App [manifest flow](https://docs.github.com/en/apps/sharing-github-apps/registering-a-github-app-from-a-manifest) but it requires human interaction so definitively not suitable for workflows.  
+
+So I'll stick with the Action secret method for now.
+
+### Use the builtin token for updating variables
+Another thing I would like to remove is the need to generate a token in the `deploy-prerequisites` workflow:
+```yaml
+- name: Generate access token
+  id: generate-access-token
+  uses: actions/create-github-app-token@v1
+  with:
+    app-id: ${{ vars.GH_APP_ID }}
+    private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+
+- name: Update GitHub variables
+  run: |
+    # (Sets a bunch of other variables like this one)
+    gh variable set GH_APP_PRIVATE_KEY_SECRET_URI --body ${{ steps.bicep-deploy.outputs.gitHubAppKeySecretUri }}          
+  env:
+    GITHUB_TOKEN: ${{ steps.generate-access-token.outputs.token }}
+```
+{: file=".github/workflows/deploy-prerequisites.yml" }
+Initially I needed to generate access tokens for the Container Apps, so after letting the runners access the App key I though I could remove the token generation in the Action workflow, but no.  
+
+The solution is deployed by two workflows with dependencies, so to "pass" values between the workflows I use GitHub Action variables using the GitHub CLI. The GitHub CLI needs an access token, I could use the builtin `GITHUB_TOKEN` for that but at the time of writing this it's not possible to grant to the `GITHUB_TOKEN` the [permission](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token) to read or write these variables, so I have to keep generating access token for now.  
+
+I guess this will be updated in the near future (the Action variables are still in preview), so I will be able to change this later.
+
+### Making the solution more private
+One of the main advantage of self-hosted runners is the ability to put them in your environment and not publicly accessible on the Internet.  
+Currently my implementation doesn't do that, it could be improved by putting the Container App in a VNET, accessing the Container Registry and the Key Vault through private endpoints, and so on.  
+Honestly I don't plan to add this for now, my intention was to share a simple baseline for hosting GitHub runners in Container Apps. Integrating it in a private environment should not be hard to do like for any Azure resource.
+
+### Improving the scaling rules (and the performance)
+
+### Manage several labels
 
 ## Wrapping-up
