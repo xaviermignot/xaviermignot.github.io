@@ -4,6 +4,7 @@ tags: [github-actions, azure, container-apps, bicep]
 img_path: /assets/img/gh-runner-aca-part-3
 image:
   path: banner.png
+# date: 2024-03-04 14:00:00
 ---
 
 I have recently gone back into the code of my series about GitHub self-hosted runners and Azure Container Apps. I have made enough adjustments to add a third post to the series.  
@@ -122,7 +123,7 @@ It worked out of the box, then I have waited a few hours, then a few days, and i
 
 ![Sparkle party GIF](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExamdobTVoNThxMGpnanBnc2gxYXpreXo1eDYzczd2am1vanhremU1ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/s2qXK8wAvkHTO/giphy.gif)_That feeling when your runners work all the time_
 
-## What next ?
+## What's next ?
 Now that the main remaining issue is solved, where could the focus go in the future ? Of course there are many improvements to do 🤓
 
 > I plan to implement some of the improvements listed in this section in the future, and some of them are just advice on what you could do after using this solution as a starting base.

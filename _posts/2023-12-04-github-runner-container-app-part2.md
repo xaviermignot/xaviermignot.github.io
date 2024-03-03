@@ -112,6 +112,9 @@ Once all the jobs have finished, everything is marked as ✅ _Succeded_ (or ❌ 
 {: .prompt-tip }
 
 ## One last word about GitHub tokens
+> This section describes a problem I had when initially publishing this article. It has been since resolved and the solution described in a [follow-up post]({% post_url 2024-03-04-github-runner-container-app-part3 %}).
+{: .prompt-info }
+
 At the time of publishing this post, to be honest I still have an issue regarding authentication against the GitHub REST API: after a few hours the generated token expires, the scaler gets 401 errors and the runners don't register.  
 To workaround this I re-deploy the runners to get a fresh GitHub installation token (I could also use a [schedule](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule)).
 
@@ -123,7 +126,7 @@ And of course I won't do that without putting the key in an Azure Key Vault. Thi
 If you have any lead for me please let me know in the comments 🤗
 
 ## Wrapping-up
-This marks the end of the series about GitHub self-hosted runners in Azure Container Apps. This second post is longer that I have first imagined as I decided to switch to jobs half-way through the writing process.
+This was initially the end of the series about GitHub self-hosted runners in Azure Container Apps, but I have added a [third post]({% post_url 2024-03-04-github-runner-container-app-part3 %}) in the meantime. This second post is longer that I have first imagined as I decided to switch to jobs half-way through the writing process.
 
 Anyway, I hope this series is useful I you want to test this solution. The goal was to provide enough information to start, avoid some mistakes I made along the way, and let you adapt it to your organization/environment.
 
