@@ -4,7 +4,7 @@ tags: [github-actions, azure, container-apps, bicep]
 img_path: /assets/img/gh-runner-aca-part-3
 image:
   path: banner.png
-# date: 2024-03-04 14:00:00
+date: 2024-03-04 13:00:00
 ---
 
 I have recently gone back into the code of my series about GitHub self-hosted runners and Azure Container Apps. I have made enough adjustments to add a third post to the series.  
