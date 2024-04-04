@@ -210,6 +210,7 @@ Digging in the workflow run UI, we can see in the output of the `Set up job` ste
 
 ## One last word about Managed Identities
 One thing I did not mention is that the workflows running on GitHub-hosted runners authenticate to Azure using the `azure/login` action, like this:
+{% raw %}
 ```yaml
 - name: Azure Login
   uses: azure/login@v1
@@ -219,6 +220,7 @@ One thing I did not mention is that the workflows running on GitHub-hosted runne
     subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
 ```
 {: file=".github/workflow/provision-runners.yml" }
+{% endraw %}
 Of course it uses the federated mechanism (without secret), which is awesome and can be automated if you follow [this post](https://www.techwatching.dev/posts/scripting-azure-ready-github-repository) from my friend Alexandre 👌.
 
 For the testing workflow, running on the self-hosted container, I wanted to skip this step and authenticate to Azure using the user-assigned managed identity (already associated with the Container App for pulling images from the registry).  
