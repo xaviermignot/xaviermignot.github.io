@@ -1,7 +1,9 @@
 ---
-title: Federated credentials between Azure Pipelines and Terraform's Azure DevOps provider
-tags: [azure, azure-devops, azure-pipelines, terraform]
+title: Workload identity federation for Azure DevOps with Terraform
+tags: [azure-devops, azure-pipelines, terraform, ci/cd]
 img_path: /assets/img/azdo-terraform-oidc
+image:
+  path: banner.png
 ---
 
 Workload identity federation is becoming more and more supported in the Azure ecosystem, and there is already a lot of content on how to use it for deploying Azure resources (I briefly mention it [here]({% post_url 2023-11-27-github-runner-container-app-part1 %}#one-last-word-about-managed-identities) and [there](https://github.com/xmi-cs/aca-gh-actions-runner?tab=readme-ov-file#connect-github-with-azure) in a GitHub Actions context).  
