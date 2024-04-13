@@ -70,7 +70,7 @@ provider "azuredevops" {
 ```
 {: file="versions.tf" }
 
-Now on the pipeline side, all we need is an `AzureCLI` task so that we can use the service connection
+Now on the pipeline side, all we need is an `AzureCLI` task so that we can use the service connection:
 ```yaml
 name: TestTerraformAdoProvider
 
@@ -102,6 +102,25 @@ And that's it, running this pipeline should get a result like this:
 ![Pipeline run in Azure DevOps](/azdo-pipeline.png){: width="600"}
 
 Which might seem pointless but demonstrates that the _federated_ connection between the Azure Pipelines agents and Azure DevOps works through the Terraform provider 🙌
+
+### What about OpenTofu ?
+Before closing this post, I realize that I have only considered Terraform users and not OpenTofu's. I don't want to comment the licence/legal business here, and keep focused on the technical stuff.  
+
+So the HCL code above works perfectly with OpenTofu without any change. For the YAML pipeline, Terraform is already installed on Microsoft hosted agents, but OpenTofu is not (and it's not [planned](https://github.com/actions/runner-images/issues/9507)).  
+
+Updating the `inlineScript` input by adding a command to install OpenTofu and replacing `terraform` commands by `tofu` will make it work:
+```yaml
+      inlineScript: |
+        sudo snap install --classic opentofu
+        export ARM_TENANT_ID="$tenantId"
+        export ARM_CLIENT_ID="$servicePrincipalId"
+        export ARM_OIDC_TOKEN="$idToken"
+        tofu init
+        tofu apply -auto-approve
+```
+{: file=".azuredevops/pipeline.yml" }
+
+Of course, you'll probably need to adapt the snippets shared here to your real-world situation (for instance putting OpenTofu's installation in a dedicated task).
 
 ## Wrapping-up
 In this post we have seen how to use the federated connection with the Terraform provider for Azure DevOps. I usually don't do many tutorial posts like this, but as it's way easier to find content about Azure (not _DevOps_), and the documentation is split across several websites, I guess providing a full tutorial is worth it.  
