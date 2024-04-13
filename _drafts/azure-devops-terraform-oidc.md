@@ -23,7 +23,7 @@ Then in Azure DevOps, in _Organization settings_, you can add the _service princ
 Now that the service principal has access to a project in Azure DevOps, we need to _federate_ its identity with Azure Pipelines runners. From your project settings in Azure DevOps, create a new service connection, select _Workload Identity federation (manual)_, give it a name, and clic _Next_:  
 ![Issuer and subject identifier in Azure DevOps](/azdo-sc-issuer.png){: width="350"}
 
-Here you can retrieve the _issuer_ and the _subject identifier_ that you need to set on the service principal. Go back to your app registration in the Azure portal, click on _Certificates & secrets_, _Federated credentials_, _Add credential_, and select the _Other issuer_ scenario. Then you can report the _issuer_ and _subject identifier_ values from Azure DevOps, and give a name to the credential:
+Here you can retrieve the _issuer_ and the _subject identifier_ that you need to set on the service principal. Go back to your app registration in the Azure portal, click on _Certificates & secrets_, _Federated credentials_, _Add credential_, and select the _Other issuer_ scenario. Then you can report the _issuer_ and _subject identifier_ values from Azure DevOps, give a name to the credential, and click on _Add_:
 ![Issuer and subject identifier in Azure portal](/portal-issuer.png){: width="600"}
 
 Back in the service connection creation in Azure DevOps, you have probably noticed that it's saved as a draft, so we need to finalize the set-up. We need to provide the following data:
