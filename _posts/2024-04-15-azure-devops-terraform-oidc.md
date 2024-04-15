@@ -4,6 +4,7 @@ tags: [azure-devops, azure-pipelines, terraform, ci/cd]
 img_path: /assets/img/azdo-terraform-oidc
 image:
   path: banner.png
+date: 2024-04-15 11:40:00
 ---
 
 Workload identity federation is becoming more and more supported in the Azure ecosystem, and there is already a lot of content on how to use it for deploying Azure resources (I briefly mention it [here]({% post_url 2023-11-27-github-runner-container-app-part1 %}#one-last-word-about-managed-identities) and [there](https://github.com/xmi-cs/aca-gh-actions-runner?tab=readme-ov-file#connect-github-with-azure) in a GitHub Actions context).  
