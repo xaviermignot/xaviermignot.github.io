@@ -16,7 +16,7 @@ The first thing to do is to create an _app registration_ in Entra ID (formerly A
 Then in Azure DevOps, in _Organization settings_, you can add the _service principal_ just like any normal user (don't forget to add it to at least one project):
 ![Add service principal in Azure DevOps](/azdo-user.png){: width="600"} _For this sample we will use the Project Contributors group but you might need to use another one depending on your needs_
 
-> Choosing the _Basic_ access level will use consume one licence (the first 5 users are free for each organization) 
+> Choosing the _Basic_ access level will consume one licence (the first 5 users are free for each organization) 
 {: .prompt-warning }
 
 > Before doing this you need to connect your Azure DevOps organization with your Entra ID tenant, checkout the docs [here](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/connect-organization-to-azure-ad?view=azure-devops) if you need.
