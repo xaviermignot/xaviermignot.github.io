@@ -1,9 +1,9 @@
 ---
 title: Authenticate to Azure DevOps as a managed identity
 tags: [azure-devops, azure-pipelines, ci/cd]
-# img_path: /assets/img/azdo-terraform-oidc
-# image:
-#   path: banner.png
+img_path: /assets/img/azdo-managed-identity
+image:
+  path: banner.jpg
 ---
 
 Recently I have been fiddling with the Azure DevOps tooling, especially playing with authentication. Yup, I know how to have fun 🤓  
@@ -56,15 +56,37 @@ token=$(echo $response | jq -r '.access_token')
 Now that we have an access token stored in a `$token` variable, let's see how to use it.
 
 ## Use the token
+Using the token is not complicated, basically what's not clear in the official docs is that the access token can be used like a PAT (Personal Access Token).
 
 ### With the CLI
+When working with the Azure _DevOps_ CLI, there are two options to authenticate:
+1. You can pipe the access token to the `az devops login` command, like this in PowerShell: `$token | az devops login` or like this from a Linux shell: `echo $token | az devops login`
+2. Or you can set the `AZURE_DEVOPS_EXT_PAT` environment variable and that's it (`$env:AZURE_DEVOPS_EXT_PAT = $token` in PowerShell, `export AZURE_DEVOPS_EXT_PAT="$token"` in a Linux shell.)
+
+And then you can start running [commands](https://learn.microsoft.com/en-us/azure/devops/cli/quick-reference?view=azure-devops).
 
 ### With the REST API
-```shell
-authHeader="Authorization: Bearer $token"
-curl -s -H "$authHeader" "$ORG_URI""$PROJECT_NAME/_apis/serviceendpoint/endpoints?api-version=7.1-preview.1" | jq
+This is pretty straightforward as the access token has to be set in the `Authorization` header, for instance in PowerShell (don't forget to replace the `{organization}` placeholder with your organization's name):
+```powershell
+Invoke-WebRequest -Headers @{ Authorization = "Bearer $token" } -Uri "https://dev.azure.com/{organization}/_apis/projects?api-version=7.2-preview.4"
 ```
+Or from Bash:
+```shell
+curl -s -H "Authorization: Bearer $token" "https://dev.azure.com/{organization}/_apis/projects?api-version=7.2-preview.4"
+```
+
 ### As a self-hosted agent
+Finally, when configuring a self-hosted agent for Azure Pipelines, you can use the access token as if it was a PAT.  
+For a Windows agent, set the `auth` and `token` parameters of the `config.cmd` script:
 ```powershell
 .\config.cmd --auth pat --token $token
 ```
+For a Linux agent, same thing with the `config.sh` script:
+```shell
+./config.sh --auth pat --token "$token"
+```
+Refer to the official [docs](https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=yaml%2Cbrowser#self-hosted-agents) for the rest of the configuration depending on your scenario.
+
+## Wrapping-up
+This concludes this post about managed identity authentication and Azure DevOps. This was a short one as I don't want to repeat what you can find in the official docs, just highlight a few tips that I think can save some time.  
+I hope this helps, thanks for reading 🤓
