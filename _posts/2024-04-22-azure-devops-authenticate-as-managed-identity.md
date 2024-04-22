@@ -1,9 +1,10 @@
 ---
 title: Authenticate to Azure DevOps as a managed identity
-tags: [azure-devops, azure-pipelines, ci/cd]
+tags: [azure-devops, azure]
 img_path: /assets/img/azdo-managed-identity
 image:
   path: banner.jpg
+date: 2024-04-22 12:15:00
 ---
 
 Recently I have been fiddling with the Azure DevOps tooling, especially playing with authentication. Yup, I know how to have fun 🤓  
@@ -13,7 +14,7 @@ After a [post]({% post_url 2024-04-15-azure-devops-terraform-oidc %}) about work
 {: .prompt-tip }
 
 ## Add a managed identity in Azure DevOps
-To run the snippets shared in this post, you'll need an Azure resource with a managed identity. For instance, I have a virtual machine with system managed identity.  
+To run the snippets shared in this post, you'll need an Azure resource with a managed identity and shell access. For instance, I have used a virtual machine with a system assigned managed identity.  
 You will also need to add the managed identity as a user in your Azure DevOps organization, this can be done by following the steps [here](https://learn.microsoft.com/en-us/azure/devops/integrate/get-started/authentication/service-principal-managed-identity?view=azure-devops).
 
 Once this is ready, you can connect to the resource and start by getting an access token.
@@ -37,11 +38,11 @@ By default this command returns an access token to use with Azure, but specifyin
 > The `--allow-no-subscriptions` flag passed to the `az login` command is necessary if your managed identity doesn't have access to any Azure subscription
 {: .prompt-info }
 
-> If you don't want to use a guid, you can use `https://app.vssps.visualstudio.com/` as a resource identifier (this value comes from the `servicePrincipalNames` property of the service principal).
+> If you don't want to use a guid, you can use `https://app.vssps.visualstudio.com/` for the `--resource` parameter (this value comes from the `servicePrincipalNames` property of the service principal).
 {: .prompt-tip }
 
 ### Using authorization endpoint
-Second tip, if you don't want to use Azure CLI, there is an authorization endpoint that you can call from any Azure resource linked to a managed identity.  
+Second tip, if you don't want to use Azure CLI, there is an authorization [endpoint](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token#get-a-token-using-http) that you can call from a VM linked to a managed identity (I haven't tested it on another type of resource yet).  
 The key here is to use the `resource` query string parameter with the same guid as with the Azure CLI. You can do it like this in PowerShell:
 ```powershell
 $response = Invoke-WebRequest -Uri 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=499b84ac-1321-427f-aa17-267ca6975798' -Header @{ Metadata = $true }
@@ -70,7 +71,7 @@ This is pretty straightforward as the access token has to be set in the `Authori
 ```powershell
 Invoke-WebRequest -Headers @{ Authorization = "Bearer $token" } -Uri "https://dev.azure.com/{organization}/_apis/projects?api-version=7.2-preview.4"
 ```
-Or from Bash:
+Or from a Linux shell:
 ```shell
 curl -s -H "Authorization: Bearer $token" "https://dev.azure.com/{organization}/_apis/projects?api-version=7.2-preview.4"
 ```
