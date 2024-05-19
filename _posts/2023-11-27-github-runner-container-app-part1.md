@@ -1,7 +1,7 @@
 ---
 title: "Host your org's GitHub runners in Azure Container Apps"
 tags: [github-actions, azure, container-apps, bicep]
-img_path: /assets/img/gh-runner-aca-part-1
+media_subpath: /assets/img/gh-runner-aca-part-1
 image:
   path: banner.png
 date: 2023-11-27 15:45:00

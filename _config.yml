@@ -62,12 +62,12 @@ plugins:
 #
 theme_mode: # [light|dark]
 
-# The CDN endpoint for images.
+# The CDN endpoint for media resources.
 # Notice that once it is assigned, the CDN url
-# will be added to all image (site avatar & posts' images) paths starting with '/'
+# will be added to all media resources (site avatar, posts' images, audio and video files) paths starting with '/'
 #
 # e.g. 'https://cdn.com'
-img_cdn: ''
+cdn: ''
 
 # the avatar on sidebar, support local or CORS resources
 
@@ -81,7 +81,7 @@ social_preview_image: # string, local or CORS resources
 toc: true
 
 comments:
-  active: giscus        # The global switch for posts comments, e.g., 'disqus'.  Keep it empty means disable
+  provider: giscus        # The global switch for posts comments, e.g., 'disqus'.  Keep it empty means disable
   # Giscus options › https://giscus.app
   giscus:
     repo: xaviermignot/xaviermignot.github.io             # <gh-username>/<repo>
@@ -106,8 +106,7 @@ pwa:
       # - "/example"  # URLs match `<SITE_URL>/example/*` will not be cached by the PWA
 
 counter:
-  enabled: true
-  data-id: 2d107d40-555c-48d3-8ee3-bd4388e8fa84
+  id: 2d107d40-555c-48d3-8ee3-bd4388e8fa84
 
 external_links:
   enabled: true
@@ -120,6 +119,7 @@ external_links:
 # ------------ The following options are not recommended to be modified ------------------
 
 kramdown:
+  footnote_backlink: "&#8617;&#xfe0e;"
   syntax_highlighter: rouge
   syntax_highlighter_opts: # Rouge Options › https://github.com/jneen/rouge#full-options
     css_class: highlight
@@ -179,8 +179,7 @@ exclude:
   - docs
   - README.md
   - LICENSE
-  - gulpfile.js
-  - node_modules
+  - "*.config.js"
   - package*.json
 
 jekyll-archives:

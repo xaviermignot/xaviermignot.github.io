@@ -2,7 +2,7 @@
 layout: post
 title: "Microsoft Visio 101: Align your shapes like a boss"
 tags: [visio]
-img_path: /assets/img/visio-tips-align-shapes
+media_subpath: /assets/img/visio-tips-align-shapes
 image: 
   path: /banner.png
 ---

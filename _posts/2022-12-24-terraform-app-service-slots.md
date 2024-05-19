@@ -1,7 +1,7 @@
 ---
 title: "Azure App Service, deployment slots (with configuration !) and Terraform"
 tags: [azure, terraform, app-service]
-img_path: /assets/img/terraform-app-service-slots
+media_subpath: /assets/img/terraform-app-service-slots
 date: 2022-12-24 09:00:00
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Deploy Azure Logic Apps as code"
 tags: [azure, bicep, terraform, logic-apps]
-img_path: /assets/img/logic-apps-iac
+media_subpath: /assets/img/logic-apps-iac
 date: 2022-08-26 07:30:00
 ---
 

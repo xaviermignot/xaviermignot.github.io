@@ -1,7 +1,7 @@
 ---
 title: Workload identity federation for Azure DevOps with Terraform
 tags: [azure-devops, azure-pipelines, terraform, ci/cd]
-img_path: /assets/img/azdo-terraform-oidc
+media_subpath: /assets/img/azdo-terraform-oidc
 image:
   path: banner.png
 date: 2024-04-15 11:40:00
