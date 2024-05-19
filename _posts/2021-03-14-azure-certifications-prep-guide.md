@@ -2,7 +2,7 @@
 layout: post
 title: Preparation guide for Azure certifications
 tags: [azure, certifications]
-img_path: /assets/img/certifications-prep
+media_subpath: /assets/img/certifications-prep
 image: 
   path: /banner.png
 ---

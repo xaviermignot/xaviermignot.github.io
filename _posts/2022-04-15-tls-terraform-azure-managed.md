@@ -1,7 +1,7 @@
 ---
 title: "TLS with Terraform and Azure: use managed certificates"
 tags: [terraform, azure, app-service]
-img_path: /assets/img/azure-terraform-certificates
+media_subpath: /assets/img/azure-terraform-certificates
 date: 2022-04-15 08:15:00
 ---
 

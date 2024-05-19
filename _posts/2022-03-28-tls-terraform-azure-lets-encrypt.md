@@ -1,7 +1,7 @@
 ---
 title: "TLS with Terraform and Azure: get certificates from Let's Encrypt"
 tags: [terraform, azure, app-service]
-img_path: /assets/img/azure-terraform-certificates
+media_subpath: /assets/img/azure-terraform-certificates
 ---
 
 Following my [previous post]({% post_url 2022-03-18-tls-terraform-azure-self-signed %}) on generating self-signed certificates with Terraform, this one is the second post of the series.  

@@ -1,7 +1,7 @@
 ---
 title: Use Terraform Cloud for your pet projects
 tags: [terraform, azure]
-img_path: /assets/img/terraform-cloud
+media_subpath: /assets/img/terraform-cloud
 ---
 
 Over the last few years I have been interested by IaC (Infrastructure as Code), and started recently to use Terraform in my professional life. To keep practicing my Terraform skills I also started to use it for POCs and personal projects instead of using the portal.  

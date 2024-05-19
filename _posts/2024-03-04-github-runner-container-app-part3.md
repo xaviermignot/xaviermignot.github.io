@@ -1,7 +1,7 @@
 ---
 title: "Follow-up on GitHub runners in Azure Container Apps"
 tags: [github-actions, azure, container-apps, bicep]
-img_path: /assets/img/gh-runner-aca-part-3
+media_subpath: /assets/img/gh-runner-aca-part-3
 image:
   path: banner.png
 date: 2024-03-04 13:00:00

@@ -1,7 +1,7 @@
 ---
 title: "Scale your org's GitHub runners in Azure Container Apps"
 tags: [github-actions, azure, container-apps, bicep]
-img_path: /assets/img/gh-runner-aca-part-2
+media_subpath: /assets/img/gh-runner-aca-part-2
 image:
   path: banner.png
 date: 2023-12-04 13:20:00

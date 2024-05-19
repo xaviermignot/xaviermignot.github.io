@@ -1,7 +1,7 @@
 ---
 title: "Quick tip: Try Azure Resource Graph"
 tags: [azure, quick-tip, azure-monitor]
-img_path: /assets/img/try-azure-resource-graph-tip
+media_subpath: /assets/img/try-azure-resource-graph-tip
 image:
   path: banner.png
 date: 2023-05-14 18:30:00

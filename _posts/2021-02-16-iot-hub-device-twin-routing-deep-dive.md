@@ -1,7 +1,7 @@
 ---
 title: Azure IoT Hub - Routing device twin changes deep dive
 tags: [azure, azure-iot]
-img_path: /assets/img/device-twin-routing
+media_subpath: /assets/img/device-twin-routing
 ---
 
 Azure IoT Hub message routing is a great feature that let you send messages to different endpoints based on rules, directly in the IoT Hub service. It's mostly used for routing telemetry messages, but can also send other kind of events, such as lifecyle or device twin change events.  

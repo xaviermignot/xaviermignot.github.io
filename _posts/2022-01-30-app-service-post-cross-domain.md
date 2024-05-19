@@ -1,7 +1,7 @@
 ---
 title: "Bug hunting story: Azure App Service, Easy Auth and cross domain POST queries"
 tags: [azure, app-service, azure-ad]
-img_path: /assets/img/easy-auth-cross-domain
+media_subpath: /assets/img/easy-auth-cross-domain
 ---
 
 This is the kind of post that would have saved me some time a few days ago, so let's write it to help others, including future me.  

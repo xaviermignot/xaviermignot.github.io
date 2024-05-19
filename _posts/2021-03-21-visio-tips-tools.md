@@ -2,7 +2,7 @@
 layout: post
 title: "Microsoft Visio 101: The basic tools"
 tags: [visio]
-img_path: /assets/img/visio-tips-tools
+media_subpath: /assets/img/visio-tips-tools
 image: 
   path: /banner.png
 ---

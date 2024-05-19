@@ -1,7 +1,7 @@
 ---
 title: My guide for Azure IoT devices
 tags: [azure-iot]
-img_path: /assets/img/azure-iot-device-guide
+media_subpath: /assets/img/azure-iot-device-guide
 ---
 
 If you want to start prototyping a project, or just start learning Azure IoT with a physical device, you have several options. Obviously you can simulate one on your machine, but it's much funnier to use a physical one, right ?  

@@ -1,7 +1,7 @@
 ---
 title: "App Services with Bicep & GitHub Actions, part 2: Deployments slots"
 tags: [azure, bicep, app-service, github-actions]
-img_path: /assets/img/bicep-app-service-slots
+media_subpath: /assets/img/bicep-app-service-slots
 image:
   path: banner.png
 date: 2023-02-16 23:00:00

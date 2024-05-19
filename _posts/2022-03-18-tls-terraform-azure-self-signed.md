@@ -1,7 +1,7 @@
 ---
 title: "TLS with Terraform and Azure: generate self-signed certificates"
 tags: [terraform, azure, app-service]
-img_path: /assets/img/azure-terraform-certificates
+media_subpath: /assets/img/azure-terraform-certificates
 ---
 
 We all love starting pet projects, so we tend to buy custom domains as it can be fairly cheap. SSL/TLS certificates on the other hand used to be pricey, but today there are several solutions to get these for free.  

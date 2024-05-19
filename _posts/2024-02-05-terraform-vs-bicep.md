@@ -1,7 +1,7 @@
 ---
 title: "Terraform vs Bicep: the differences you should really know"
 tags: [azure, bicep, terraform]
-img_path: /assets/img/terraform-vs-bicep
+media_subpath: /assets/img/terraform-vs-bicep
 image:
   path: banner.png
 date: 2024-02-05 22:40:00

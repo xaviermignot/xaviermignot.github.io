@@ -2,7 +2,7 @@
 layout: post
 title: "Microsoft Visio 101: Additional tips"
 tags: [visio]
-img_path: /assets/img/visio-additional-tips
+media_subpath: /assets/img/visio-additional-tips
 image: 
   path: /banner.png
 ---
