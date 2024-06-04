@@ -1,35 +1,55 @@
 ---
-title: How to persist values between Azure Pipelines runs
+title: "Azure Pipelines: Storing values between pipelines runs"
+description: How to use variable groups in Azure Pipelines with the Azure DevOps CLI and PowerShell
 tags: [azure-devops, azure-pipelines]
-media_subpath: /assets/img/azdo-persist-values
+media_subpath: /assets/img/azdo-pipeline-variable-groups
+image:
+  path: banner.jpg
+  alt: Image by jcomp on Freepik
 ---
 
-Using Azure Pipelines, it's pretty common to store values in variables for later use. Whether the value is saved for the next step, job or stage, it can be done easily using the `task.setvariable` command as documented [here](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-variables-scripts) (I have also share a tip about this in [this post]({% post_url 2023-09-18-azure-pipelines-objects-variables %})).  
-In this post we will see how we can store values in variable groups to persist them between pipeline runs.
+Using Azure Pipelines, it's pretty common to store values in variables for later use. Whether the value is saved for the next step, job or stage, it can be done easily using the `task.setvariable` command as documented [here](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-variables-scripts) (I have also shared a tip about this in [a previous post]({% post_url 2023-09-18-azure-pipelines-objects-variables %})).  
+But what if we need to save a value for another pipeline run ? We'll see how to do this in this post using variable groups and the Azure DevOps CLI.
 
 ## What are variable groups ?
-Variable groups are located in the _Library_ section of the Azure Pipelines' UI:
-![](/variable-groups-ui.png)
-Each variable group can contain several variables, and can be used by one or many pipelines within the same project. I use them to store environment-related values I don't want to put in my repos, such as Azure subscription ids for example.  
+Variable groups allow you to set variables in the _Library_ section of the Azure Pipelines' UI:
+![The Library UI of Azure Pipelines](/variable-groups-ui.png)_This is where you can create variable groups_
+Each variable group can contain several variables, and can be used by one or many pipelines within the same project.  
 
 > Variables in groups can be marked as sensitive to mask their value in the pipelines logs. A group can also be bound to an Azure key vault so that its variables are retrieved from the vault's secrets.
 {: .prompt-info }
 
 ## A simple use case sample
-As an example, let's say we need to store the outputs of an Azure deployment in a variable group. The [AzureResourceManagerTemplateDeployment](https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-resource-manager-template-deployment-v3) task has a `deploymentOutputs` input for that: we can provide a variable name here, and it will contain the outputs of the deployment in JSON:
+Setting variable in groups from the UI is a common use case, but the point of this post is to it in an automated way.  
+As an example, let's say we have a pipeline to deploy resources in Azure, and we need to store the outputs of the deployment in a variable group for another pipeline. We use the [AzureResourceManagerTemplateDeployment](https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/azure-resource-manager-template-deployment-v3) who provides a way to get the outputs in a variable:
 ```yaml
 steps:
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
-      # ..lines removed for clarity, this input is the most important here...
-      deploymentOutputs: outputs
+      # ..lines removed for clarity...
+      deploymentOutputs: outputs # The $(outputs) variable will contain the outputs in JSON
 ```
 {: file=".azuredevops/azure-pipeline.yml" }
+
+The `$(outputs)` variable will have the following structure for the rest of the job:
+```json
+{
+  "firstOutput": {
+    "type": "String",
+    "value": "The value of the first output"
+  },
+  "secondOutput": {
+    "type": "String",
+    "value": "The value of the second output"
+  }
+}
+```
+We will add a task to parse this JSON and store the values in a variable group already created from the UI.
 
 ## Setting the variables in the group
 To set the variables I'm going to use the Azure DevOps CLI. It's a simple task but there is a few things to mention:
 - There is no `set` command in the `az pipelines variable-group variable` command group, but a `create` and and `update` one. We need to use the right command depending on whether the variable already exists
-- Listing the variables in a group is possible using the `az pipelines variable-group variable list` command, but it requires the id of group. The same result can be achieved from the group name using the `az pipelines variable-group list` command with a JMESPATH query.
+- Listing the variables in a group is possible using the `az pipelines variable-group variable list` command, but it requires the id of group that we don't have. The same result can be achieved from the group name using the `az pipelines variable-group list` command with a JMESPATH query.
 
 Here is the full PowerShell script I use for this:
 ```powershell
@@ -61,11 +81,11 @@ Get-Member -InputObject $parsedOutputs -MemberType NoteProperty | Select-Object 
 ```
 {: file=".azuredevops/Set-OutputsInVariableGroup.ps1" }
 
-Note that authentication is required to run the script. I have deliberately omitted from the script, so that you can test it locally after authenticating using a PAT.  
+Note that authentication is required to run the script to run the `az devops` and `az pipelines` commands. I have deliberately omitted it from the script, so that you can test it locally after authenticating using a PAT.  
 For the pipeline, authentication will be handled in the YAML, let's see how to do that.
 
 ## Running the script from the pipeline
-Again, running this script should be easy but there is a little twist because of the authentication. 
+Running this script from the pipeline is easy but there is a little twist because of the authentication, and it depends on the account we will use. 
 
 ### Using the Build Service account
 The easiest way is to use the `$(System.AccessToken)` predefined variable and pipe it to the `az devops login` command:
@@ -73,7 +93,9 @@ The easiest way is to use the `$(System.AccessToken)` predefined variable and pi
 steps:
   # ...previous task removed for clarity...
   - pwsh: |
+      # Authenticate using the $(System.AccessToken) variable
       $env:ACCESS_TOKEN | az devops login 
+      # Call the script to parse outputs and put them in the group
       .azuredevops/Set-OutputsInVariableGroup.ps1 `
         -Outputs $env:OUTPUTS `
         -VariableGroupName '<NAME OF THE GROUP HERE>' `
@@ -90,8 +112,8 @@ steps:
 > Notice the use of the `$(System.CollectionUri)` and `$(System.TeamProject)` predefined variables to get the organization URL and the project name
 {: .prompt-info }
 
-Using the `$(System.AccessToken)` variable will make the _Build Service_ account of your project authenticate against Azure DevOps. By default this service account has the _Reader_ role on your variable group, so before running the pipeline you need to change this to _Administrator_:
-![](/variable-group-security.png)
+Using the `$(System.AccessToken)` variable will make the _Build Service_ account of your project authenticate against Azure DevOps. By default this service account has the _Reader_ role on your variable group, so before running the pipeline you need to change the role to _Administrator_:
+![Variable group security UI](/variable-group-security.png)
 
 After that the pipeline should run without any issue, and the variable group will be updated by the service account with all the deployment outputs as variables.
 
@@ -120,8 +142,11 @@ steps:
       scriptType: pscore
       scriptLocation: inlineScript
       inlineScript: |
+        # Get an access token to access the Azure DevOps service principal
         $token = $(az account get-access-token --resource 499b84ac-1321-427f-aa17-267ca6975798 --query accessToken -o tsv)
+        # Authenticate using the access token
         $token | az devops login
+        # Call the script to parse outputs and put them in the group
         .azuredevops/Set-OutputsInVariableGroup.ps1 `
           -Outputs $env:OUTPUTS `
           -VariableGroupName '<NAME OF THE GROUP HERE>' `
@@ -137,4 +162,14 @@ steps:
 > The code snippet above will also work if you are using a managed identity instead of a service principal
 {: .prompt-tip }
 
+## Use the variable group in the next pipeline
+Referencing the variables of the group in another pipeline is done easily as usual using the following syntax:
+```yaml
+variables:
+  - group: <NAME OF THE GROUP HERE>
+```
+{: file=".azuredevops/another-pipeline.yml" }
+Then the variables can be referenced using the macro syntax, for instance `$(firstOutput)`.
+
 ## Wrapping up
+That's all folks for this post, we have seen how to save variables in a group between two pipeline runs. It looked like a simple thing to do but it finally requires a few extra steps. I hope this helps ! 
