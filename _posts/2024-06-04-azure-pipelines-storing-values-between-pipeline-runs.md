@@ -6,6 +6,7 @@ media_subpath: /assets/img/azdo-pipeline-variable-groups
 image:
   path: banner.jpg
   alt: Image by jcomp on Freepik
+date: 2024-06-04 13:00:00
 ---
 
 Using Azure Pipelines, it's pretty common to store values in variables for later use. Whether the value is saved for the next step, job or stage, it can be done easily using the `task.setvariable` command as documented [here](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-variables-scripts) (I have also shared a tip about this in [a previous post]({% post_url 2023-09-18-azure-pipelines-objects-variables %})).  
