@@ -11,9 +11,6 @@
   type: linkedin
   icon: 'fab fa-linkedin'   # icons powered by <https://fontawesome.com/>
   url:  'https://www.linkedin.com/in/mignotxavier/'                  # Fill with your Linkedin homepage
--
-  type: twitter
-  icon: 'fa-brands fa-twitter'
 - 
   type: mastodon
   icon: 'fab fa-mastodon'
