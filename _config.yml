@@ -32,16 +32,12 @@ author: Xavier Mignot # change to your full name
 github:
   username: xaviermignot # change to your github username
 
-twitter:
-  username: _xavierm # change to your twitter username
-
 social:
   name: Xavier Mignot # it will shows as the copyright owner in Footer
   email: contact@xmi.fr # change to your email address
   links:
     # The first element serves as the copyright owner's link
     - https://www.linkedin.com/in/mignotxavier
-    - https://twitter.com/_xavierm # change to your twitter homepage
     - https://github.com/xaviermignot # change to your github homepage
     - https://hachyderm.io/@xavierm
 
