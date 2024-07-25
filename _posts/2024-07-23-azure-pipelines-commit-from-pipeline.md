@@ -3,16 +3,20 @@ title: "Azure DevOps: How to commit from a pipeline"
 description: How to make a commit from an Azure pipeline triggered by a CI change, on the same branch.
 tags: [azure-devops, azure-pipelines]
 media_subpath: /assets/img/azdo-pipeline-commit
+image:
+  path: banner.png
+  alt: Photo by Rose Galloway Green on Unsplash
+date: 2024-07-25 02:00:00
 ---
 
-This is another quick post on Azure Pipelines, this time on how to commit from a pipeline. I had to this recently, my use-case was a CI-triggered pipeline who needed to make a commit on the branch it was triggered from.  
+This is another post on Azure Pipelines, this time on how to commit from a pipeline. I had to this recently, my use-case was a CI-triggered pipeline who needed to make a commit on the branch it was triggered from.  
 Let's see how to do this in a few steps.
 
 ## Allow the Build service to make changes on the repo
 Before jumping in some yaml, we need to grant the _Contribute_ permission to the Build Service account, aka the identity used by the future pipeline.  
 This is done in the project's settings, in the security settings of your repository:
 ![Repository security settings from Azure DevOps project settings](/project-settings.png)  
-Depending on what you need to do you might need to set other permissions, like _Create branch_ or _Create tag_. In my case _Contribute_ was enough.
+Depending on what you need to do, you might need to set other permissions, like _Create branch_ or _Create tag_. In my case _Contribute_ was enough.
 
 ## Allow the pipeline to run Git commands
 The first steps of the pipeline should be the following:
