@@ -3,7 +3,7 @@ title: Authenticate to Azure DevOps as a managed identity
 tags: [azure-devops, azure]
 media_subpath: /assets/img/azdo-managed-identity
 image:
-  path: banner.jpg
+  path: banner.webp
 date: 2024-04-22 12:15:00
 ---
 

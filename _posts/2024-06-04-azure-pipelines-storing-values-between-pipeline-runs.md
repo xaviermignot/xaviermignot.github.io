@@ -4,7 +4,7 @@ description: How to use variable groups in Azure Pipelines with the Azure DevOps
 tags: [azure-devops, azure-pipelines]
 media_subpath: /assets/img/azdo-pipeline-variable-groups
 image:
-  path: banner.jpg
+  path: banner.webp
   alt: Image by jcomp on Freepik
 date: 2024-06-04 13:00:00
 ---

@@ -6,8 +6,8 @@ media_subpath: /assets/img/azure-iot-device-guide
 
 If you want to start prototyping a project, or just start learning Azure IoT with a physical device, you have several options. Obviously you can simulate one on your machine, but it's much funnier to use a physical one, right ?  
 Over the years I have accumulated several boards for various reasons (maybe I have a problem with it).  
-![Raspberry Pi 1](/rpi-alone.jpg){: width="350" .normal }
-![All my devices](/all-devices.jpg){: width="350" .normal }
+![Raspberry Pi 1](/rpi-alone.webp){: width="350" .normal }
+![All my devices](/all-devices.webp){: width="350" .normal }
 _How it started / how it's going_
 
 In this post I will share my experience with all these devices and hopefully help you choose one. I will go through the devices I have used by chronological order, based on my experience.  
@@ -18,8 +18,8 @@ As a reminder/disclaimer I don't have any background in embedded development, I'
 
 There is nothing I could write about Raspberry Pi that hasn't been written yet. I have been using them for many years for various purposes: media center, home automation box, network ad blocker, retrogaming, etc.  
 On my first meetup as a speaker in 2016, I have presented with a colleague a little project based on a traffic light powered by a Raspberry Pi. It was running a .NET App to control the 3 lights using the pins of the Pi and electronic relays.  
-![Raspberry Pi and relays](/rpi-relay-small.jpg){: width="300" .normal }
-![Raspberry Pi and relays](/traffic-light.jpg){: width="400" .normal }
+![Raspberry Pi and relays](/rpi-relay-small.webp){: width="300" .normal }
+![Raspberry Pi and relays](/traffic-light.webp){: width="400" .normal }
 _An open view with the Pi and the relays / the traffic light once closed and light up_  
 There was also a Slack bot to interact with the device, and a integration with Twitter so that the audience could tweet and depending on the hashtag the light was changing. It was a fun project to build.  
 I can't recommend enough the Raspberry Pi to start with Azure IoT, or for physical computing in general, for the following reasons:
@@ -89,8 +89,8 @@ Another option for microcontrollers with Azure IoT would be the Azure Sphere dev
 ## Wilderness Lab Meadow board
 
 In 2019 I've bought a Meadow board from [Wilderness Labs](https://www.wildernesslabs.co/), after missing their Kickstarter campaign in 2018. The promise is to run a full .NET Standard on a microcontroller board, which was appealing to me as C# is my preferred language, and I had some issues with C on the MXChip.  
-![Meadow upside](/meadow-up.jpg){: width="350" .normal }
-![Meadow bottom side](/meadow-bottom.jpg){: width="350" .normal }
+![Meadow upside](/meadow-up.webp){: width="350" .normal }
+![Meadow bottom side](/meadow-bottom.webp){: width="350" .normal }
 _The Meadow kit from above / and from below (look how sharp this wooden board looks 🤩)_
 
 However I have barely used this board for the moment, I only went through the getting started guides and that's it. The development experience with Visual Studio "full" (not Code) was not that great, I had to reset/reflash my board all the time, it was pretty clunky so I put it aside for the moment.  
@@ -104,7 +104,7 @@ These options seem targeted to professional users, they're more like "prototype 
 
 Recently I have discovered Adafruit boards, a huge family of microcontroller boards, including some of them running CircuitPython, an implementation of the Python language running on microcontrollers.  
 I really like Python, although I need to practice with it more often, and I already knew Adafruit as a very reliable component manufacturer so I decided to give CircuitPython a shot.  
-![Adafruit boards](/adafruit.jpg){: width="350" }
+![Adafruit boards](/adafruit.webp){: width="350" }
 _Trinket m0 on the breaboard (it's so tiny !), Feather m0 Express on the right (all on the homemade board inspired by Meadow's_
 
 It turns out it's pretty great, I really like the development flow: plugging the device on my laptop USB port, editing a `code.py` file using VS Code, save it and *BAM !* the code is already running on the device.  
@@ -117,7 +117,7 @@ Anyway event if I don't do IoT with my Adafruit boards, I really like using them
 ## A few words on CPX and Microbit
 
 Speaking of learning for kids, I want to mention two last devices: Adafruit Circuit Playground Express and BBC Microbit. It's slightly off the post's topic as they are not communicating devices (Microbit has bluetooth though), but their great for introducing people to programming, especially youngsters.  
-![Microbit and CPX](/microbit-cpx.jpg){: width="350" }
+![Microbit and CPX](/microbit-cpx.webp){: width="350" }
 _BBC Micro:Bit on the left, Adafruit Ciruit Playground Express (CPX) on the right_
 
 Each platform website provides great content and project inspiration, and there is also a nice integration on Microsoft MakeCode to let people program the devices without coding, using a blocky interface. Here are the links:

@@ -3,7 +3,7 @@ title: "Azure Pipelines: Storing objects in variables from a PowerShell task"
 tags: [azure-devops, azure-pipelines, ci/cd]
 media_subpath: /assets/img/azdo-pipeline-object
 image:
-  path: banner.jpg
+  path: banner.webp
   alt: Photo by karosu on Unsplash
 date: 2023-09-18 21:00:00
 ---
