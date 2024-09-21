@@ -3,7 +3,7 @@ title: "App Services with Bicep & GitHub Actions, part 1: Provision & deploy"
 tags: [azure, bicep, app-service, github-actions]
 media_subpath: /assets/img/app-service-bicep-github-actions
 image:
-  path: banner.png
+  path: banner.webp
 date: 2023-02-09 09:00:00
 ---
 
@@ -137,11 +137,11 @@ jobs:
 {: file=".github/workflows/simple-workflow.yml" }
 {% endraw %}
 The `workflow_dispatch` trigger allows us to manually run the workflow from the GitHub UI:
-![Run GitHub workflow](01-GitHub-run-workflow.png)_You can also use `on: push` to trigger your workflow when a change is pushed_
+![Run GitHub workflow](01-GitHub-run-workflow.webp)_You can also use `on: push` to trigger your workflow when a change is pushed_
 Once the workflow has finished the resources will be created and the website look like this:
-![Empty App Service](02-empty-app.png)  
+![Empty App Service](02-empty-app.webp)  
 For now it's an empty shell waiting for our content, we can notice the _Build with .NET_ line, it confirms that the application stack has been properly set, as we can also see in the Azure portal:
-![Application Stack in Azure portal](03-portal-application-stack.png)
+![Application Stack in Azure portal](03-portal-application-stack.webp)
 
 ### Time for code deployment !
 To push a package to our new web app we are going to add a second job to our workflow with the following steps/actions:
@@ -207,7 +207,7 @@ Overall the complete `deploy` job looks like this:
 The whole workflow can be found in the GitHub [repo](https://github.com/xaviermignot/bicep-app-service-slots/blob/main/.github/workflows/simple-workflow.yml).
 
 Finally if you run this workflow and browse the app again you should see the deployed content:
-![Deployed app](04-deployed-app.png) _Wondering what this blue app thing is about ? This is the topic of the next post_
+![Deployed app](04-deployed-app.webp) _Wondering what this blue app thing is about ? This is the topic of the next post_
 
 
 ## Wrapping-up

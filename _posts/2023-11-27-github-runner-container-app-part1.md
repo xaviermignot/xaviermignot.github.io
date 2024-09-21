@@ -3,7 +3,7 @@ title: "Host your org's GitHub runners in Azure Container Apps"
 tags: [github-actions, azure, container-apps, bicep]
 media_subpath: /assets/img/gh-runner-aca-part-1
 image:
-  path: banner.png
+  path: banner.webp
 date: 2023-11-27 15:45:00
 ---
 
@@ -22,7 +22,7 @@ For the purpose of this series I have created my very own GitHub organization (f
 The repo contains a Dockerfile, GitHub workflows and Bicep code to create the necessary resources in Azure, and run a "hello world" Azure CLI script on the self-hosted runners.  
 
 This diagram shows how these components interact together:
-![Architecture diagram](/01-diagram.png) _This is what the architecture looks like_
+![Architecture diagram](/01-diagram.webp) _This is what the architecture looks like_
 
 > You can follow the instructions in the [README](https://github.com/xmi-cs/aca-gh-actions-runner/blob/main/README.md) of the repo to deploy runners in your environment. The rest of the post explains how the solution works, not how to deploy it step by step.   
 {: .prompt-info }
@@ -162,7 +162,7 @@ Most of the variables are _plain_ text, except the `ACCESS_TOKEN` where a refere
 
 ## See the runner in action
 Once the deployment is complete (and successful 🤞), a single runner should be visible in GitHub both from the settings of your fork and your org:
-![Runner from the GitHub settings](/02-github-idle-runner.png)_This is from the settings of my repo_
+![Runner from the GitHub settings](/02-github-idle-runner.webp)_This is from the settings of my repo_
 
 In the Azure portal, the runner output is visible from the _Log stream_ panel of the Container App:
 ```
@@ -203,10 +203,10 @@ jobs:
 In the other workflows, the `runs-on` property is set to `ubuntu-latest`, so that the job is picked by runner managed by GitHub.
 
 Once the `Test self-hosted runners` workflow has started, the GitHub UI shows that the self-hosted runner picks the job and becomes active:
-![Active runner](/03-github-active-runner.png)_Entering active mode..._
+![Active runner](/03-github-active-runner.webp)_Entering active mode..._
 
 Digging in the workflow run UI, we can see in the output of the `Set up job` step the name of the runner and that the machine name matches with the _revision_ of the Container App:
-![Set up job output](/04-github-set-up-job.png){: width="500"}_The machine name is indeed the name of the replica_
+![Set up job output](/04-github-set-up-job.webp){: width="500"}_The machine name is indeed the name of the replica_
 
 ## One last word about Managed Identities
 One thing I did not mention is that the workflows running on GitHub-hosted runners authenticate to Azure using the `azure/login` action, like this:

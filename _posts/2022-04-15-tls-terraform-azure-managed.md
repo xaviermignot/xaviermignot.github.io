@@ -25,7 +25,7 @@ The idea behind managed certificates is pretty simple: if you can prove you *own
 And then you don't have to worry about it, Azure will renew the certificate for you, you can forget about it and focus on other things, like your business for instance...
 
 On the diagram side, things looks way simpler than for the other "levels":  
-![Diagram](/04-managed.png) _The diagram looks almost the same as for self-signed certificates_
+![Diagram](/04-managed.webp) _The diagram looks almost the same as for self-signed certificates_
 
 On the code side, we have previously bound the App Service to a custom domain using a `azurerm_app_service_custom_hostname_binding` resource in the `app_service` module:
 ```hcl
@@ -59,7 +59,7 @@ I had previously made another [repo](https://github.com/xaviermignot/app-service
 {: .prompt-tip }  
 
 When browsing the App Service, we can see that the certificate is issued by GeoTrust (aka DigiCert) and of course trusted by the browser:  
-![Browser](/04-managed-browser.png) _The certificate is trusted and valid for 6 months ✅_
+![Browser](/04-managed-browser.webp) _The certificate is trusted and valid for 6 months ✅_
 
 
 ## Managed certificates: too good to be true ?

@@ -3,7 +3,7 @@ title: "Terraform vs Bicep: the differences you should really know"
 tags: [azure, bicep, terraform]
 media_subpath: /assets/img/terraform-vs-bicep
 image:
-  path: banner.png
+  path: banner.webp
 date: 2024-02-05 22:40:00
 ---
 
@@ -18,15 +18,15 @@ One of the most important thing to understand is what is happening on the machin
 
 ### Using Bicep
 When you give a file to Bicep, it will find the dependant Bicep files, "compile" the whole thing as an ARM template and submit a _deployment_ in a single API call to Azure. From there all the work is done within Azure, the caller (your workstation or CI/CD runner) monitors the status of the deployment and waits for its completion.  
-![Bicep execution sad Escobar meme](01-execution-mode-bicep.jpg){: width="400"} _As the deployment is made by Azure, pretty much nothing happens on your machine_
+![Bicep execution sad Escobar meme](01-execution-mode-bicep.webp){: width="400"} _As the deployment is made by Azure, pretty much nothing happens on your machine_
 You can also monitor the execution and see the result from the Azure portal in the deployment blade of the targeted management group, subscription or resource group:
-![Deployment in Azure portal](04-portal-deployment.png) _Viewing this in the portal will not happen if you use Terraform_
+![Deployment in Azure portal](04-portal-deployment.webp) _Viewing this in the portal will not happen if you use Terraform_
 
 ### Using Terraform
 When you run `terraform plan` from a folder, it compares the whole _configuration_ (the `*.tf` files) with the _state_ to determine the changes to make on the resources in Azure. Then running `terraform apply` will make the changes on the resources and reflect them in the state.  
 For both commands there is no _deployment_ submitted to Azure, but a lot of calls to the management API are made to create/read/update/delete the resources in Azure. The order of the API calls is determined by the logic of Terraform and its providers, this logic is executed on the machine running the Terraform CLI (your workstation or CI/CD runner).  
 Once the configuration has been applied you won't see any _deployment_ in the Azure portal, as the AzureRM provider of Terraform doesn't use them. Instead you can see a bunch of entries in the _Activity log_ of the affected resources.  
-![Terraform execution conspiracy whiteboard meme](02-execution-mode-terraform.jpg){: width="400"} _When using Terraform, a lot of calls are made from your machine_
+![Terraform execution conspiracy whiteboard meme](02-execution-mode-terraform.webp){: width="400"} _When using Terraform, a lot of calls are made from your machine_
 
 ### What does it change ?
 Once this explained, let's dig in what this difference changes with several examples.
@@ -63,7 +63,7 @@ The state is a key-concept specific to Terraform. Basically it's an abstract lay
 - If a change is made without Terraform on a resource previously created with Terraform, it will introduce a _drift_, aka a difference between the state and the real world infrastructure. This can be made by humans using the portal, but also by Azure itself: for instance when a managed certificated is automatically renewed by Azure, the new thumbprint is not updated in Terraform's state.  
 Depending on the situation it can be trivial or tricky to address, but you should be prepared as it will very likely happen.
 
-![No state no drift meme](03-no-state.jpg){: width="400"} _Of course Bicep can't have drift problems_
+![No state no drift meme](03-no-state.webp){: width="400"} _Of course Bicep can't have drift problems_
 
 But once familiar with the state you'll become confident in dealing these and you'll appreciate the features it brings.
 Of course in Bicep, there is no state, we can say that the infrastructure is the sate, which is simpler to handle at first but you will see in the rest of this post the features you might miss.  

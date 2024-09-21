@@ -3,7 +3,7 @@ title: "Quick tip: Try Azure Resource Graph"
 tags: [azure, quick-tip, azure-monitor]
 media_subpath: /assets/img/try-azure-resource-graph-tip
 image:
-  path: banner.png
+  path: banner.webp
 date: 2023-05-14 18:30:00
 ---
 
@@ -31,7 +31,7 @@ With Azure Resource Graph, a simple KQL request on the `resources` table will gi
 ### Get the payload of an Azure Monitor alert
 Working with Azure Monitor, you often need to check the payload of an alert for troubleshooting reasons. Until now I was doing it with an action group and a webhook to a service like [Webhook.site](https://webhook.site/). But there is a better way.  
 From the Azure Monitor Alerts blade in the portal, select the occurrence of your alert and copy its _id_:
-![azure-monitor-get-alert-id](/01-get-alert-id.png)_I have cropped the screenshot and masked some details_
+![azure-monitor-get-alert-id](/01-get-alert-id.webp)_I have cropped the screenshot and masked some details_
 
 Then go to the Azure Resource Graph Explorer blade, and copy this query with your alert id:
 ```kusto
@@ -39,10 +39,10 @@ alertsmanagementresources
 | where ['id'] == '<YOUR ALERT ID HERE>'
 ```
 Click on _Run query_ (or use the `shift+enter` shortcut like a boss 😎), and click on the _See details_ link at the very end of the single result row:
-![query-results](/02-execute-query.png)
+![query-results](/02-execute-query.webp)
 
 Go to the _properties_ field to grab the full payload of your alert:
-![get-payload](/03-get-results.png)
+![get-payload](/03-get-results.webp)
 
 Using this payload you can try to figure out why your processing rule is not catching your alert, or trigger manually your Logic App or Azure Function without waiting for your alert to occur.
 

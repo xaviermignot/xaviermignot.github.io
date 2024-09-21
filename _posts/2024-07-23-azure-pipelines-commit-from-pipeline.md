@@ -4,7 +4,7 @@ description: How to make a commit from an Azure pipeline triggered by a CI chang
 tags: [azure-devops, azure-pipelines]
 media_subpath: /assets/img/azdo-pipeline-commit
 image:
-  path: banner.png
+  path: banner.webp
   alt: Photo by Rose Galloway Green on Unsplash
 date: 2024-07-25 02:00:00
 ---
@@ -15,7 +15,7 @@ Let's see how to do this in a few steps.
 ## Allow the Build service to make changes on the repo
 Before jumping in some yaml, we need to grant the _Contribute_ permission to the Build Service account, aka the identity used by the future pipeline.  
 This is done in the project's settings, in the security settings of your repository:
-![Repository security settings from Azure DevOps project settings](/project-settings.png)  
+![Repository security settings from Azure DevOps project settings](/project-settings.webp)  
 Depending on what you need to do, you might need to set other permissions, like _Create branch_ or _Create tag_. In my case _Contribute_ was enough.
 
 ## Allow the pipeline to run Git commands
@@ -101,7 +101,7 @@ steps:
 All the steps were present in the previous snippets, just notice the `trigger` who prevents the pipeline to run on the `main` branch, as committing on the main requires a pull request. In my real world scenaro there is also a path filter so that the pipeline is triggered only when selected files are changed. And yes, this is also another thing that depends on your use-case.
 
 To show that it works, triggering the pipeline will add commits like this one in the history:
-![Commit details from Azure Repos](/commit-details.png)_Notice the Azure DevOps Pipeline "user"_
+![Commit details from Azure Repos](/commit-details.webp)_Notice the Azure DevOps Pipeline "user"_
 
 ## Wrapping-up
 In this post we have seen how to make a commit from a pipeline triggered by a CI change. Nothing new or fancy, but a few gotchas along the way, and something that can be useful in many situations. Thanks for reading 🤓

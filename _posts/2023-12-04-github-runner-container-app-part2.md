@@ -3,7 +3,7 @@ title: "Scale your org's GitHub runners in Azure Container Apps"
 tags: [github-actions, azure, container-apps, bicep]
 media_subpath: /assets/img/gh-runner-aca-part-2
 image:
-  path: banner.png
+  path: banner.webp
 date: 2023-12-04 13:20:00
 ---
 
@@ -21,7 +21,7 @@ It works by querying the GitHub REST API to get the number of queued jobs, and w
 
 ### Choosing the right version of the scaler
 The link to the KEDA documentation in the previous paragraph leads to the latest version of KEDA (`2.12` at the time of writing this post). Before browsing the docs I strongly advise you to check the KEDA version used by your Container Apps Environment:
-![KEDA version in the Azure portal](/01-portal-environment.png)_Looks like I don't have the latest version 🥹_
+![KEDA version in the Azure portal](/01-portal-environment.webp)_Looks like I don't have the latest version 🥹_
 
 Azure Container Apps is a _managed_ service where you don't manage the KEDA version used by the underneath cluster. Using Azure Kubernetes Service will probably give you more control on this, but with Container Apps the updates are rolled by service.  
 
@@ -43,7 +43,7 @@ They also support event triggers from KEDA scalers so it's definitively a good f
 {: .prompt-tip }
 
 Before jumping into the code, this little diagram shows what will happen once the runners will scale out:
-![Diagram](/02-diagram.png)_It also shows the changes from the diagram of the previous post_
+![Diagram](/02-diagram.webp)_It also shows the changes from the diagram of the previous post_
 
 ## Update the Bicep code
 
@@ -100,10 +100,10 @@ resource acaJob 'Microsoft.App/jobs@2023-05-01' = {
 
 ## Testing the runner at scale
 Once a deployment has been made with the new version of the Bicep code, no runner should be visible at first in GitHub. But if we manually trigger the `Test self-hosted runners` workflow several times, we should see this:
-![Active runners](/03-runners.png)_The jobs are being processed in parallel_
+![Active runners](/03-runners.webp)_The jobs are being processed in parallel_
 
 In the Azure portal, we can see the triggered jobs in the _Execution history_ blade:
-![Execution history](/04-portal-execution-history.png)_This is where we can monitor current and past runs_
+![Execution history](/04-portal-execution-history.webp)_This is where we can monitor current and past runs_
 From here we can also troubleshoot in the logs, sadly the _Log stream_ blade is not available for jobs (yet ?) so we have to run queries in Log Analytics for that.
 
 Once all the jobs have finished, everything is marked as ✅ _Succeded_ (or ❌ _Failed_) in the Azure portal, and no runner appears anymore in the GitHub UI as the KEDA scaler have scaled them to 0.

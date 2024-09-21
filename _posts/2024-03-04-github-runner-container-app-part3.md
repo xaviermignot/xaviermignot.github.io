@@ -3,7 +3,7 @@ title: "Follow-up on GitHub runners in Azure Container Apps"
 tags: [github-actions, azure, container-apps, bicep]
 media_subpath: /assets/img/gh-runner-aca-part-3
 image:
-  path: banner.png
+  path: banner.webp
 date: 2024-03-04 13:00:00
 ---
 
@@ -17,7 +17,7 @@ At the end of the second post, there still was an issue with authentication. It 
 
 ## Updates on the KEDA scaler
 The first good news is the version of KEDA which has been updated to `2.12` on my Container App Environment:
-![KEDA version in the Azure portal](portal-environment.png)_KEDA version went from 2.10 to 2.12 🚀_
+![KEDA version in the Azure portal](portal-environment.webp)_KEDA version went from 2.10 to 2.12 🚀_
 
 This is a big deal as authentication using a GitHub App key was introduced in the `2.11` version of the scaler. In the previous post I still had to use a token for authentication because of the `2.10` version of the scaler.
 
@@ -29,10 +29,10 @@ This is very easy to do using Bicep, the only thing to notice is that even if it
 {: .prompt-info }
 
 To sum-up the changes with diagrams, authentication will go from this:
-![Previous authentication](/authentication-before.png){: width="500" }_The access token is generated once and will expire_
+![Previous authentication](/authentication-before.webp){: width="500" }_The access token is generated once and will expire_
 
 To that:  
-![New authentication](/authentication-after.png){: width="500" }_The private key in the vault allows token generation from Container App Jobs_
+![New authentication](/authentication-after.webp){: width="500" }_The private key in the vault allows token generation from Container App Jobs_
 
 ## Update the Container App Job to use the Key Vault
 First, the secret containing the access token is replaced by a reference to the new secret in the Key Vault:

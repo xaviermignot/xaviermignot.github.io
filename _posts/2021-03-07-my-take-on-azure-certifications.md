@@ -3,7 +3,7 @@ layout: post
 title: My take on Azure certifications
 tags: [azure, certifications]
 image: 
-  path: /assets/img/azure-certifications/banner.png
+  path: /assets/img/azure-certifications/banner.webp
 ---
 
 Recently I have seen and participated in conversations about the utility of IT certifications, especially Azure certifications. As I have passed several of them I am convinced of their utility, and I will use this post to expose my point of view.

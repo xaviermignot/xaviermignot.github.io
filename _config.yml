@@ -67,7 +67,7 @@ cdn: ''
 
 # the avatar on sidebar, support local or CORS resources
 
-avatar: /assets/img/avatar.png?n=n #the ?n=n is a workaround to fix a 404 bug on the avatar
+avatar: /assets/img/avatar.webp?n=n #the ?n=n is a workaround to fix a 404 bug on the avatar
 
 # The URL of the site-wide social preview image used in SEO `og:image` meta tag.
 # It can be overridden by a customized `page.image` in front matter.

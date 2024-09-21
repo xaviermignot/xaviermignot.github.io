@@ -3,7 +3,7 @@ title: Workload identity federation for Azure DevOps with Terraform
 tags: [azure-devops, azure-pipelines, terraform, ci/cd]
 media_subpath: /assets/img/azdo-terraform-oidc
 image:
-  path: banner.png
+  path: banner.webp
 date: 2024-04-15 11:40:00
 ---
 
@@ -12,9 +12,9 @@ Since last month it's also supported by the Terraform provider for Azure DevOps.
 
 ## Add a service principal user in your organization
 The first thing to do is to create an _app registration_ in Entra ID (formerly Azure AD). Just give it a name and keep the other settings as default:  
-![Create and App Registration in the portal](/portal-app-registration.png){: width="600"} _This can also be done with tools like the Azure CLI or PowerShell_
+![Create and App Registration in the portal](/portal-app-registration.webp){: width="600"} _This can also be done with tools like the Azure CLI or PowerShell_
 Then in Azure DevOps, in _Organization settings_, you can add the _service principal_ just like any normal user (don't forget to add it to at least one project):
-![Add service principal in Azure DevOps](/azdo-user.png){: width="600"} _For this sample we will use the Project Contributors group but you might need to use another one depending on your needs_
+![Add service principal in Azure DevOps](/azdo-user.webp){: width="600"} _For this sample we will use the Project Contributors group but you might need to use another one depending on your needs_
 
 > Choosing the _Basic_ access level will consume one licence (the first 5 users are free for each organization) 
 {: .prompt-warning }
@@ -24,10 +24,10 @@ Then in Azure DevOps, in _Organization settings_, you can add the _service princ
 
 ## Create a service connection with federated credentials
 Now that the service principal has access to a project in Azure DevOps, we need to _federate_ its identity with Azure Pipelines runners. From your project settings in Azure DevOps, create a new service connection, select _Workload Identity federation (manual)_, give it a name, and clic _Next_:  
-![Issuer and subject identifier in Azure DevOps](/azdo-sc-issuer.png){: width="350"}
+![Issuer and subject identifier in Azure DevOps](/azdo-sc-issuer.webp){: width="350"}
 
 Here you can retrieve the _issuer_ and the _subject identifier_ that you need to set on the service principal. Go back to your app registration in the Azure portal, click on _Certificates & secrets_, _Federated credentials_, _Add credential_, and select the _Other issuer_ scenario. Then you can report the _issuer_ and _subject identifier_ values from Azure DevOps, give a name to the credential, and click on _Add_:
-![Issuer and subject identifier in Azure portal](/portal-issuer.png){: width="600"}
+![Issuer and subject identifier in Azure portal](/portal-issuer.webp){: width="600"}
 
 Back in the service connection creation in Azure DevOps, you have probably noticed that it's saved as a draft, so we need to finalize the set-up. We need to provide the following data:
 - An Azure subscription name and id
@@ -102,7 +102,7 @@ A few things to notice here:
 - Predefined System [variables](https://learn.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml#system-variables-devops-services) are used to get the Azure DevOps organization URL and project name so that we don't need to hard-code them 👌
 
 And that's it, running this pipeline should get a result like this:
-![Pipeline run in Azure DevOps](/azdo-pipeline.png){: width="600"}
+![Pipeline run in Azure DevOps](/azdo-pipeline.webp){: width="600"}
 
 Which might seem pointless but demonstrates that the _federated_ connection between the Azure Pipelines agents and Azure DevOps works through the Terraform provider 🙌
 

@@ -16,7 +16,7 @@ As an example we are going to build a very simple project consisting in the foll
 - A table in the Storage Account
 - A Logic App triggered by HTTP: each request will add a line in the storage table with the IP of the caller
 
-![Diagram](/01-diagram.png) _The following diagram shows what we are going to create here_
+![Diagram](/01-diagram.webp) _The following diagram shows what we are going to create here_
 
 
 ## GitHub repository
@@ -107,7 +107,7 @@ In other words, the "code" or the "logic" of the Logic Apps cannot be deployed s
 ### Let's develop/deploy this Logic App for good now !
 So how can we develop Logic Apps from the GUI and automate their deployment using IaC ?  
 Here is what I've got in the Azure portal once I've finished "developing" my Logic App:
-![Logic App workflow in Azure portal](/02-workflow-portal.png) _A similar experience is available using the VS Code extension_  
+![Logic App workflow in Azure portal](/02-workflow-portal.webp) _A similar experience is available using the VS Code extension_  
 Switching to the *Code view* allows me to see my workflow in JSON. From there I can copy the `definition` element and save its content a [file](https://github.com/xaviermignot/deploy-logic-apps-with-iac/blob/81f3560869aaf70bd945132e63b7034833216403/logic_apps/insertIntoTableStorage.json) in my repo.  
 
 > Why not taking *all* the content of the code view ? Because the `parameters` element contains the resource id of the API connection (with the subscription id and resource group name) and the Storage Account name, and I don't want these kind of environment-related information to end up in my git repository.
