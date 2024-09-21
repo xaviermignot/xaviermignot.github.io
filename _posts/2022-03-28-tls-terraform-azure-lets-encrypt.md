@@ -105,10 +105,10 @@ Then I use the `source .env` command and the ACME provider can use the environme
 
 Once the [full code](https://github.com/xaviermignot/terraform-certificates/blob/main/02_acme/main.tf) has been applied you can check out the Activity Log of your DNS zone.  
 You should see that the service principal corresponding to the environment variables has created and deleted a TXT record in the zone :
-![Activity Log](/03-lets-encrypt-activity-log.png) _The creation and deletion of the TXT record should occur within a minute_
+![Activity Log](/03-lets-encrypt-activity-log.webp) _The creation and deletion of the TXT record should occur within a minute_
 
 And more importantly you can browse your App Service from its custom hostname and see how your browser enjoys this fresh trusted certificate:  
-![Browser](/03-lets-encrypt-browser.png){: width="480" } _Note the R3 issuer which is Let's Encrypt, and the absence of security warning ✅_
+![Browser](/03-lets-encrypt-browser.webp){: width="480" } _Note the R3 issuer which is Let's Encrypt, and the absence of security warning ✅_
 
 
 ## Wrapping up
@@ -120,7 +120,7 @@ So I hope this post makes sense and helps other to issue trusted certificates us
 {: .prompt-tip }
 
 Back to the original diagram, here is where we are now:  
-![Diagram](/03-lets-encrypt.png) _The certificate is now issued by a trusted CA before being bounded to the App Service_
+![Diagram](/03-lets-encrypt.webp) _The certificate is now issued by a trusted CA before being bounded to the App Service_
 
 The [next post]({% post_url 2022-04-15-tls-terraform-azure-managed %}) will close the series with Azure *managed* certificates, a feature that deserves more attention 😉  
 Thanks for reading !

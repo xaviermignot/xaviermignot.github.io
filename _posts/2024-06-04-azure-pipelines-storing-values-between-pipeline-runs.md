@@ -14,7 +14,7 @@ But what if we need to save a value for another pipeline run ? We'll see how to 
 
 ## What are variable groups ?
 Variable groups allow you to set variables in the _Library_ section of the Azure Pipelines' UI:
-![The Library UI of Azure Pipelines](/variable-groups-ui.png)_This is where you can create variable groups_
+![The Library UI of Azure Pipelines](/variable-groups-ui.webp)_This is where you can create variable groups_
 Each variable group can contain several variables, and can be used by one or many pipelines within the same project.  
 
 > Variables in groups can be marked as sensitive to mask their value in the pipelines logs. A group can also be bound to an Azure key vault so that its variables are retrieved from the vault's secrets.
@@ -114,7 +114,7 @@ steps:
 {: .prompt-info }
 
 Using the `$(System.AccessToken)` variable will make the _Build Service_ account of your project authenticate against Azure DevOps. By default this service account has the _Reader_ role on your variable group, so before running the pipeline you need to change the role to _Administrator_:
-![Variable group security UI](/variable-group-security.png)
+![Variable group security UI](/variable-group-security.webp)
 
 After that the pipeline should run without any issue, and the variable group will be updated by the service account with all the deployment outputs as variables.
 

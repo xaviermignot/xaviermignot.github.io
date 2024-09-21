@@ -14,7 +14,7 @@ The [second post]({% post_url 2022-03-28-tls-terraform-azure-lets-encrypt %}) is
 ## Presentation of the context for the whole series
 
 Let's say we have the following architecture as a starting point:  
-![Starting architecture](01-http.png) _Let's start with a Web App bound to a custom domain_  
+![Starting architecture](01-http.webp) _Let's start with a Web App bound to a custom domain_  
 So we have the following components:
 - An App Service running in a plan with in the Basic tier at least
 - A DNS zone with at least the following records:
@@ -24,10 +24,10 @@ So we have the following components:
 
 Everything is created using Terraform CLI from my terminal, including the DNS records, that's why I'm using Azure DNS 😎  
 With this setup the App Service is accessible on the custom hostname using HTTP only, if we try to access it using HTTPS our browser displays an error as the only certificate it can find is bound the `azurewebsites.net` domain:  
-![Browser error](/01-http-browser.png) _The browser displays an error as the certificate doesn't match the hostname... yet_  
+![Browser error](/01-http-browser.webp) _The browser displays an error as the certificate doesn't match the hostname... yet_  
 
 In the Azure portal, the custom domain is added to the App Service but marked as unsecured:
-![Azure portal](/01-http-portal.png) _The Custom domains blade of the Azure portal displays this error on our custom domain_
+![Azure portal](/01-http-portal.webp) _The Custom domains blade of the Azure portal displays this error on our custom domain_
 
 Now that we have our basic setup, let's see how we can secure this web app.
 
@@ -93,16 +93,16 @@ resource "azurerm_app_service_certificate" "self_signed_cert" {
 And that's it, the certificate is ready to be used as an App Service certificate as you can see in the full code [here](https://github.com/xaviermignot/terraform-certificates/blob/main/01_self_signed/main.tf). 
 
 As you have probably guessed this certificate will not make the browser happy as our machine is not recognized as a trusted authority:  
-![Browser error](/02-self-signed-browser.png) _The hostname matches but the browser still displays an error as the authority is not trusted_
+![Browser error](/02-self-signed-browser.webp) _The hostname matches but the browser still displays an error as the authority is not trusted_
 
 But at least the Azure portal is happier as it considers that the custom domain is now secured:
-![Azure portal](/02-self-signed-portal.png) _The Azure portal seems less picky than the browser..._
+![Azure portal](/02-self-signed-portal.webp) _The Azure portal seems less picky than the browser..._
 
 
 ## Wrapping up
 
 That's it for this first step, which serves as an introduction to next posts. As I already mentioned the use of self-signed certificates is not recommended for production, and next you will see we can do much better than that.  
 If we take a look back to our initial diagram, we have made the following changes:
-![Generating self-signed certs](02-self-signed.png) _Diagram of the generation and deployment of the self-signed cert_  
+![Generating self-signed certs](02-self-signed.webp) _Diagram of the generation and deployment of the self-signed cert_  
 Stay tuned for the [next post]({% post_url 2022-03-28-tls-terraform-azure-lets-encrypt %}) who will be about Let's Encrypt. If you already need it, you can go to my [repo](https://github.com/xaviermignot/terraform-certificates) as the code is already there 🤓  
 Thanks for reading !

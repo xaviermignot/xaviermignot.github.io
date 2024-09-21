@@ -3,7 +3,7 @@ title: "App Services with Bicep & GitHub Actions, part 2: Deployments slots"
 tags: [azure, bicep, app-service, github-actions]
 media_subpath: /assets/img/bicep-app-service-slots
 image:
-  path: banner.png
+  path: banner.webp
 date: 2023-02-16 23:00:00
 ---
 
@@ -56,10 +56,10 @@ The demo consists in an ASP.NET web app, Bicep code and GitHub Actions workflows
 ## Some screenshots of the demo
 
 Let's see what we are going to build, starting at the first step of our deployment cycle. In the previous post we already had the _blue_ version of the app in production:
-![The blue app in production](/01-blue-app-prod.png)
+![The blue app in production](/01-blue-app-prod.webp)
 
 This time we are going to add the _green_ version in the _staging_ slot:
-![The green app in staging](/02-green-app-staging.png)_Notice the URL with the -staging suffix in the subdomain_
+![The green app in staging](/02-green-app-staging.webp)_Notice the URL with the -staging suffix in the subdomain_
 
 
 ## Updates on the Bicep code
@@ -186,7 +186,7 @@ resource staging 'Microsoft.Web/sites/slots@2022-03-01' = {
 ### First deployment
 Now that the Bicep code is ready, to get at the first step of the deployment cycle _for real_, we run the  [`initial-deployment`](https://github.com/xaviermignot/bicep-app-service-slots/blob/main/.github/workflows/initial-deployment.yml) GitHub Actions workflow. This workflow provisions all the resources in Azure, deploys the _blue_ version of the app in the production slot, and the _green_ version in the staging slot.
 
-Basically we now have what is shown on the screenshots earlier. We can also see that the current value of the `activeApp` parameter is visible in the portal: ![Blue activeApp in the Azure portal](/03-deployment-blue.png)_This helps us to implement the rule n°1: save which version is live somewhere_
+Basically we now have what is shown on the screenshots earlier. We can also see that the current value of the `activeApp` parameter is visible in the portal: ![Blue activeApp in the Azure portal](/03-deployment-blue.webp)_This helps us to implement the rule n°1: save which version is live somewhere_
 
 ### Swapping version
 Moving forward to the third step of our deployment cycle, we make a first swap by running the [`azcli-swap`](https://github.com/xaviermignot/bicep-app-service-slots/blob/main/.github/workflows/azcli-swap.yml) workflow which uses the following command:  
@@ -195,9 +195,9 @@ az webapp deployment slot swap -g $RG_NAME -n $APP_NAME -s staging
 ```
 {: file=".github/workflows/azcli-swap.yml" }
 As expected the `swap` command puts the green version in production:
-![The green app in production](/04-green-app-prod.png)
+![The green app in production](/04-green-app-prod.webp)
 And the blue one is now in staging:
-![The blue app in staging](/05-blue-app-staging.png)_As expected the red panel stays in the staging slot_
+![The blue app in staging](/05-blue-app-staging.webp)_As expected the red panel stays in the staging slot_
 Everything looks good but things would get messy if the workflow stopped here, as it still has to follow rule n°1:  "always save which version is live somewhere".  
 This is done in two steps, first the workflow gets the previous `activeApp` value and "inverts" it using Bash:
 ```sh
@@ -223,7 +223,7 @@ update-active-app:
 {: file=".github/workflows/azcli-swap.yml" }
 {% endraw %}
 Note that this deployment will have no change on the resources in Azure, it will only save the new version for the next deployments:
-![Green activeApp in the Azure portal](/06-deployment-green.png)
+![Green activeApp in the Azure portal](/06-deployment-green.webp)
 
 ### What about next deployments ?
 Now that our first swap has been made, we are at the step 4 or the deployment cycle described [earlier](#what-is-blue-green-deployment-anyway-) in this post.  

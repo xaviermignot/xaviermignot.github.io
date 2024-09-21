@@ -26,7 +26,7 @@ As an example, let's say I want to retrieve the name, type and resource group of
 $resources = Get-AzResource | Select-Object -Property Name,Type,ResourceGroupName
 ```
 Using this line and replacing `variableValue` with `$resources` in the previous yaml snippet will not work as you can check from your terminal:
-![View from my terminal](/01-terminal.png)_I have cropped the image for obvious sensitive reasons_
+![View from my terminal](/01-terminal.webp)_I have cropped the image for obvious sensitive reasons_
 You see that a complex variable in a string is empty, even if tabular data is shown when the variable is typed alone in a terminal line. As you can guess the same code in a pipeline will result in an empty variable, and fortunately there is a simple solution to this.
 
 ## The solution
@@ -59,7 +59,7 @@ steps:
       Write-Host "There are $($resources.Count) resources in the list"
 ```
 And the working result from the Azure Pipelines UI:
-![Azure DevOps](/02-azdo.png)
+![Azure DevOps](/02-azdo.webp)
 
 ## Wrapping up
 As conclusion, let me explain the real-world scenario where I needed this trick, as you might wonder why we do this instead of putting everything in a single script.  

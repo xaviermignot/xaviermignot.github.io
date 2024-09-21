@@ -3,7 +3,7 @@ title: "Terraform vs Bicep: the differences you should really know"
 tags: [azure, bicep, terraform]
 media_subpath: /assets/img/terraform-vs-bicep
 image:
-  path: banner.png
+  path: banner.webp
 date: 2024-02-05 22:40:00
 ---
 
@@ -20,7 +20,7 @@ One of the most important thing to understand is what is happening on the machin
 When you give a file to Bicep, it will find the dependant Bicep files, "compile" the whole thing as an ARM template and submit a _deployment_ in a single API call to Azure. From there all the work is done within Azure, the caller (your workstation or CI/CD runner) monitors the status of the deployment and waits for its completion.  
 ![Bicep execution sad Escobar meme](01-execution-mode-bicep.jpg){: width="400"} _As the deployment is made by Azure, pretty much nothing happens on your machine_
 You can also monitor the execution and see the result from the Azure portal in the deployment blade of the targeted management group, subscription or resource group:
-![Deployment in Azure portal](04-portal-deployment.png) _Viewing this in the portal will not happen if you use Terraform_
+![Deployment in Azure portal](04-portal-deployment.webp) _Viewing this in the portal will not happen if you use Terraform_
 
 ### Using Terraform
 When you run `terraform plan` from a folder, it compares the whole _configuration_ (the `*.tf` files) with the _state_ to determine the changes to make on the resources in Azure. Then running `terraform apply` will make the changes on the resources and reflect them in the state.  

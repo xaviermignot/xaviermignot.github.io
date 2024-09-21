@@ -65,10 +65,10 @@ To fast-forward to this situation, I run the `initial-deployment` workflow of th
 - Checkout the `green` tag of the repo, and also build the code but deploy to the _staging_ slot
 
 So far this is what we have in production:  
-![The blue app in production](/01-blue-app-prod.png) _I have also strengthen my front-end chops for this project_  
+![The blue app in production](/01-blue-app-prod.webp) _I have also strengthen my front-end chops for this project_  
 
 And in staging:
-![The green app in staging](/02-green-app-staging.png) _You see that red panel over here ? Its presence is managed using deployment slots (or sticky) settings_
+![The green app in staging](/02-green-app-staging.webp) _You see that red panel over here ? Its presence is managed using deployment slots (or sticky) settings_
 
 ### A little glimpse inside the IaC
 As you can see in the pics both versions of the app shows a value in _italic_ that comes from configuration, and a red panel only on the staging slot. This done using the `active_app` variable declared like this in the main module:
@@ -160,10 +160,10 @@ state, without changing any real infrastructure.
 Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
 ```
 Back to the browser, the green version is now in production:
-![The green app in production](/03-green-app-prod.png)
+![The green app in production](/03-green-app-prod.webp)
 
 And the blue one has moved to staging:
-![The blue app in staging](/04-blue-app-staging.png)
+![The blue app in staging](/04-blue-app-staging.webp)
 
 ### In case of a rollback...
 To perform a rollback, just run the `azcli-swap` workflow again ! Executing the same steps will put the blue version back in production, and green one in staging, just like before the first swap.  

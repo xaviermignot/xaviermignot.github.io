@@ -42,7 +42,7 @@ Once you have your *organization* (which represents your *team*) in Terraform Cl
 Go to [Terraform Cloud](https://app.terraform.io/), select you organization, and click on the *"__New workspace__"* button.  
 
 On the next page you have to choose a workflow, choose *CLI-driven workflow*:  
-![CLI-driven workflow](/02-workspace-type.png)
+![CLI-driven workflow](/02-workspace-type.webp)
 _The CLI-driven workflow on the new workspace page_  
 Using this workflow allows you to run Terraform commands from your machine, but they will run remotely in Terraform Cloud. It's the best of two worlds approach as you get the simplicity of running the commands from your terminal of choice, and you get the security of having the state stored remotely, and the runs are accessible in Terraform Cloud.
 
@@ -71,7 +71,7 @@ Then back in Terraform Cloud you need to create *environment variables* from the
 - `ARM_TENANT_ID`: Your tenant id, also from the command output
 
 You should get something like this:
-![Environment variables](/03-environment-variables.png)_These variables are then used by Terraform to get tokens for calling the Azure REST API._
+![Environment variables](/03-environment-variables.webp)_These variables are then used by Terraform to get tokens for calling the Azure REST API._
 
 ### Set a few variables for your project
 Still from the *Variables* tab of your workspace page, you need to create the following *Terraform variables*:
@@ -81,7 +81,7 @@ Still from the *Variables* tab of your workspace page, you need to create the fo
 Note that these variables are not *environment* variables, they are not used in the shell but in the Terraform code.
 
 Here is how I have set the variables in my workspace:
-![Terraform variables](/04-terraform-variables.png)_My resources will be created in the France Central Azure region, and called afa-xmi-tf-sample, ai-xmi-tf-sample, etc._
+![Terraform variables](/04-terraform-variables.webp)_My resources will be created in the France Central Azure region, and called afa-xmi-tf-sample, ai-xmi-tf-sample, etc._
 
 ## Get the code & get ready to deploy
 I have made up a GitHub repo with the resources listed above, you can grab it [here](https://github.com/xaviermignot/terraform-sample).  
@@ -128,7 +128,7 @@ Then you are ready to use the most common Terraform CLI commands:
 - `terraform apply` to *apply* the plan and finally make the changes (which will result in the creation of all resources when you run this for the first time)
 
 After that feel free to tweak the Terraform files, experiment, and run the `plan` and `apply` commands again. Use the Azure portal to see what you have deployed:
-![Azure portal](/05-azure-portal.png)_You should get something similar to this_  
+![Azure portal](/05-azure-portal.webp)_You should get something similar to this_  
 Once you are done, you can delete all the resources with the `terraform destroy` command.  
 
 What I like about this approach is that even if you can see the output of the commands in you terminal, everything is running in the cloud, and the state of the infrastructure is securely stored in the cloud as well.

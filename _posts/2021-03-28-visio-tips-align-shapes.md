@@ -4,7 +4,7 @@ title: "Microsoft Visio 101: Align your shapes like a boss"
 tags: [visio]
 media_subpath: /assets/img/visio-tips-align-shapes
 image: 
-  path: /banner.png
+  path: /banner.webp
 ---
 
 A I really enjoy making architecture diagrams using Visio, I want to share in a few posts some tips to help you do the same.  
@@ -29,7 +29,7 @@ Which seems like a detail but it makes me happy, as it' much easier to control t
 
 Already introduced in the previous section, the align does simply what it says: select several shapes, and use the align tool to left, right, center or middle align them.  
 Just remember that the first selected shape will not move and be used as a *reference*, so that the following shapes will align by moving towards the first one. Oh and by the way, it's located in the *Arrange* section of the *Home* ribbon:  
-![Align tool](/01-align-tool.png){: width="350" }  
+![Align tool](/01-align-tool.webp){: width="350" }  
 I almost use only the tool for center and middle align, in the example below I start to arrange these messy shapes by using center align twice and middle align once:  
 ![Diagram align](/diagram-align.gif)
 _Align tool in action_  
@@ -39,7 +39,7 @@ Using the align tool is a first step toward harmony in architecture diagrams, th
 ## Meet the Position tool
 
 The position tool is the one to use when you need to nicely, evenly position shapes in a diagram. The position tool is located right next to the align tool in the ribbon:  
-![Position tool](/02-position-tool.png){: width="350" }  
+![Position tool](/02-position-tool.webp){: width="350" }  
 I use mostly the *distribute horizontally* and *distribute vertically*, when I have at least 3 shapes to evenly place. Note that with the position tool the shapes at the ends will remain still, only the shapes between them will move.  
 Let's get back to the previous diagram to see it in action:  
 ![Diagram position](/diagram-position.gif)
@@ -53,13 +53,13 @@ As I have mentioned in my previous [post]({% post_url 2021-03-21-visio-tips-tool
 However I encourage you to go a step further by using the [ShapeSheet](https://docs.microsoft.com/en-us/office/client-developer/visio/about-the-shapesheet-spreadsheet) to manage connection points. The ShapeSheet is a spreadsheet associated to each shape that can be used to control the shapes properties. Think of it as the F12 key that brings the developers tools of your browser but for Visio.  
 Beside you have to activate the Visio [developer mode](https://docs.microsoft.com/en-us/office/vba/visio/how-to/run-visio-in-developer-mode) to access it but don't freak out, we will only use it for one simple thing.  
 Once a shape has at least one connection point, I right click on it, I use the *Show ShapeSheet* menu and organize the *Connection Points* section to look like this:  
-![ShapeSheep](/03-shape-sheet.png)  
+![ShapeSheep](/03-shape-sheet.webp)  
 In this section I can add, edit and remove the shapes connection points and set their coordinates as I want using simple formulas using the height and width of the shape. And you can see on the shape in the upper part of the screenshot that the connection point are perfectly placed, way better than if I had placed them "manually".  
 Of course depending on the use case I can add more connection points, if I have several connections to place on the same side or to start a connection below the shape's text.  
 
 But what's really interesting is when I do this for all the shapes on my diagrams, I can then use the align and position tools to place my shapes, and the connections between them will always looks perfectly straight, avoiding those pesky offset pixels that ruin the harmony of a diagram.  
 See how it looks after the addition of the connections on the previous diagram:  
-![Diagram with connection](/04-with-connections.png)
+![Diagram with connection](/04-with-connections.webp)
 _Shapes aligned, position and nicely connected 👌_  
 
 

@@ -32,7 +32,7 @@ For this demo I will use the following components:
 I have chosen to use only az cli from bash as I want to get more comfortable with it, but you can also use the Azure portal to configure the IoT Hub and update the desired properties and tags section of the twin, or Powershell cmdlets. The [Azure IoT Hub](https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.azure-iot-toolkit) extension for VS Code is also great to update the twin and monitor events.
 
 The following diagrams shows the whole set-up:
-![Diagram](/diagram.png)
+![Diagram](/diagram.webp)
 
 ### Configuring the IoT Hub
 We need an IoT Hub in the Free or Standard tier, we can't use the Basic tier as it does not support the device twin feature.  
@@ -74,7 +74,7 @@ Set-up is done, let's jump to the first test !
 ## Testing changes on properties (desired/reported) and tags
 
 For each test I am using Windows Terminal with two panes open in WSL: one on the lef to make the twin change, one on the right to monitor the changes (using the `az iot hub monitor-events` command):  
-![Reported test in Windows Terminal](/test-reported.png)
+![Reported test in Windows Terminal](/test-reported.webp)
 
 ### Test on reported properties
 As seen in the image above, runing the device tool in the left pane changes the `color` reported property from `Red` to `Blue`. In the right pane, we see an event with the following payload:
