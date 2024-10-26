@@ -1,23 +1,25 @@
 ---
 title: First look on the Graph provider for Bicep
-description: 
-tags: [azure, bicep]
+description: Provision an Azure App Service protected by Entra ID using Bicep only.
+tags: [azure, bicep, app-service]
 media_subpath: /assets/img/bicep-graph-provider
-# image:
-#   path: banner.webp
-#   alt: Photo by *** on ***
-# date: 2024-10-jj hh:MM:00
+image:
+  path: banner.webp
+  alt: Image generated using Microsoft Designer
+date: 2024-10-26 10:00:00
 ---
 
-I have made a [post]({% post_url 2024-02-05-terraform-vs-bicep %}) a few month ago to compare Terraform/OpenTofu and Bicep in a Azure context. I was mentioning in this post that interacting with Azure AD/Entra ID was not possible with Bicep, but also put a link to a GitHub issue in the conclusion about an _provider_ for Microsoft Graph was on the way.  
+I have made a [post]({% post_url 2024-02-05-terraform-vs-bicep %}) a few month ago to compare Terraform/OpenTofu and Bicep in a Azure context. I was mentioning in this post that interacting with Azure AD/Entra ID was not possible with Bicep, but also put a link to a GitHub issue in the conclusion about an upcoming _provider_ for Microsoft Graph.  
 Time has passed since then and the provider has been released in public preview for testing. Let's see how it works using a very common use-case.
 
 ## An App Service protected by Easy Auth using Bicep ONLY
 Easy Auth is the built-in authentication feature of Azure App Service. In a nutshell it forces the users to authenticate with an Identity Provider before redirecting them to the app. All of this without the need to modify the code of the app.  
 Using Entra ID as the Identity Provider makes a good use case for Bicep Graph provider as we will have to create Azure resources (App Service and App Service Plan) using _classic_ Bicep and Microsoft Graph resources (App Registration and Enterprise App) using the Graph provider.
 
+![The resources provisioned by the sample](resources.webp){: width="500" }_This diagram shows the resources to provision for this sample_
+
 > If you are not familiar with App Service Easy Auth, you can start by reading [this page](https://learn.microsoft.com/en-us/azure/app-service/overview-authentication-authorization) in the docs
-{: .prompt-info }
+{: .prompt-tip }
 
 ## GitHub repository
 The full code associated with this post is available on my GitHub [here](https://github.com/xaviermignot/bicep-app-service-easy-auth). You'll find instructions there on how to run the code in your Azure environment.  
@@ -32,9 +34,17 @@ As the Graph provider is in preview, theses lines need to be added in the `bicep
 }
 ```
 {: file="bicepconfig.json" }
-This enables the _extensibility_ feature of Bicep, allowing other _providers_ than the Azure Resource Manager to be used. The Microsoft Graph provider is just one provider, there are other providers on the way.  
-We can compare these _providers_ to those used by Terraform/OpenTofu, as they extend the use of Bicep by interacting with other APIs than Azure Resource Manager. But the way everything is orchestrated is different, as what happens on the machine running Bicep is still the same: a call to the Azure Resource Manager API is done to create a deployment.  
-On the Azure side, Azure Resource Manager uses its deployment _engine_ to provision Azure resources (by default) and MS Graph resources (when the specified provider is `microsoftGraph`). So the calls to the MS Graph API are not made from my machine, but from the deployment engine running in Azure.  
+This enables the _extensibility_ feature of Bicep, allowing other _providers_ than Azure Resource Manager to be used. The Microsoft Graph provider is just one provider, other providers are on the way.  
+
+The way the provider is invoked is interesting, as the Bicep execution mode remains the same: a single API call is made from the client machine to create an ARM deployment, and the rest happens in Azure, even the execution of the Graph provider.  
+
+On the Azure side, Azure Resource Manager uses its _deployment engine_ to provision Azure resources (by default) and MS Graph resources (when the specified provider is `microsoftGraph`). So the calls to the MS Graph API are not made from the client machine, but from the deployment engine running in Azure.  
+
+I have tried to illustrate the concept with the following diagram:
+![The workflow of the Bicep Graph extension](/workflow.webp)_This diagram is heavily inspired by the one on [this page](https://learn.microsoft.com/en-us/graph/templates/overview-bicep-templates-for-graph)_
+
+> We can compare the Bicep providers to those used by Terraform/OpenTofu: both allow the use of external APIs but in the Terraform/OpenTofu world, the providers run on the client machine
+{: .prompt-info }
 
 ## Show me some Bicep Graph code !
 To specify the MS Graph provider, the first line of a Bicep file must be `extension microsoftGraph`. Otherwise the default provider is used, which is obviously Azure Resource Manager.  
@@ -133,3 +143,4 @@ Zooming on this deployment, the _Deployment details_ from the _Overview_ blade i
 Once again it is kinda fun to see how this extensibility feature has been implemented by the Bicep team, allowing interactions with other APIs than ARM while keeping the core workflow of Bicep the same, that's pretty clever 🤓
 
 ## Wrapping-up
+In this post we have seen how we can use the Graph provider for Bicep, and a glimpse on how Bicep extensibility feature works under the hood. Personally I think it's great to see how Bicep is evolving in its own way, amazing work done by the Bicep team, I can't wait to see what's coming next 🤓
