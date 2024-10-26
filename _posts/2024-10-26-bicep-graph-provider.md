@@ -137,7 +137,7 @@ resource easyAuth 'Microsoft.Web/sites/config@2023-12-01' = {
 Leaving the IDE for the Azure portal, at the resource group level the deployment for the App Registration is just another deployment among the others:
 ![The list of deployments at the resource group level in Azure portal](portal-rg.webp)_You know, I'm something of an ARM template myself_
 
-Zooming on this deployment, the _Deployment details_ from the _Overview_ blade is buggy for now and doesn't show the list of resources but in the _Template_ blade we can see that the deployed resources is of type `Microsoft.Graph/applications`:
+Zooming on this deployment, the _Deployment details_ from the _Overview_ blade is buggy for now and doesn't show the list of resources but in the _Template_ blade we can see that the deployed resource is of type `Microsoft.Graph/applications`:
 ![The ARM template for the App Registration](portal-template.webp)_Always nice to see some ARM from time to time, makes me love Bicep even more 💖_
 
 Once again it is kinda fun to see how this extensibility feature has been implemented by the Bicep team, allowing interactions with other APIs than ARM while keeping the core workflow of Bicep the same, that's pretty clever 🤓
