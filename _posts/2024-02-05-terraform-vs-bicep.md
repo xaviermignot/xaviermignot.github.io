@@ -1,11 +1,15 @@
 ---
 title: "Terraform vs Bicep: the differences you should really know"
+description: What really matters if you work with Azure and need to choose between Terraform and Bicep
 tags: [azure, bicep, terraform]
 media_subpath: /assets/img/terraform-vs-bicep
 image:
   path: banner.webp
 date: 2024-02-05 22:40:00
 ---
+
+> This post has been updated in late October 2024 with the public preview of Bicep extensibility feature
+{: .prompt-info }
 
 For a few years now my professional coding time has been dedicated to writing Infrastructure-as-Code and CI/CD pipelines for several customers working with Azure. I now have some real-world experience in both Terraform and Bicep and as I have read several posts comparing the two, I want to share my opinion on this.  
 If there is one thing to keep from this post it would be this: this is a not a mono or multi cloud issue, you have to think beyond that. To elaborate on this, I will focus on two differences that are not talked about enough.
@@ -35,9 +39,12 @@ Once this explained, let's dig in what this difference changes with several exam
 First, Bicep's execution mode limits its capability to interact with other things: as the whole deployment is done remotely you can't for instance insert a delay between two resources. You can't either interact with another API, or another cloud.  
 In fact, as Bicep compiles into an ARM template, it is de-facto limited to what ARM templates can do, which is what the Azure Resource Manager API can do. So you can do anything as long as it's related to an Azure _resource_, which excludes:
 - Uploading a blob to a storage account (a blob is a data, not a resource)
-- Interact with Azure AD/Entra ID:
-  - You can't activate Easy Auth on an App Service as you'll need to create an App Registration
-  - You can't get existing AAD objects like groups from their names to assign roles (you have to provide ids)
+- ~~Interact with Azure AD/Entra ID:~~
+  - ~~You can't activate Easy Auth on an App Service as you'll need to create an App Registration~~
+  - ~~You can't get existing AAD objects like groups from their names to assign roles (you have to provide ids)~~
+
+> Update: Interacting with Entra ID in now possible in public preview with the _extensibility_ feature and the MS Graph _provider_ for Bicep. I have made [a post]({% post_url 2024-10-26-bicep-graph-provider %}) about this feature 😉
+{: .prompt-info }
 
 You can still work around these limitations either by:
 - Using Azure CLI and providing input values to the Bicep deployment
@@ -118,9 +125,6 @@ There are less important differences between that should not been considering wh
 As Terraform is older that Bicep (created in 2014 vs 2020), and is less limited by its execution mode, it naturally comes with more features: more built-in functions, more looping capabilities, a `console` command to experiment in your terminal, etc.  
 But Bicep is steadily catching up, and some of the latest features greatly improve the coding experience, for instance [user-defined types](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/user-defined-data-types), [null-forgiving](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/operator-null-forgiving) and [safe-dereference](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/operator-safe-dereference) operators, or [user-defined functions](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/user-defined-functions).
 
-> At the time of writing this post, user-defined functions and types import are still in preview.
-{: .prompt-info }
-
 ### VS Code integration
 I have been using Visual Studio Code as my main IDE for many years now, and I use the following extensions for Bicep and Terraform code:
 - The official Bicep [extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep) by Microsoft
@@ -156,7 +160,7 @@ Initially it was for a talk on this very same topic, you can check it out, compa
 Let's finish this long article by making a choice between the two. Personally, at the time of writing this, Terraform is my go-to IaC solution. I have seen comments stating that Terraform has won the "IaC war", and I guess it's true for now: the integration with many tools and a the ability to destroy resources removed from the code are hard to beat.  
 
 I also think that Bicep strongly deserves more than a look. From what I have also seen in the Bicep's [repo](https://github.com/Azure/bicep), the people building it are brilliant, and I'm quite amazed on how they achieve to make the language evolve, considering it's built on ARM template foundations.  
-I guess they believe in what they do and have good reasons to do so: it's a well designed language and big upcoming features could become game changers: [deployment stacks](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deployment-stacks) for resource lifecycle, and extensibility is also on the way (checkout the discussion [here](https://github.com/Azure/bicep/issues/7724) and [this page](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-extensibility-kubernetes-provider) of the docs).
+I guess they believe in what they do and have good reasons to do so: it's a well designed language and big upcoming features could become game changers: [deployment stacks](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/deployment-stacks) for resource lifecycle, and extensibility is also in public preview (check the [docs](https://learn.microsoft.com/en-us/graph/templates/overview-bicep-templates-for-graph) and my [post]({% post_url 2024-10-26-bicep-graph-provider %}) for MS Graph and [this page](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-extensibility-kubernetes-provider) for Kubernetes).
 
 For some use-cases I'll choose Bicep over Terraform, for instance small projects/customers (especially if no one will do IaC when I'll leave) or chicken and eggs problems (like provisioning the storage account holding Terraform's state).  
 For the rest, I'll stick with Terraform as it keeps people from using the portal too much and generally, it _scales_ better... for now 😏
