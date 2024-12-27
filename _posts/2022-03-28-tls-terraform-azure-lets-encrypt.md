@@ -4,6 +4,9 @@ tags: [terraform, azure, app-service]
 media_subpath: /assets/img/azure-terraform-certificates
 ---
 
+> This post has been updated in late December 2024 with the use of the `azuredns` DNS provider instead of the now deprecated `azure` one
+{: .prompt-info }
+
 Following my [previous post]({% post_url 2022-03-18-tls-terraform-azure-self-signed %}) on generating self-signed certificates with Terraform, this one is the second post of the series.  
 This time we are going to use Let's Encrypt as the certificate authority (CA) instead of our own machine. As a result we will get trusted certificates that can be used in production, for free.
 
@@ -71,11 +74,9 @@ resource "acme_certificate" "cert" {
 
   dns_challenge {
     # Many providers are supported for the DNS challenge, we are using Azure DNS here
-    provider = "azure"
+    provider = "azuredns"
 
     config = {
-      # Some arguments are passed here but it's not enough to let the provider access the zone in Azure DNS.
-      # Other arguments (tenant id, subscription id, and cient id/secret) must be set through environment variables.
       AZURE_RESOURCE_GROUP = var.dns.zone_rg_name
       AZURE_ZONE_NAME      = var.dns.zone_name
       AZURE_TTL            = 300
@@ -87,21 +88,12 @@ The key part is in the `dns_challenge` block of the `acme_certificate` resource.
 
 Before generating a certificate for our domain, Let's Encrypt checks that we *own* that domain. To do that it proceeds with a DNS *challenge*, basically it generates a random string and will not generate the certificate unless that random string is in a specific TXT record of the DNS zone.  
 
-Obviously the ACME provider does that for us, we just need to let it access our DNS zone. The provider supports *many* DNS providers, in this case we are using Azure DNS.  
+Obviously the ACME provider does that for us, we just need to let it access our DNS zone. The provider supports *many* DNS providers, in this case we are using `azuredns`.  
 
-So we need to tell the ACME provider *where* our DNS zone is, so we specify its name and resource group name in the `config` block above. Unfortunately the provider cannot use the Azure CLI authentication so we need to set additional arguments for authentication, so that the provider knows the subscription we are using, and a client id/secret to access it.  
+So we need to tell the ACME provider *where* our DNS zone is, so we specify its name and resource group name in the `config` block above. And as the `azuredns` DNS provider supports the same authentication methods as the `azurerm` Terraform provider, the required configuration is done.  
 
-This is the kind of information that should not be pushed to a git repository, so I prefer to put these as environment variables in a `.env` git-ignored file like this:
-```sh
-export ARM_TENANT_ID="<YOUR AZURE TENAND ID (a guid)>"
-export ARM_SUBSCRIPTION_ID="<YOUR AZURE SUBSCRIPTION ID (another guid)>"
-export ARM_CLIENT_ID="<AN APP REGISTRATION ID (yep it's a guid too)>"
-export ARM_CLIENT_SECRET="<THE APP REGISTRATION SECRET (not a guid this time)>"
-```
-Then I use the `source .env` command and the ACME provider can use the environment variables to authenticate to Azure and add/remove records in my DNS zone.  
-
-> If you are using Terraform Cloud or running Terraform in a CI/CD context you will not need to do this as the environment variables are already set
-{: .prompt-tip }  
+> Be sure to use the `azuredns` DNS provider and not the `azure` one which is now deprecated and required a client id and a client secret.
+{: .prompt-warning }
 
 Once the [full code](https://github.com/xaviermignot/terraform-certificates/blob/main/02_acme/main.tf) has been applied you can check out the Activity Log of your DNS zone.  
 You should see that the service principal corresponding to the environment variables has created and deleted a TXT record in the zone :
