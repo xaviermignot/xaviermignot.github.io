@@ -1,9 +1,13 @@
 ---
 title: Simplifying Home Assistant's configuration with ytt
 description: How you can use templating for your Home Assistant configuration with ytt
+media_subpath: /assets/img/ytt-home-assistant
+image:
+  path: banner.webp
+date: 2024-12-31 14:00:00
 ---
 
-I have been a light user of Home Assistant to automate my home for a few years, and have recently lost all my configuration (I could blame Raspberry Pi's SD card usage for that, but I should have anticipated that with backups...).  
+I have been a light user of Home Assistant to automate my home for a few years, and have recently lost all my configuration (I could blame Raspberry Pi's SD card usage for that, but I should have anticipated with backups...).  
 This was a good opportunity to reconfigure everything "as code" (using YAML files instead of the GUI), and in this post I will show how I have simplified my configuration using ytt.
 
 ## What is ytt ?
@@ -220,10 +224,17 @@ schedule: !include schedules.yaml
 
 Then, each file can be created and edited using File Editor in the GUI. Once the file are up-to-date in Home Assistant, I run a [configuration check](https://www.home-assistant.io/common-tasks/supervised/#configuration-check) and if everything is ok, I [reload](https://www.home-assistant.io/docs/tools/dev-tools/#reloading-the-yaml-configuration) the configuration to apply the changes.
 
-As a disclaimer, my solution is not fully automated:
-- I add physical devices to Home Assistant using the GUI as it requires physical interactions (pushing a button) on each device, so it can't be done with a _zero-touch_ approach
-- For the moment I also deploy the generated files to Home Assistant using the GUI
+> As you have seen my _workflow_ is not fully automated, as I still deploy configuration files "by hand". I might automate this step in the future but I'm happy with it for now.  
+Also it's tricky to automate everything, for instance I add physical devices with the GUI as it requires physical interaction (pushing buttons) on each device, so it can't be done with a _zero-touch_ approach.
+{: .prompt-info }
 
 ## Adding new features
+There is a lot of YAML content in this blog post, but it only implements simple thermostats for now. This is a good starting point, once you are familiar with this approach, you can extend your installation with new features.  
+For instance I have added a "heating mode" [input select](https://www.home-assistant.io/integrations/input_select/) with several modes to automatically lower the temperature in the whole house when the family is away for a few days, put it back to normal a few hours before we are back home, switch all heaters off in springtime, etc.  
+
+It relies on the use of a new automation [triggered](https://www.home-assistant.io/docs/automation/trigger/#state-trigger) when the input select changes, and [conditions](https://www.home-assistant.io/docs/automation/condition/) on existing automations.  
+I won't go further in the details, as this post is already long enough. I encourage you to build-up your skills with ytt, as you might use it for other tasks, and explore the great documentation of Home Assistant to understand how you can manage your configuration with templated YAML files instead of performing many manual actions in the GUI. At least, it works pretty well for me.
 
 ## Wrapping-up
+That's it for the last post of the year, this is my approach to bring an "as code" flavour to my Home Assistant usage. I hope this make sense and is useful, as I have written this post quickly and shared only snippets of my "code" instead of the full repo that is private.  
+Don't hesitate to reach out in the comment if you need, cheers 🤓
