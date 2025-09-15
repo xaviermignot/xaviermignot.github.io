@@ -49,7 +49,7 @@ I have tried to illustrate the concept with the following diagram:
 ## Show me some Bicep Graph code !
 To specify the MS Graph provider, the first line of a Bicep file must be `extension microsoftGraph`. Otherwise the default provider is used, which is obviously Azure Resource Manager.  
 For instance this module creates the App Registration required for Easy Auth:
-```
+```bicep
 extension microsoftGraph // This is important, it says "use the MS Graph provider for this file"
 
 param project string
@@ -94,7 +94,7 @@ output clientId string = app.appId
 I have written Terraform code to provision App Service with Easy Auth a while ago, and the App Registration [code](https://github.com/xaviermignot/tf-general-poc/blob/main/eng/tf/appgw-app-service-easy-auth/az-ad.tf) in HCL is very similar to the above code.  
 
 What is really cool is that it's just a resource defined in Bicep, so it integrates seamlessly with the other (ARM) resources in the code. For instance the `defaultHostname` parameter comes from the App Service resource in my Bicep code, and the `clientId` output from above is passed to the module in charge of the Easy Auth ARM resource:
-```
+```bicep
 param appServiceName string // This comes from the App Service module (who uses the ARM default provider)
 param clientId string // This comes from the App Registration modules (who uses the MS Graph provider)
 

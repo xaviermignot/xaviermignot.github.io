@@ -68,7 +68,7 @@ Let's see what we need to change in the Bicep code to make this happen.
 
 ### Add a deployment slot
 Adding a deployment slot is simple, we give it a name and set the App Service resource as the parent:
-```
+```bicep
 resource staging 'Microsoft.Web/sites/slots@2022-03-01' = {
   name: 'staging'
   location: location
@@ -86,7 +86,7 @@ We also set the same location and application stack as the parent App Service.
 
 ### Add the `activeApp` parameter
 Here we are starting to follow the rules established earlier, starting with rule n°3: always pass which value is active in production. This is done with the `activeApp` parameter, declare in the `main` module and passed to the module in charge of the App Service creation:
-```
+```bicep
 @allowed([ 'blue', 'green' ])
 param activeApp string = 'blue'
 ```
@@ -95,7 +95,7 @@ param activeApp string = 'blue'
 ### Manage the blue and the green configuration
 After rule n°3 we have to follow rule n°2: pass the configuration of all versions at each deployment.  
 One of the key point of the demo is to have different values in the _app settings_ of the production and the staging slot. When the `appService` module is called, we pass two arrays of app settings, for the blue app and for the green app:
-```
+```bicep
 module appService 'modules/appService.bicep' = {
   name: 'deploy-app-service'
   params: {
@@ -119,7 +119,7 @@ module appService 'modules/appService.bicep' = {
 {: file="infra/resources.bicep" }
 Note that we also pass the `activeApp` parameter as mentioned earlier.  
 In the `appService` module, this parameter is used to determine which configuration is bound to the production or the staging slot:
-```
+```bicep
 resource app 'Microsoft.Web/sites@2022-03-01' = {
   // ...
   properties: {
@@ -148,7 +148,7 @@ resource staging 'Microsoft.Web/sites/slots@2022-03-01' = {
 Notice the red panel only visible in the staging slot ? It's managed using a slot or sticky setting, i.e. a setting that stays in a deployment slot and is never swapped.  
 To do this in Bicep we need to create a `Microsoft.Web/sites/config` resource to set the names of the sticky settings. Then any setting with one of these names will be created as sticky, whether it's added to a slot or to an App Service.  
 In our example we need a sticky setting in the staging slot with the name `IsStaging` and the value `true`:
-```
+```bicep
 resource stickySettings 'Microsoft.Web/sites/config@2022-03-01' = {
   name: 'slotConfigNames'
   parent: app

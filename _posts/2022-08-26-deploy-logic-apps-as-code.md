@@ -36,7 +36,7 @@ This [periodic table of Azure resource types](https://justinoconnor.codes/2022/0
 I'm new to Bicep but already used to create a `main.bicep` module containing a *subscription* deployment to create the resource group, and a `resources.bicep` module containing a *resource group* deployment.  
 I will focus on the `resources.bicep` module here, here is the beginning of the module with the creation of the Storage Account, and the storage table:
 
-```
+```bicep
 @description('The suffix to use in resource naming.')
 param suffix string
 param location string
@@ -70,7 +70,7 @@ To interact with a resource or a service, a Logic App requires an *API connectio
 This is one of the key steps of this post, as the service connection contains the way the Logic App authenticates to the Storage Account. I could have used an account key but decided to use a *managed identity* to follow best practices ([this post](https://medium.com/medialesson/deploying-azure-logic-apps-managed-identity-with-bicep-e1354f185e4d) helped me a lot to make this part work).  
 
 Long story short, the trick with the Managed Identity is to use the `2018-07-01-preview` API version of the `Microsoft.Web/connections` resource type. Bicep will show a warning because of this but it's currently the only way to make it work:
-```
+```bicep
 resource tableStorageConnection 'Microsoft.Web/connections@2018-07-01-preview' = {
   name: 'tableStorage'
   location: location
@@ -114,7 +114,7 @@ Switching to the *Code view* allows me to see my workflow in JSON. From there I 
 {: .prompt-info }  
  
 Now that my logic is saved (and versioned) alongside my IaC code, I can use it in the `definition` property of my Logic App workflow (using the `loadJsonContent` builtin function):
-```
+```bicep
 resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
   name: 'ala-${suffix}'
   location: location
