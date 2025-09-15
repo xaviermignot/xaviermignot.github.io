@@ -116,7 +116,7 @@ Nothing uncommon here, we notice that the previously generated token is retrieve
 
 In the Bicep code (stripped down for readability, full version is [here](https://github.com/xmi-cs/aca-gh-actions-runner/blob/main/infra/modules/containerApp.bicep)), you can see how the values are passed to the container:
 
-```
+```bicep
 resource acaApp 'Microsoft.App/containerApps@2023-05-01' = {
   // ...
   properties: {
@@ -232,7 +232,7 @@ Research lead me to [this](https://github.com/microsoft/azure-container-apps/iss
 A nifty workaround is to set an environment variable to trick Azure CLI into thinking it's running in an App Service container, as App Services fortunately use the same endpoint as Container Apps.
 
 So the overall solution consists in adding these two environment variables in the Bicep code creating the Container App:
-```
+```bicep
 {
   // This is for tricking az cli (the value doesn't matter)
   name: 'APPSETTING_WEBSITE_SITE_NAME'

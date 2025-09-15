@@ -36,7 +36,7 @@ To that:
 
 ## Update the Container App Job to use the Key Vault
 First, the secret containing the access token is replaced by a reference to the new secret in the Key Vault:
-```
+```bicep
 resource acaJob 'Microsoft.App/jobs@2023-05-01' = {
   properties: {
     configuration: {
@@ -54,7 +54,7 @@ resource acaJob 'Microsoft.App/jobs@2023-05-01' = {
 {: file="infra/modules/containerAppJob.bicep" }
 
 The secret is used in two places by the Container App Job, as an environment variable:
-```
+```bicep
 resource acaJob 'Microsoft.App/jobs@2023-05-01' = {
   properties: {
     template: {
@@ -81,7 +81,7 @@ resource acaJob 'Microsoft.App/jobs@2023-05-01' = {
 Note that two variables are used, one for the GitHub App id, one for the key. These are used by the container itself to authenticate against the GitHub REST API. 
 
 On the scaling side, the authentication parameter `appKey` references the same secret as the environment variable. Following the KEDA [documentation](https://keda.sh/docs/latest/scalers/github-runner/), using the key for authentication requires to add the application id and installation id in the `metadata`: 
-```
+```bicep
 resource acaJob 'Microsoft.App/jobs@2023-05-01' = {
   properties: {
     configuration: {

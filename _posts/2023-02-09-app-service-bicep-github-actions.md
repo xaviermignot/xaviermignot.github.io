@@ -30,7 +30,7 @@ These two resources will live in the same resource group.
 ### The App Service Plan
 
 Here is the Bicep module for the App Service Plan:
-```
+```bicep
 param location string
 param project string
 
@@ -66,7 +66,7 @@ As our plan runs on Linux we have to set the `LinuxFxVersion` property for this,
 {: .prompt-warning }
 
 Apart from that the code is simple, here is the full resource:
-```
+```bicep
 param location string
 param project string
 

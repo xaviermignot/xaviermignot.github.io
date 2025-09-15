@@ -60,7 +60,7 @@ This is the most important part, it consists in matching the [trigger specificat
 - the `auth` array tells how the scaler authenticates against the GitHub REST API: using a secret reference to a PAT in our case as the GitHub App private key is not supported in our version of KEDA.
 
 This code snippet highlights the required changes:
-```
+```bicep
 resource acaJob 'Microsoft.App/jobs@2023-05-01' = {
   // ...
   properties: {
